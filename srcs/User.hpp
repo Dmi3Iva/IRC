@@ -1,7 +1,3 @@
-//
-// Created by Shandy Mephesto on 1/10/22.
-//
-
 #ifndef IRC_USER_HPP
 #define IRC_USER_HPP
 
