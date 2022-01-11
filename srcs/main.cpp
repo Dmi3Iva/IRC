@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include <csignal>
 #include <iostream>
 
 using std::cerr;
