@@ -47,8 +47,10 @@ public:
       }
       buffer[bytesRead] = '\0';
       cout << "The message was: " << buffer;
+      parse(string(buffer));
+      // Should we parse it?
       // Send a message to the _userfd
-      send(_fd, buffer, bytesRead + 1, 0);
+      // send(_fd, buffer, bytesRead + 1, 0);
       return 0;
     }
     cout << "Client ended the _userfd!" << endl;
@@ -61,6 +63,19 @@ public:
 
 private:
   int _fd;
+
+  void parse(string msg) {
+    vector<srting> commands;
+    srting stringCommand;
+    // split commands
+    if (!msg.empty()) {
+      while (std::getline(msg, stringCommand, '\n')) {
+        commands.push_back(stringCommand);
+      }
+    }
+    // execute them one by one
+
+  }
 };
 
 #endif
