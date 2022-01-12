@@ -1,6 +1,7 @@
 #ifndef IRC_USER_HPP
 #define IRC_USER_HPP
 
+#include "constants.h"
 #include <arpa/inet.h>
 #include <cerrno>
 #include <cstdlib> // For exit() and EXIT_FAILURE
@@ -36,28 +37,16 @@ public:
 
   int listen() {
     // Read from the _userfd
-    char buffer[100];
+    char buffer[IRC_MSG_LEN];
     ssize_t bytesRead;
-    cout << "User listens" << endl;
-    if ((bytesRead = recv(_fd, buffer, 100, 0))) {
+    cout << "User listens:" << endl;
+    if ((bytesRead = recv(_fd, buffer, sizeof(buffer), 0))) {
       if (bytesRead == -1) {
-        if (errno == 35)
-          return 0;
         cerr << "Something went wrong while try to receive message. errno: " << errno << " fd was: " << _fd << endl;
         return 1;
-        //          close(_userfd);
-        //          close(_socketfd);
-        //        exit(EXIT_FAILURE);
       }
       buffer[bytesRead] = '\0';
       cout << "The message was: " << buffer;
-      if (bytesRead == 1 && buffer[0] == '#') {
-        cout << "end signal from the client" << endl;
-        return 0;
-        //          close(_userfd);
-        //          close(_socketfd);
-        //        exit(EXIT_FAILURE);
-      }
       // Send a message to the _userfd
       send(_fd, buffer, bytesRead + 1, 0);
       return 0;
@@ -74,4 +63,4 @@ private:
   int _fd;
 };
 
-#endif // IRC_USER_HPP
+#endif

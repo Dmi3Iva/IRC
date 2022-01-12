@@ -28,12 +28,12 @@ public:
     return &instance;
   }
 
-  pollfd getPollFdFromFd(int fd) {
-    pollfd pfd;
-    pfd.fd = fd;
-    pfd.events = POLLIN | POLLOUT;
-    pfd.revents = POLLIN | POLLOUT;
-    pollfd pollfdArr[1] = {pfd};
+  pollfd *getPollFdFromFd(int fd) {
+    pollfd *pollfdArr = new pollfd[1];
+    pollfdArr[0].fd = fd;
+    pollfdArr[0].events = POLLIN | POLLOUT;
+    pollfdArr[0].revents = 0;
+    return pollfdArr;
   }
 
   void start() {
@@ -41,14 +41,15 @@ public:
     _startListening(_socketfd);
 
     // Grab a userfd from the queue
-    pollfd myPoll = getPollFdFromFd(_socketfd);
+    pollfd *serverPollFd = getPollFdFromFd(_socketfd);
 
     while (!_stopFlag) {
       // accept new users
-      _someFunction(myPoll);
+      _acceptNewClients(serverPollFd);
       _checkUsers();
     }
 
+    delete serverPollFd;
     Users.clear();
     close(_socketfd);
     cout << "The server closed" << endl;
@@ -102,46 +103,40 @@ private:
 
   void _checkUsers() {
     for (std::vector<User>::iterator it = Users.begin(), ite = Users.end(); it != ite; ++it) {
-      pollfd userPoll;
-      userPoll.fd = it->getFD();
-      userPoll.events = POLLIN | POLLOUT;
-      userPoll.revents = POLLIN | POLLOUT;
-      pollfd userfdArr[1] = {userPoll};
-      int ret = poll(userfdArr, 1, 500);
-      cout << "User status " << ret << endl;
-      if (ret && it->listen()) {
+      pollfd *userfdArr = getPollFdFromFd(it->getFD());
+      int ret = poll(userfdArr, 1, 800);
+      cout << "User poll status " << ret << " revents: " << userfdArr[0].revents << endl;
+      if (ret && (userfdArr[0].revents & POLLIN) && it->listen()) {
         it->closeFD();
         Users.erase(it);
       }
+      delete userfdArr;
     }
   }
 
-  void _someFunction(pollfd pollfdArr) {
-    int pollReturned = poll(pollfdArr, 1, 500);
-    cout << "pol return: " << pollReturned << endl;
-    if (pollReturned > 0) {
+  void _acceptNewClients(pollfd *serverPollFd) {
+    int newConnectionsCount = poll(serverPollFd, 1, 500);
+    cout << "New connections count: " << newConnectionsCount << endl;
+    if (newConnectionsCount > 0) {
       size_t addrlen = sizeof(sockaddr);
       int userfd =
           accept(_socketfd, reinterpret_cast<struct sockaddr *>(&_sockaddr), reinterpret_cast<socklen_t *>(&addrlen));
 
       if (userfd < 0) {
-        cerr << "Failed to grab userfd. errno: " << errno << endl;
-        //          exit(EXIT_FAILURE);
+        cerr << "Failed to accept new connection. errno: " << errno << endl;
       } else {
         fcntl(userfd, F_SETFL, O_NONBLOCK);
         Users.push_back(User(userfd));
-        char host[NI_MAXHOST];       // Client's remote name
-        char service[NI_MAXSERV];    // Service (i.e. port) the client is connect on
-        memset(host, 0, NI_MAXHOST); // same as memset(host, 0, NI_MAXHOST);
+        char host[NI_MAXHOST];    // Client's remote name
+        char service[NI_MAXSERV]; // Service (i.e. port) the client is connect on
+        memset(host, 0, NI_MAXHOST);
         memset(service, 0, NI_MAXSERV);
-        cout << "new user fd is: " << userfd << std::endl;
+        cout << "new user fd is: " << userfd;
         if (getnameinfo(reinterpret_cast<const struct sockaddr *>(&_sockaddr), sizeof(sockaddr), host, NI_MAXHOST,
-                        service, NI_MAXSERV, 0) == 0) {
-          cout << host << " connected on port " << service << endl;
-        } else {
+                        service, NI_MAXSERV, 0) != 0) {
           inet_ntop(AF_INET, &_sockaddr.sin_addr, host, NI_MAXHOST);
-          cout << host << " connected on port " << ntohs(_sockaddr.sin_port) << endl;
         }
+        cout << " connected on host:" << host << " port: " << service << endl;
       }
     }
   }
