@@ -5,10 +5,11 @@
 #ifndef IRC_IRCCHANNEL_HPP
 #define IRC_IRCCHANNEL_HPP
 
-#include <cstring>
+#include <string>
 #define IRC_CHANNEL_NAME_LENGTH 200
 
 using std::string;
+
 class IrcChannel {
 public:
   IrcChannel() {}

@@ -1,31 +1,37 @@
-#infdef CONTEXT
+#ifndef CONTEXT
 #define CONTEXT
 
+#include "ACommand.hpp"
 #include "Commands/NickCommand.hpp"
-#include "Commands/QuitCommand.hpp"
 #include "Commands/UserCommand.hpp"
+#include "Server.hpp"
 #include <map>
+#include <utility>
+
+using std::cout;
+using std::endl;
+using std::make_pair;
+using std::map;
+using std::string;
+
+class Server;
+class ACommand;
 
 class Context {
+private:
+  typedef map<string, ACommand *> commandsMapType;
+  commandsMapType _commandsMap;
+  Server *_serverPtr;
+
 public:
-  Context(Server *serverPtr) : _serverPtr(serverPtr) {
-    commandsMap = {{"NICK", NickCommand}, {"USER", UserCommand}, {"QUIT", QuitCommand}};
-  }
-  ~Context() {}
+  Context();
+  Context(Server *serverPtr);
+  ~Context();
 
-  executeCommand(string cmd, string restString) {
-    for (commandsMapType::iterator it = commandsMap.begin(), ite = commandsMap.end(); it != ite; ++it) {
-      if (it->first == cmd) {
-        cout << "founded command: " << cmd << endl;
-        it->second.execute(restString);
-        break;
-      }
-    }
-
-  private:
-    typedef map<string, ACommand> commandsMapType;
-    commandsMapType commandsMap;
-    Server *_serverPtr;
-  };
+  void setupCommands();
+  void setServer(Server *serverPtr);
+  int executeCommand(User *user, string stringCommand);
+  void sendMessage(int whereFd, string responseMessage);
+};
 
 #endif
