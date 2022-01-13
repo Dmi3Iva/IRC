@@ -21,14 +21,15 @@ class Context {
 private:
   typedef map<string, ACommand *> commandsMapType;
   commandsMapType _commandsMap;
-  Server *_serverPtr;
+  //  Server *_serverPtr;
+  // TODO:: contain users and channels
 
 public:
   Context();
-  Context(Server *serverPtr);
+  //  Context(Server *serverPtr);
   ~Context();
 
-  void setupCommands();
+  //  void setupCommands();
   void setServer(Server *serverPtr);
   int executeCommand(User *user, string stringCommand);
   void sendMessage(int whereFd, string responseMessage);

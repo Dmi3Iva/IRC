@@ -117,7 +117,7 @@ void Server::_handleMessage(string msg) {
   }
 }
 
-void Server::_handleRegistration(string msg) {
+void Server::_handleRegistration(User *user, string msg) {
   // parse
   vector<string> commands = ft_split(msg, '\n');
   // send to context
