@@ -1,24 +1,23 @@
 #ifndef ACOMMAND
 #define ACOMMAND
 
-#include "Context.hpp"
+#include "Channel.hpp"
 #include "User.hpp"
 #include <string>
+#include <sys/socket.h>
 
 using std::string;
 
-class Context;
-class User;
-
 class ACommand {
 public:
-  ACommand(Context *ctx);
+  ACommand(vector<User> *usersPtr, vector<Channel> *channelsPtr);
   ~ACommand(){};
   virtual void execute(User *user, string cmd) = 0;
-  //  virtual void response(string args) = 0;
+  void sendMessage(int fd, string msg);
 
 protected:
   string _name;
-  Context *_ctx;
+  vector<User> *_usersPtr;
+  vector<Channel> *_channelsPtr;
 };
 #endif

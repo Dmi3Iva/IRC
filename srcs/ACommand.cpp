@@ -1,3 +1,6 @@
 #include "ACommand.hpp"
 
-ACommand::ACommand(Context *ctx) : _name(""), _ctx(ctx) {}
+ACommand::ACommand(vector<User> *usersPtr, vector<Channel> *channelsPtr)
+    : _name(""), _usersPtr(usersPtr), _channelsPtr(channelsPtr) {}
+
+void ACommand::sendMessage(int fd, string msg) { send(fd, msg.c_str(), msg.size(), 0); }

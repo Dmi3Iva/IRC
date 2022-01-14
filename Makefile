@@ -31,6 +31,7 @@ $(NAME): $(OBJ) $(HEADERS)
 all: $(NAME)
 
 clean:
+	rm -rf $(OBJ)
 
 fclean: clean
 	rm -rf $(NAME)

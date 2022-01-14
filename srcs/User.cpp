@@ -7,9 +7,9 @@
 User::User(int userFd) : _fd(userFd), _isRegistered(false) {}
 User::~User() {}
 
-int User::listen() {
-  // Read from the _userfd
-}
+// int User::listen() {
+//   // Read from the _userfd
+// }
 
 void User::closeFD() { close(_fd); }
 int User::getFD() { return _fd; }
@@ -29,6 +29,8 @@ void User::setRealname(string realname) {
 }
 
 bool User::getIsRegistered() { return _isRegistered; }
+
+void User::setIsRegistered(bool isRegistered) { _isRegistered = isRegistered; }
 
 string User::getNickname() { return _nickname; }
 string User::getUsername() { return _username; }

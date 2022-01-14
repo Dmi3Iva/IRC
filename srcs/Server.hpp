@@ -14,7 +14,7 @@
 #include <vector>
 
 #include "Context.hpp"
-#include "User.hpp"
+#include "utils.hpp"
 
 using std::cerr;
 using std::cout;
@@ -24,6 +24,11 @@ using std::vector;
 
 class Context;
 
+/**
+ * Starting IRC server,
+ * checks for new connections,
+ * creates Context which execute commands and contains info about channels and users
+ */
 class Server {
 public:
   static Server *getInstance();
@@ -34,21 +39,16 @@ public:
 private:
   int _socketfd;
   sockaddr_in _sockaddr;
-  // TODO:: move to Context
-  std::vector<User> Users;
-  int _stopFlag;
   Context *_ctx;
 
   Server();
   Server(Server const &);         // Don't Implement.
-  void operator=(Server const &); // Don't implement
+  void operator=(Server const &); // Don't implement.
 
-  void _checkUsers();
   void _acceptNewClients(pollfd *serverPollFd);
   void _startListening(int socketfd);
-  void _init(string addr, int port);
-  void _handleMessage(string msg);
-  void _handleRegistration(string msg);
+  void _bindSocket(string addr, int port);
+  void _printConnectionInfo(int userFd);
 };
 
 #endif // IRC_SERVER_HPP

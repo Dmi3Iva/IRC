@@ -2,9 +2,11 @@
 #define CONTEXT
 
 #include "ACommand.hpp"
+#include "Channel.hpp"
 #include "Commands/NickCommand.hpp"
 #include "Commands/UserCommand.hpp"
-#include "Server.hpp"
+#include "User.hpp"
+#include "utils.hpp"
 #include <map>
 #include <utility>
 
@@ -14,25 +16,31 @@ using std::make_pair;
 using std::map;
 using std::string;
 
-class Server;
-class ACommand;
+// class Server;
+// class ACommand;
 
 class Context {
 private:
   typedef map<string, ACommand *> commandsMapType;
   commandsMapType _commandsMap;
-  //  Server *_serverPtr;
-  // TODO:: contain users and channels
+  std::vector<User> _users;
+  std::vector<Channel> _channels;
+
+  void _setupCommands();
+  void _handleMessage(User *user, string msg);
+  int _executeCommand(User *user, string stringCommand);
 
 public:
   Context();
-  //  Context(Server *serverPtr);
   ~Context();
 
-  //  void setupCommands();
-  void setServer(Server *serverPtr);
-  int executeCommand(User *user, string stringCommand);
-  void sendMessage(int whereFd, string responseMessage);
+  void addUser(int userfd);
+  void listenUsers();
+  void executeMessage(User u, string msg);
+  //  void removeUser(user user);
+
+  // TODO:: move sendMessage to ACommand
+  // void sendMessage(int whereFd, string responseMessage);
 };
 
 #endif

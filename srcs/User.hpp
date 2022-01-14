@@ -36,7 +36,7 @@ public:
   User(int userFd);
   ~User();
 
-  int listen();
+  //  int listen();
   void closeFD();
   int getFD();
   void setNickname(string nickname);
@@ -47,6 +47,7 @@ public:
   string getRealname();
 
   bool getIsRegistered();
+  void setIsRegistered(bool isRegistered);
 
 private:
   int _fd;
@@ -55,8 +56,8 @@ private:
   string _realname;
   bool _isRegistered;
 
-  void _handleMessage(string msg);
-  void _handleRegistration(string msg);
+  //  void _handleMessage(string msg);
+  //  void _handleRegistration(string msg);
 };
 
 #endif

@@ -18,7 +18,7 @@ class User;
 
 class UserCommand : public ACommand {
 public:
-  UserCommand(Context *ctx);
+  UserCommand(vector<User> *usersPtr, vector<Channel> *channelsPtr);
   void execute(User *user, string cmd);
 };
 

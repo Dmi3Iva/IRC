@@ -1,6 +1,7 @@
 #include "UserCommand.hpp"
 
-UserCommand::UserCommand(Context *ctx) : ACommand(name, ctx), _name("USER") {}
+UserCommand::UserCommand(vector<User> *usersPtr, vector<Channel> *channelsPtr)
+    : _ACommand(userPtr, channelsPtr), _name("USER") {}
 
 /**
  * Command: USER
@@ -16,7 +17,7 @@ void UserCommand::execute(User *user, string cmd) {
   vector<string> userInfo = ft_split(cmd, ' ');
   user->setUsername(userInfo[0]);
 
-  if (user->getIsRegistered()) {
-    cout << "TODO:: Does it require for some operations here?" << endl;
+  if (!user->getNickname().empty() && !user->getRealname().empty() && !user->getUsername().empty()) {
+    user->setIsRegistered(true);
   }
 };
