@@ -7,6 +7,8 @@ Server::Server() : _ctx(new Context()) {
     cerr << "Failed to create socket. errno: " << errno << endl;
     exit(EXIT_FAILURE);
   }
+  int on = 1;
+  setsockopt(_socketfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
   if (fcntl(_socketfd, F_SETFL, O_NONBLOCK) == -1) {
     cerr << "Failed to update socket fd. errno: " << errno << endl;
     exit(EXIT_FAILURE);
