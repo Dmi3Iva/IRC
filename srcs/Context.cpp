@@ -71,7 +71,7 @@ int Context::_executeCommand(User *user, string stringCommand) {
 
 void Context::_handleMessage(User *user, string msg) {
   // parse
-  vector<string> commands = ft_split(msg, "\r\n");
+  vector<string> commands = ft_split(msg, DELIMITER);
   // execute in order
   for (vector<string>::iterator it = commands.begin(), ite = commands.end(); it != ite; ++it) {
     _executeCommand(user, *it);
