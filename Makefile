@@ -6,6 +6,8 @@ CFLAGS = -Wall -Werror -Wextra -std=c++98
 
 SRC = srcs/main.cpp \
 	srcs/ACommand.cpp \
+ 	srcs/Commands/NickCommand.cpp\
+ 	srcs/Commands/UserCommand.cpp\
 	srcs/Channel.cpp \
 	srcs/Context.cpp \
 	srcs/Server.cpp \
@@ -16,6 +18,8 @@ OBJ=$(SRC:.cpp=.o)
 
 HEADERS = srcs/constants.hpp \
  	srcs/ACommand.hpp \
+ 	srcs/Commands/NickCommand.hpp\
+ 	srcs/Commands/UserCommand.hpp\
 	srcs/Channel.hpp \
 	srcs/Context.hpp \
 	srcs/Server.hpp \

@@ -32,7 +32,6 @@ class Context;
 class Server {
 public:
   static Server *getInstance();
-  pollfd *getPollFdFromFd(int fd);
   void start();
   ~Server();
 

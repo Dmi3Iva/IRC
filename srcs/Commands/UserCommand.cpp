@@ -1,7 +1,8 @@
 #include "UserCommand.hpp"
 
-UserCommand::UserCommand(vector<User> *usersPtr, vector<Channel> *channelsPtr)
-    : _ACommand(userPtr, channelsPtr), _name("USER") {}
+UserCommand::UserCommand(vector<User> *usersPtr, vector<Channel> *channelsPtr) : ACommand(usersPtr, channelsPtr) {
+  _name = "USER";
+}
 
 /**
  * Command: USER

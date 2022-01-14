@@ -15,6 +15,7 @@ using std::endl;
 using std::make_pair;
 using std::map;
 using std::string;
+using std::vector;
 
 // class Server;
 // class ACommand;
@@ -23,8 +24,8 @@ class Context {
 private:
   typedef map<string, ACommand *> commandsMapType;
   commandsMapType _commandsMap;
-  std::vector<User> _users;
-  std::vector<Channel> _channels;
+  vector<User> _users;
+  vector<Channel> _channels;
 
   void _setupCommands();
   void _handleMessage(User *user, string msg);
@@ -36,11 +37,6 @@ public:
 
   void addUser(int userfd);
   void listenUsers();
-  void executeMessage(User u, string msg);
-  //  void removeUser(user user);
-
-  // TODO:: move sendMessage to ACommand
-  // void sendMessage(int whereFd, string responseMessage);
 };
 
 #endif

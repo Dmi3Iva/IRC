@@ -10,7 +10,7 @@
  * @param delim
  * @return
  */
-vector<string> ft_split(std::string s, char delim) {
+vector<string> ft_split(const string &s, char delim) {
   vector<string> result;
   istringstream iss(s);
   string item;

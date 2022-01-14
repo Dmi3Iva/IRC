@@ -2,6 +2,7 @@
 #define NICKCOMMAND
 
 #include "../ACommand.hpp"
+#include "../responses.hpp"
 #include <iostream>
 
 class ACommand;
