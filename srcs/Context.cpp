@@ -35,7 +35,11 @@ void Context::listenUsers() {
           if (bytesRead == -1) {
             cerr << "Something went wrong while try to receive message. errno: " << errno << " fd was: " << fd << endl;
           }
+
           buffer[bytesRead] = '\0';
+          if (bytesRead - 1 >= 0 && buffer[bytesRead - 1] == '\r')
+            buffer[bytesRead - 1] = '\0';
+
           cout << "The message was: " << buffer;
           _handleMessage(&(*it), string(buffer));
         } else {
@@ -56,7 +60,9 @@ int Context::_executeCommand(User *user, string stringCommand) {
   for (commandsMapType::iterator it = _commandsMap.begin(), ite = _commandsMap.end(); it != ite; ++it) {
     if (it->first == commandName) {
       cout << "founded command: " << commandName << endl;
-      it->second->execute(user, stringCommand.substr(stringCommand.find(' ')));
+      string s = stringCommand.substr(stringCommand.find(' '));
+      string executeString = trim(s);
+      it->second->execute(user, executeString);
       break;
     }
   }
@@ -65,9 +71,9 @@ int Context::_executeCommand(User *user, string stringCommand) {
 
 void Context::_handleMessage(User *user, string msg) {
   // parse
-  vector<string> commands = ft_split(msg, '\n');
+  vector<string> commands = ft_split(msg, "\r\n");
   // execute in order
   for (vector<string>::iterator it = commands.begin(), ite = commands.end(); it != ite; ++it) {
-    _executeCommand(user, (*it));
+    _executeCommand(user, *it);
   }
 }

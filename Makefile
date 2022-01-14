@@ -2,7 +2,7 @@ NAME=ircserv
 
 CC = clang++
 
-CFLAGS = -Wall -Werror -Wextra -std=c++98
+CFLAGS = -Wall -Werror -Wextra -std=c++98 -g
 
 SRC = srcs/main.cpp \
 	srcs/ACommand.cpp \
@@ -17,6 +17,7 @@ SRC = srcs/main.cpp \
 OBJ=$(SRC:.cpp=.o)
 
 HEADERS = srcs/constants.hpp \
+	srcs/responses.hpp \
  	srcs/ACommand.hpp \
  	srcs/Commands/NickCommand.hpp\
  	srcs/Commands/UserCommand.hpp\

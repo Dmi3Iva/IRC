@@ -9,6 +9,8 @@ void NickCommand::execute(User *user, string cmd) {
   user->setNickname(cmd);
   if (!user->getNickname().empty() && !user->getRealname().empty() && !user->getUsername().empty()) {
     user->setIsRegistered(true);
-    sendMessage(user->getFD(), RPL_WELCOME(user->getNickname(), user->getUsername, "localhost"));
+    string msg = RPL_WELCOME(user->getNickname(), user->getUsername(), "localhost");
+    cout << "sending message: " << msg << endl;
+    sendMessage(user->getFD(), msg);
   }
 };

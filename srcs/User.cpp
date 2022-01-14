@@ -24,7 +24,7 @@ void User::setUsername(string username) {
 }
 
 void User::setRealname(string realname) {
-  cout << "set nickname: " << realname << endl;
+  cout << "set realname: " << realname << endl;
   _realname = realname;
 }
 

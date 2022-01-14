@@ -10,13 +10,15 @@
  * @param delim
  * @return
  */
-vector<string> ft_split(const string &s, char delim) {
+vector<string> ft_split(string s, const string &delim) {
   vector<string> result;
-  istringstream iss(s);
-  string item;
-  while (getline(iss, item, delim)) {
-    if (!item.empty())
-      result.push_back(item);
+  size_t pos = 0;
+  string token;
+  while ((pos = s.find(delim)) != std::string::npos) {
+    token = s.substr(0, pos);
+    if (!token.empty())
+      result.push_back(token);
+    s.erase(0, pos + delim.length());
   }
   return result;
 }
@@ -33,3 +35,15 @@ pollfd *getPollFdFromFd(int fd) {
   pollfdPtr[0].revents = 0;
   return pollfdPtr;
 }
+
+std::string &ltrim(std::string &str, const std::string &chars) {
+  str.erase(0, str.find_first_not_of(chars));
+  return str;
+}
+
+std::string &rtrim(std::string &str, const std::string &chars) {
+  str.erase(str.find_last_not_of(chars) + 1);
+  return str;
+}
+
+std::string &trim(std::string &str, const std::string &chars) { return ltrim(rtrim(str, chars), chars); }

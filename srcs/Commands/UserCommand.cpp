@@ -15,10 +15,13 @@ UserCommand::UserCommand(vector<User> *usersPtr, vector<Channel> *channelsPtr) :
 void UserCommand::execute(User *user, string cmd) {
   cout << "Execute command" << cmd << endl;
   user->setRealname(cmd.substr(cmd.find(':') + 1));
-  vector<string> userInfo = ft_split(cmd, ' ');
+  vector<string> userInfo = ft_split(cmd, " ");
   user->setUsername(userInfo[0]);
 
   if (!user->getNickname().empty() && !user->getRealname().empty() && !user->getUsername().empty()) {
     user->setIsRegistered(true);
+    string msg = RPL_WELCOME(user->getNickname(), user->getUsername(), "localhost");
+    cout << "sending message: " << msg << endl;
+    sendMessage(user->getFD(), msg);
   }
 };

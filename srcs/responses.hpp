@@ -4,9 +4,11 @@
 
 #ifndef IRC_RESPONSES_HPP
 #define IRC_RESPONSES_HPP
+#include <string>
 
-#define RPL_WELCOME(nickname, username, host)                                                                          \
-  ":#host 001 #nickname :Welcome to the Internet Relay Network \
-!#username@#host"
+#define RPL_WELCOME(nickname, username, hostname)                                                                      \
+  std::string(":") + hostname + std::string(" 001 ") + nickname + std::string(" :Welcome to the Internet Relay ") +    \
+      std::string("Network ") + nickname + std::string("!") + username + std::string("@") + hostname +                 \
+      std::string("\r\n")
 
 #endif // IRC_RESPONSES_HPP
