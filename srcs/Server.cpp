@@ -93,18 +93,18 @@ void Server::_acceptNewClients(pollfd *serverPollFd) {
       cerr << "Failed to accept new connection. errno: " << errno << endl;
     } else {
       fcntl(userfd, F_SETFL, O_NONBLOCK);
-      _printConnectionInfo(userfd);
+      pair<string, string> connectionInfo = _getConnectionInfo(userfd);
       // add connection to context
-      _ctx->addUser(userfd);
+      _ctx->addUser(userfd, connectionInfo.first, connectionInfo.second);
     }
   }
 }
 
 /**
- * Print host and port on with user was connected
+ * Return pair with host and port on with user was connected
  * @param userfd
  */
-void Server::_printConnectionInfo(int userfd) {
+pair<string, string> Server::_getConnectionInfo(int userfd) {
   char host[NI_MAXHOST];    // Client's remote name
   char service[NI_MAXSERV]; // Service (i.e. port) the client is connect on
   memset(host, 0, NI_MAXHOST);
@@ -115,4 +115,5 @@ void Server::_printConnectionInfo(int userfd) {
     inet_ntop(AF_INET, &_sockaddr.sin_addr, host, NI_MAXHOST);
   }
   cout << " connected on host:" << host << " port: " << service << endl;
+  return make_pair(string(host), string(service));
 }

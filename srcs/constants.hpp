@@ -1,5 +1,5 @@
-#ifndef CONSTANTS
-#define CONSTANTS
+#ifndef CONSTANTS_HPP
+#define CONSTANTS_HPP
 
 #define SERVER_ERROR "SERVER ERROR: "
 #define IRC_MSG_LEN 512

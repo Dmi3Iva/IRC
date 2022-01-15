@@ -1,9 +1,11 @@
-#ifndef CONTEXT
-#define CONTEXT
+#ifndef CONTEXT_HPP
+#define CONTEXT_HPP
 
 #include "ACommand.hpp"
 #include "Channel.hpp"
+#include "Commands/JoinCommand.hpp"
 #include "Commands/NickCommand.hpp"
+#include "Commands/PartCommand.hpp"
 #include "Commands/UserCommand.hpp"
 #include "User.hpp"
 #include "utils.hpp"
@@ -22,7 +24,7 @@ private:
   typedef map<string, ACommand *> commandsMapType;
   commandsMapType _commandsMap;
   vector<User> _users;
-  vector<Channel> _channels;
+  map<string, Channel> _channels;
 
   void _setupCommands();
   void _handleMessage(User *user, string msg);
@@ -32,7 +34,7 @@ public:
   Context();
   ~Context();
 
-  void addUser(int userfd);
+  void addUser(int userfd, string hostname, string port);
   void listenUsers();
 };
 

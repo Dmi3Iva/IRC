@@ -3,9 +3,12 @@
 Context::Context() { _setupCommands(); }
 
 void Context::_setupCommands() {
+  string serverName = "localhost";
   // TODO:: replace with init list
-  _commandsMap["NICK"] = new NickCommand(&_users, &_channels);
-  _commandsMap["USER"] = new UserCommand(&_users, &_channels);
+  _commandsMap["NICK"] = new NickCommand(serverName, &_users, &_channels);
+  _commandsMap["USER"] = new UserCommand(serverName, &_users, &_channels);
+  _commandsMap["JOIN"] = new JoinCommand(serverName, &_users, &_channels);
+  _commandsMap["PART"] = new PartCommand(serverName, &_users, &_channels);
 }
 
 Context::~Context() {
@@ -14,7 +17,7 @@ Context::~Context() {
   _channels.clear();
 }
 
-void Context::addUser(int userfd) { _users.push_back(User(userfd)); }
+void Context::addUser(int userfd, string hostname, string port) { _users.push_back(User(userfd, hostname, port)); }
 
 void Context::listenUsers() {
   // TODO:: check all users fds here
@@ -71,6 +74,7 @@ void Context::_handleMessage(User *user, string msg) {
   // parse
   vector<string> commands = ft_split(msg, DELIMITER);
   // execute in order
+
   for (vector<string>::iterator it = commands.begin(), ite = commands.end(); it != ite; ++it) {
     _executeCommand(user, *it);
   }

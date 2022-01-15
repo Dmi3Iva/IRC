@@ -1,5 +1,5 @@
-#ifndef UTILS
-#define UTILS
+#ifndef UTILS_HPP
+#define UTILS_HPP
 
 #include <sstream>
 #include <string>
@@ -13,6 +13,7 @@ using std::vector;
 
 vector<string> ft_split(string s, const string &delim);
 pollfd *getPollFdFromFd(int fd);
+int isChannelName(string channelName);
 
 std::string &ltrim(std::string &str, const std::string &chars = "\t\n\v\f\r ");
 std::string &rtrim(std::string &str, const std::string &chars = "\t\n\v\f\r ");
