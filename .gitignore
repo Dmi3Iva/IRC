@@ -36,3 +36,6 @@
 *.out
 *.app
 ircserv
+
+# IDE
+.idea

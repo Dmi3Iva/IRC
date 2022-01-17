@@ -14,7 +14,8 @@ SRC = srcs/main.cpp \
  	srcs/Commands/PingCommand.cpp\
 	srcs/Channel.cpp \
 	srcs/Context.cpp \
-	srcs/Server.cpp \
+	srcs/Server/Server.cpp \
+	srcs/Server/Socket.cpp \
 	srcs/User.cpp \
 	srcs/utils.cpp
 
@@ -31,7 +32,8 @@ HEADERS = srcs/constants.hpp \
  	srcs/Commands/PingCommand.hpp\
 	srcs/Channel.hpp \
 	srcs/Context.hpp \
-	srcs/Server.hpp \
+	srcs/Server/Server.hpp \
+	srcs/Server/Socket.hpp \
 	srcs/User.hpp \
 	srcs/utils.hpp
 
