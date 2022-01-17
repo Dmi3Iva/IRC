@@ -58,14 +58,12 @@ void Context::listenUsers() {
 int Context::_executeCommand(User *user, string stringCommand) {
   vector<string> commands;
   string commandName = stringCommand.substr(0, stringCommand.find(' '));
-  for (commandsMapType::iterator it = _commandsMap.begin(), ite = _commandsMap.end(); it != ite; ++it) {
-    if (it->first == commandName) {
-      cout << "founded command: " << commandName << endl;
-      string s = stringCommand.substr(stringCommand.find(' '));
-      string executeString = trim(s);
-      it->second->execute(user, executeString);
-      break;
-    }
+  commandsMapType::iterator it = _commandsMap.find(commandName);
+  if (it != _commandsMap.end()) {
+    cout << "founded command: " << commandName << endl;
+    string s = stringCommand.substr(stringCommand.find(' '));
+    string executeString = trim(s);
+    it->second->execute(user, executeString);
   }
   return 0;
 }

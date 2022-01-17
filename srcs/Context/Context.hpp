@@ -15,9 +15,6 @@ using std::map;
 using std::string;
 using std::vector;
 
-// class Server;
-// class ACommand;
-
 class Context {
 private:
   typedef map<string, ACommand *> commandsMapType;
