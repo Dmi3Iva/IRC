@@ -3,10 +3,14 @@
 
 #include "Channel.hpp"
 #include "User.hpp"
-#include <string>
+#include <iostream>
 #include <sys/socket.h>
+#include "responses.hpp"
 
 using std::string;
+using std::cout;
+using std::endl;
+using std::vector;
 
 class ACommand {
 public:
