@@ -2,15 +2,10 @@
 #define USERCOMMAND
 
 #include "../ACommand.hpp"
-#include "../Context.hpp"
+#include "../Context/Context.hpp"
 #include "../utils.hpp"
 #include <iostream>
 #include <vector>
-
-using std::cout;
-using std::endl;
-using std::string;
-using std::vector;
 
 class ACommand;
 class Context;

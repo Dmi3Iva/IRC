@@ -2,15 +2,11 @@
 #define NICKCOMMAND
 
 #include "../ACommand.hpp"
+#include "../Context/Context.hpp"
 #include "../responses.hpp"
 #include <iostream>
 
 class ACommand;
-
-using std::cout;
-using std::endl;
-using std::string;
-using std::vector;
 
 class NickCommand : public ACommand {
 public:

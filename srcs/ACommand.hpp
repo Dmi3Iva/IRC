@@ -7,6 +7,10 @@
 #include <sys/socket.h>
 
 using std::string;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
 
 class ACommand {
 public:
@@ -16,8 +20,10 @@ public:
   void sendMessage(int fd, string msg);
 
 protected:
-  string _name;
-  vector<User> *_usersPtr;
+  string          _name;
+  string          _description;
+  vector<User>    *_usersPtr;
   vector<Channel> *_channelsPtr;
 };
+
 #endif

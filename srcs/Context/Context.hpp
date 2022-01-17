@@ -1,12 +1,10 @@
 #ifndef CONTEXT
 #define CONTEXT
 
-#include "ACommand.hpp"
-#include "Channel.hpp"
-#include "Commands/NickCommand.hpp"
-#include "Commands/UserCommand.hpp"
-#include "User.hpp"
-#include "utils.hpp"
+#include "../ACommand.hpp"
+#include "CommandsHeaders.hpp"
+#include "../User.hpp"
+#include "../utils.hpp"
 #include <map>
 #include <utility>
 
@@ -37,6 +35,8 @@ public:
 
   void addUser(int userfd);
   void listenUsers();
+
+  
 };
 
 #endif

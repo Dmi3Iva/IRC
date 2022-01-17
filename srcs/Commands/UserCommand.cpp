@@ -2,6 +2,7 @@
 
 UserCommand::UserCommand(vector<User> *usersPtr, vector<Channel> *channelsPtr) : ACommand(usersPtr, channelsPtr) {
   _name = "USER";
+  _description = "USER <username> <hostname> <servername> <realname>";
 }
 
 /**

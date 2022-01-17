@@ -6,6 +6,7 @@ void Context::_setupCommands() {
   // TODO:: replace with init list
   _commandsMap["NICK"] = new NickCommand(&_users, &_channels);
   _commandsMap["USER"] = new UserCommand(&_users, &_channels);
+  _commandsMap["PRIVMSG"] = new PrivateMessageCommand(&_users, &_channels);
 }
 
 Context::~Context() {

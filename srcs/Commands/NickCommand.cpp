@@ -2,6 +2,7 @@
 
 NickCommand::NickCommand(vector<User> *usersPtr, vector<Channel> *channelsPtr) : ACommand(usersPtr, channelsPtr) {
   _name = "NICK";
+  _description = "NICK <nickname> [ <hopcount> ]";
 }
 
 void NickCommand::execute(User *user, string cmd) {
