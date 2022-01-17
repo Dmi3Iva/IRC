@@ -5,6 +5,7 @@
 #include "User.hpp"
 #include <iostream>
 #include <sys/socket.h>
+#include <cstring>
 #include "responses.hpp"
 
 using std::string;
