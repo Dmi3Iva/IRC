@@ -82,7 +82,7 @@ void JoinCommand::_joinChannel(User* user, string channelName, string key)
 void JoinCommand::execute(User* user, string cmd)
 {
 	cout << "JOIN executes: " << cmd << endl;
-	if (!user->getIsRegistered()) {
+	if (!user->isRegistered()) {
 		sendMessage(
 			user->getFD(),
 			ERR_NOTREGISTERED(_serverName, (user->getNickname().empty() ? std::string("*") : user->getNickname()), _name));

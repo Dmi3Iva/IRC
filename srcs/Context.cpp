@@ -24,44 +24,22 @@ Context::~Context()
 	fullDeleteContainer(_users);
 }
 
-void Context::addUser(int userfd, string hostname, string port) { _users.push_back(new User(userfd, hostname, port)); }
+void Context::addUser(User* user) { _users.push_back(user); }
 
-void Context::listenUsers()
+void Context::deleteUser(User* user)
 {
-	// TODO:: check all users fds here
-	for (vector<User*>::iterator it = _users.begin(), ite = _users.end(); it != ite; ++it) {
-		pollfd* userfdArr = getPollFdFromFd((*it)->getFD());
-		// TODO:: move poll
-		int ret = poll(userfdArr, 1, 800);
-		cout << "User poll status " << ret << " revents: " << userfdArr[0].revents << endl;
+	for (std::vector<User*>::iterator it = _users.begin(), ite = _users.end(); it != ite; ++it)
+		if ((*it)->getFD() == user->getFD())
+			_users.erase(it);
+}
 
-		// proccess request
-		if (ret && (userfdArr[0].revents & POLLIN)) {
-			{
-				char buffer[IRC_MSG_LEN];
-				int fd = (*it)->getFD();
-				ssize_t bytesRead;
-				cout << "User listens:" << endl;
-				if ((bytesRead = recv(fd, buffer, sizeof(buffer), 0))) {
-					if (bytesRead == -1) {
-						cerr << "Something went wrong while try to receive message. errno: " << errno << " fd was: " << fd << endl;
-					}
-
-					buffer[bytesRead] = '\0';
-					if (bytesRead - 1 >= 0 && buffer[bytesRead - 1] == '\r')
-						buffer[bytesRead - 1] = '\0';
-
-					cout << "The message was: " << buffer;
-					_handleMessage(&(**it), string(buffer));
-				} else {
-					_users.erase(it);
-					cout << "Client ended the _userfd!" << endl;
-				}
-			}
-		}
-
-		delete userfdArr;
+User* Context::findUserByFd(int fd)
+{
+	for (size_t i = 0; i < _users.size(); ++i) {
+		if (_users[i]->getFD() == fd)
+			return _users[i];
 	}
+	return NULL;
 }
 
 void Context::clearEmptyData()
@@ -92,19 +70,20 @@ int Context::_executeCommand(User* user, string stringCommand)
 		}
 	} else {
 		// if User is registered we should reply with error that error wasn't found
-		if (user->getIsRegistered()) {
+		if (user->isRegistered()) {
 			sendMessage(user->getFD(), ERR_UNKNOWNCOMMAND(_serverName, user->getNickname(), commandName));
 		}
 	}
 	return 0;
 }
 
-void Context::_handleMessage(User* user, string msg)
+void Context::handleMessage(User* user)
 {
 	// parse
-	vector<string> commands = ft_split(msg, DELIMITER);
+	vector<string> commands = ft_split(user->getMessage(), DELIMITER);
 	// execute in order
 	for (vector<string>::iterator it = commands.begin(), ite = commands.end(); it != ite; ++it) {
 		_executeCommand(user, trim(*it));
 	}
+	user->setMessage("");
 }

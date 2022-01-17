@@ -69,3 +69,11 @@ int isChannelName(string channelName)
 		return 0;
 	return 1;
 }
+
+struct pollfd fillPollfd(int sd, short events) {
+  struct pollfd fd;
+  fd.fd = sd;
+  fd.events = events;
+  fd.revents = 0;
+  return fd;
+}
