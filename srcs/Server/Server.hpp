@@ -33,14 +33,11 @@ class Context;
 class Server {
 
 private:
+  typedef vector<struct pollfd> pollfdType;
   Socket* _socket;
-  Context *_сontext;
+  Context* _сontext;
   string _password;
-  std::vector<struct pollfd> _pollfds;
-
-//  int _socketfd;
-//  sockaddr_in _sockaddr;
-//  static Server *getInstance();
+  pollfdType _pollfds;
 
 public:
   Server(in_addr_t, int, string);
@@ -57,9 +54,6 @@ private:
   Server(Server const &);         // Don't Implement.
   void operator=(Server const &); // Don't implement.
 
-//  void _acceptNewClients(pollfd *serverPollFd);
-//  void _startListening(int socketfd);
-//  void _bindSocket(string addr, int port);
   void _printConnectionInfo(int userFd);
 };
 

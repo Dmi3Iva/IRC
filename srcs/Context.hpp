@@ -29,8 +29,8 @@ private:
 	map<string, Channel*> _channels;
 	string _serverName;
 
-	void _setupCommands();
-	void _handleMessage(User* user, string msg);
+	User* findUserByFd(int);
+  void _setupCommands();
 	int _executeCommand(User* user, string stringCommand);
 
 public:
@@ -38,7 +38,8 @@ public:
 	~Context();
 
 	void addUser(int userfd, string hostname, string port);
-	void listenUsers();
+	void deleteUser(int userfd);
+  void _handleMessage(int userfd, string msg);
 
 	/**
    * Remove empty channels and removed users from storage
