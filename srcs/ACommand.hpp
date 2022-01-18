@@ -19,6 +19,7 @@ public:
   ~ACommand(){};
   virtual void execute(User *user, string cmd) = 0;
   void sendMessage(int fd, string msg);
+  User	*getUserFromArray(string userName);
 
 protected:
   string          _name;

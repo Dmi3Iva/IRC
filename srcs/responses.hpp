@@ -12,5 +12,7 @@
 #define RPL_MOTD(server, nickname)          ":" + server + " 372 " + nickname + " :- " + "Welcome to the Internet Relay Network\n"
 #define RPL_ENDOFMOTD(server, nickname)     ":" + server + " 376 " + nickname + " :End of /MOTD command\n"
 
+#define RPL_PRIVMSG(nickname, username, host, receiver, message)	std::string(":") + nickname + "!" + username + "@" + host + " PRIVMSG " + receiver + std::string(" :") + message + DELIMITER
+
 
 #endif // IRC_RESPONSES_HPP

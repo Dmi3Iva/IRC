@@ -2,7 +2,7 @@
 #define NICKCOMMAND
 
 #include "../ACommand.hpp"
-#include "../Context/Context.hpp"
+#include "../Context.hpp"
 #include "../responses.hpp"
 #include <iostream>
 

@@ -2,7 +2,7 @@
 #define USERCOMMAND
 
 #include "../ACommand.hpp"
-#include "../Context/Context.hpp"
+#include "../Context.hpp"
 #include "../utils.hpp"
 #include <iostream>
 #include <vector>
