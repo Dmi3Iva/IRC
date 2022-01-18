@@ -24,8 +24,8 @@ private:
   vector<User> _users;
   vector<Channel> _channels;
 
+  User* findUserByFd(int);
   void _setupCommands();
-  void _handleMessage(User *user, string msg);
   int _executeCommand(User *user, string stringCommand);
 
 public:
@@ -33,7 +33,8 @@ public:
   ~Context();
 
   void addUser(int userfd);
-  void listenUsers();
+  void deleteUser(int userfd);
+  void _handleMessage(int userfd, string msg);
 };
 
 #endif

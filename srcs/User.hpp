@@ -37,7 +37,7 @@ public:
   ~User();
 
   //  int listen();
-  void closeFD();
+//  void closeFD();
   int getFD();
   void setNickname(string nickname);
   void setUsername(string username);
