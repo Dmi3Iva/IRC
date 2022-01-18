@@ -44,11 +44,8 @@ void Server::start() {
     _acceptNewClients(serverPollFd);
     // if poll show new messages then check users in context
     _ctx->listenUsers();
+    _ctx->clearEmptyData();
   }
-
-  //  delete serverPollFd;
-  //  close(_socketfd);
-  //  cout << "The server closed" << endl;
 }
 
 /**

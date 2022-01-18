@@ -12,7 +12,6 @@ UserCommand::UserCommand(string serverName, userVector *usersPtr, channelMap *ch
  * @param user
  * @param cmd
  */
-// TODO:: should we ignore hostname and servername?
 void UserCommand::execute(User *user, string cmd) {
   cout << "Execute command" << cmd << endl;
   user->setRealname(cmd.substr(cmd.find(':') + 1));

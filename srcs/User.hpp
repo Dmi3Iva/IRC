@@ -37,24 +37,20 @@ class User {
 public:
   typedef map<string, Channel *> userChannels;
 
-  // TODO::
-  //  User(const User &user) {  }
-  // TODO::
-  //  User &operator=(const User &user) {  };
-
+  User &operator=(const User &user);
+  User(const User &user);
   User(int userFd, string hostname, string port);
   ~User();
 
   void closeFD();
-  int getFD();
+  int getFD() const;
   void setNickname(string nickname);
   void setUsername(string username);
   void setRealname(string realname);
-  string getNickname();
-  string getUsername();
-  string getRealname();
-
-  bool getIsRegistered();
+  string getNickname() const;
+  string getUsername() const;
+  string getRealname() const;
+  bool getIsRegistered() const;
   const string &getHostname() const;
   const string &getPort() const;
   void setIsRegistered(bool isRegistered);
@@ -63,6 +59,7 @@ public:
   int quitChannel(string channelName);
   int getMaxOfChannels() const;
   bool isFullOfChannels();
+  const userChannels &getChannels() const;
 
 private:
   int _fd;

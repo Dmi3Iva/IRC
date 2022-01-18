@@ -14,7 +14,7 @@ using std::vector;
 
 class NickCommand : public ACommand {
 public:
-  NickCommand(string serverName, vector<User> *usersPtr, channelMap *channelsPtr);
+  NickCommand(string serverName, vector<User *> *usersPtr, channelMap *channelsPtr);
   void execute(User *user, string cmd);
 };
 

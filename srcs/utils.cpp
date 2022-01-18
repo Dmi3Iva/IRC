@@ -5,10 +5,10 @@
 #include "utils.hpp"
 
 /**
- * TODO::
- * @param s
- * @param delim
- * @return
+ * split string with delimiter
+ * @param s source string
+ * @param delim delimiter string
+ * @return vector of strings
  */
 vector<string> ft_split(string s, const string &delimiter) {
   size_t pos_start = 0, pos_end, delim_len = delimiter.length();
@@ -20,7 +20,6 @@ vector<string> ft_split(string s, const string &delimiter) {
     pos_start = pos_end + delim_len;
     res.push_back(token);
   }
-
   res.push_back(s.substr(pos_start));
   return res;
 }

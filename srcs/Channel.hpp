@@ -24,18 +24,17 @@ public:
   void setPassword(const string password);
   const string &getTopic() const;
   void setTopic(const string &topic);
-  void addUser(User *p_user);
   const usersVectorType &getMembers() const;
   const usersVectorType &getOperators() const;
   const usersVectorType &getBannedUsers() const;
-
-  void removeUser(User *pUser);
-  int isOperator(User *pUser) const;
-
   bool isOnlyInviteChannel() const;
   void setIsOnlyInviteChannel(bool is_only_invite_channel);
   int getUsersLimit() const;
   void setUsersLimit(int users_limit);
+
+  void addUser(User *p_user);
+  void removeUser(User *pUser);
+  int isOperator(User *pUser) const;
 
   bool isFullOfMembers();
 
@@ -45,12 +44,14 @@ private:
   string _password;
   bool _isOnlyInviteChannel;
   User *_owner;
+  ssize_t _usersLimit;
+
   // all participant of the channel
   usersVectorType _members;
   // only operators
   usersVectorType _operators;
   usersVectorType _bannedUsers;
-  ssize_t _usersLimit;
+
   int _removeUserByNickname(usersVectorType &users, string nickname);
 };
 

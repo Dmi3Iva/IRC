@@ -6,76 +6,76 @@ JoinCommand::JoinCommand(string serverName, userVector *usersPtr, channelMap *ch
 }
 
 /**
- * If a JOIN is successful, the user is then sent the channel's topic(using RPL_TOPIC)
- * and the list of users who are on the channel (using RPL_NAMREPLY), which must include the user joining.
+ *
  * @param user
  */
-void JoinCommand::_userHasJoinedChannel(User *user, Channel *channel) {
+void JoinCommand::_userHasJoinedChannel(User *user, channelMap::iterator chIterator) {
   // resend user message to channel members
-  for (Channel::usersVectorType::const_iterator it = channel->getMembers().begin(), ite = channel->getMembers().end();
+  for (Channel::usersVectorType::const_iterator it = chIterator->second->getMembers().begin(),
+                                                ite = chIterator->second->getMembers().end();
        it != ite; ++it)
     sendMessage((*it)->getFD(),
-                JOIN_REPL(user->getNickname(), user->getUsername(), user->getHostname(), channel->getName()));
+                JOIN_RPL(user->getNickname(), user->getUsername(), user->getHostname(), chIterator->second->getName()));
 
   // send channel topic to the user
-  sendMessage(user->getFD(), RPL_TOPIC(_serverName, channel->getName(), channel->getTopic()));
+  sendMessage(user->getFD(), RPL_TOPIC(_serverName, chIterator->second->getName(), chIterator->second->getTopic()));
 
   // send channel members to joined user
-  if (channel->getMembers().empty()) {
+  if (chIterator->second->getMembers().empty()) {
     // if there aren't any members send empty response, but it actually seems to be wrong
-    cerr << "ERROR: Channel " << channel->getName() << " after user joined still empty!" << endl;
-    sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, channel->getName(), ""));
+    cerr << "ERROR: Channel " << chIterator->second->getName() << " after user joined still empty!" << endl;
+    sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, chIterator->second->getName(), ""));
   } else {
-    for (Channel::usersVectorType::const_iterator it = channel->getMembers().begin(), ite = channel->getMembers().end();
+    for (Channel::usersVectorType::const_iterator it = chIterator->second->getMembers().begin(),
+                                                  ite = chIterator->second->getMembers().end();
          it != ite; ++it)
-      sendMessage(user->getFD(),
-                  RPL_NAMREPLY(_serverName, channel->getName(),
-                               (channel->isOperator(*it) ? "@" + (*it)->getNickname() : (*it)->getNickname())));
+      sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, chIterator->second->getName(),
+                                              (chIterator->second->isOperator(*it) ? "@" + (*it)->getNickname()
+                                                                                   : (*it)->getNickname())));
   }
   // end of sending
-  sendMessage(user->getFD(), RPL_ENDOFNAMES(_serverName, channel->getName()));
+  sendMessage(user->getFD(), RPL_ENDOFNAMES(_serverName, chIterator->second->getName()));
 }
 
 void JoinCommand::_joinChannel(User *user, string channelName, string key) {
   channelMap::iterator it = _channelsPtr->find(channelName);
 
-  // if there is no channel like this create new
+  // if channel is not created, create it
   if (it == _channelsPtr->end()) {
     std::pair<channelMap::iterator, bool> newChannel =
-        _channelsPtr->insert(make_pair(channelName, Channel(channelName)));
+        _channelsPtr->insert(make_pair(channelName, new Channel(channelName)));
     it = newChannel.first;
   }
-  // else check password, ban list
+  // else check channel and user
   else {
     if (user->isFullOfChannels()) {
       sendMessage(user->getFD(), ERR_TOOMANYCHANNELS(_serverName, user->getNickname(), channelName));
       return;
     }
-    if (it->second.isFullOfMembers()) {
+    if (it->second->isFullOfMembers()) {
       sendMessage(user->getFD(), ERR_CHANNELISFULL(_serverName, user->getNickname(), channelName));
       return;
     }
-    if (it->second.getPassword() != key) {
+    if (it->second->getPassword() != key) {
       sendMessage(user->getFD(), ERR_BADCHANNELKEY(_serverName, user->getNickname(), channelName));
       return;
     }
-    if (isPUserInVector(user, it->second.getBannedUsers())) {
+    if (isPUserInVector(user, it->second->getBannedUsers())) {
       sendMessage(user->getFD(), ERR_BANNEDFROMCHAN(_serverName, user->getNickname(), channelName));
       return;
     }
-    if (it->second.isOnlyInviteChannel()) {
+    if (it->second->isOnlyInviteChannel()) {
       sendMessage(user->getFD(), ERR_INVITEONLYCHAN(_serverName, user->getNickname(), channelName));
       return;
     }
   }
 
   // add user to channel
-  it->second.addUser(user);
+  it->second->addUser(user);
   // add channel to user's channel list
-  user->addChannel(&it->second);
+  user->addChannel(it->second);
   // send all required messages
-
-  _userHasJoinedChannel(user, &(it->second));
+  _userHasJoinedChannel(user, it);
 }
 
 /**
@@ -84,16 +84,13 @@ void JoinCommand::_joinChannel(User *user, string channelName, string key) {
  * @param cmd
  */
 void JoinCommand::execute(User *user, string cmd) {
-  cout << "Execute command " << cmd << endl;
-  // first we have to check if the user is authorized
-  // if user not registered than send error message?
+  cout << "JOIN executes: " << cmd << endl;
   if (!user->getIsRegistered()) {
     sendMessage(
         user->getFD(),
         ERR_NOTREGISTERED(_serverName, (user->getNickname().empty() ? std::string("*") : user->getNickname()), _name));
     return;
   }
-  // split string into some
   vector<string> channelsAndKeys = ft_split(cmd, " ");
   // if there not only keys and channels then show error
   if (channelsAndKeys.size() < 1 || channelsAndKeys.size() > 2) {
@@ -110,7 +107,7 @@ void JoinCommand::execute(User *user, string cmd) {
   if (channelsAndKeys.size() > 1)
     keys = ft_split(channelsAndKeys[1], ",");
 
-  // if channel and keys lists have different sizes, last channels received empty strings
+  // if channels and keys lists have different sizes, last channels received empty keys
   for (size_t i = 0; i < channels.size(); ++i) {
     _joinChannel(user, channels[0], i < keys.size() ? keys[i] : string());
   }

@@ -25,7 +25,7 @@ public:
 
 private:
   void _joinChannel(User *user, string channelName, string key);
-  void _userHasJoinedChannel(User *user, Channel *channel);
+  void _userHasJoinedChannel(User *user, channelMap::iterator chIterator);
 };
 
 #endif

@@ -17,8 +17,8 @@ using std::vector;
 
 class ACommand {
 public:
-  typedef vector<User> userVector;
-  typedef map<string, Channel> channelMap;
+  typedef vector<User *> userVector;
+  typedef map<string, Channel *> channelMap;
 
   ACommand(string serverName, userVector *usersPtr, channelMap *channelsPtr);
   ~ACommand(){};

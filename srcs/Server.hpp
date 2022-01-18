@@ -1,5 +1,6 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
+
 #include <arpa/inet.h>
 #include <cerrno>
 #include <cstdlib> // For exit() and EXIT_FAILURE

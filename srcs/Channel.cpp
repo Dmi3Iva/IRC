@@ -4,7 +4,12 @@ Channel::Channel(const string name)
     : _name(name), _topic("default topic: welcome to the channel! :)"), _isOnlyInviteChannel(false), _owner(NULL),
       _usersLimit(-1) {}
 
-Channel::~Channel() { cout << "Channel " << _name << " is closed" << endl; }
+Channel::~Channel() {
+  _members.clear();
+  _operators.clear();
+  _bannedUsers.clear();
+  cout << "Channel " << _name << " is closed" << endl;
+}
 
 const string &Channel::getName() const { return _name; }
 
@@ -28,22 +33,17 @@ const Channel::usersVectorType &Channel::getMembers() const { return _members; }
 const Channel::usersVectorType &Channel::getOperators() const { return _operators; }
 
 void Channel::removeUser(User *pUser) {
-  // only one member in the channel
-  if (_members.size() == 1) {
-    this->~Channel();
-  } else {
-    // remove user from _members by nick
-    _removeUserByNickname(_members, pUser->getNickname());
-    // remove user from _operators by nick
-    _removeUserByNickname(_operators, pUser->getNickname());
-    // if it's owner we have to find new
-    if (pUser->getNickname() == _owner->getNickname()) {
-      if (!_operators.empty()) {
-        _owner = _operators.front();
-      } else {
-        _owner = _members.front();
-        _operators.push_back(_owner);
-      }
+  // remove user from _members by nick
+  _removeUserByNickname(_members, pUser->getNickname());
+  // remove user from _operators by nick
+  _removeUserByNickname(_operators, pUser->getNickname());
+  // if was removed owner, replace owner with new member
+  if (!_members.empty() && pUser->getNickname() == _owner->getNickname()) {
+    if (!_operators.empty()) {
+      _owner = _operators.front();
+    } else {
+      _owner = _members.front();
+      _operators.push_back(_owner);
     }
   }
 }
@@ -74,6 +74,5 @@ void Channel::setIsOnlyInviteChannel(bool is_only_invite_channel) { _isOnlyInvit
 int Channel::getUsersLimit() const { return _usersLimit; }
 
 void Channel::setUsersLimit(int users_limit) { _usersLimit = users_limit; }
-bool Channel::isFullOfMembers() {
-  return _usersLimit == -1 ? false : _members.size() >= static_cast<size_t>(_usersLimit);
-}
+
+bool Channel::isFullOfMembers() { return _usersLimit != -1 && _members.size() >= static_cast<size_t>(_usersLimit); }

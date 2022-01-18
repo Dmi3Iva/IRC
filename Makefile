@@ -10,7 +10,6 @@ SRC = srcs/main.cpp \
  	srcs/Commands/UserCommand.cpp\
  	srcs/Commands/JoinCommand.cpp\
  	srcs/Commands/PartCommand.cpp\
- 	srcs/Commands/PrivmsgCommand.cpp\
 	srcs/Channel.cpp \
 	srcs/Context.cpp \
 	srcs/Server.cpp \
@@ -26,7 +25,6 @@ HEADERS = srcs/constants.hpp \
  	srcs/Commands/UserCommand.hpp\
  	srcs/Commands/JoinCommand.hpp\
  	srcs/Commands/PartCommand.hpp\
- 	srcs/Commands/PrivmsgCommand.hpp\
 	srcs/Channel.hpp \
 	srcs/Context.hpp \
 	srcs/Server.hpp \

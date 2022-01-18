@@ -23,8 +23,8 @@ class Context {
 private:
   typedef map<string, ACommand *> commandsMapType;
   commandsMapType _commandsMap;
-  vector<User> _users;
-  map<string, Channel> _channels;
+  vector<User *> _users;
+  map<string, Channel *> _channels;
 
   void _setupCommands();
   void _handleMessage(User *user, string msg);
@@ -36,6 +36,11 @@ public:
 
   void addUser(int userfd, string hostname, string port);
   void listenUsers();
+
+  /**
+   * Remove empty channels and removed users from storage
+   */
+  void clearEmptyData();
 };
 
 #endif

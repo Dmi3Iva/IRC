@@ -30,13 +30,13 @@
  * example: ":Guest41!~Guest41@joseon-i28.29p.1d9n3c.IP JOIN :#freenode"
  * <nick>!<user>@<host>
  */
-#define JOIN_REPL(nickname, username, host, channel)                                                                   \
+#define JOIN_RPL(nickname, username, host, channel)                                                                    \
   std::string(":") + nickname + "!" + username + "@" + host + " JOIN " + channel + DELIMITER
 
 /**
  * example: ":Guest41!~Guest41@joseon-i28.29p.1d9n3c.IP PART :#freenode"
  */
-#define PART_REPL(nickname, username, host, channel)                                                                   \
+#define PART_RPL(nickname, username, host, channel)                                                                    \
   std::string(":") + nickname + "!" + username + "@" + host + " PART " + channel + DELIMITER
 
 /**
