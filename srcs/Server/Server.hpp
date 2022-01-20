@@ -1,10 +1,10 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-# include <iostream>
-# include "Socket.hpp"
-# include "../Context.hpp"
-# include "../utils.hpp"
+#include "../Context.hpp"
+#include "../utils.hpp"
+#include "Socket.hpp"
+#include <iostream>
 
 using std::cerr;
 using std::cout;
@@ -22,29 +22,29 @@ class Context;
 class Server {
 
 private:
-  typedef vector<struct pollfd> pollfdType;
-  Socket* _socket;
-  struct sockaddr_in _address;
-  Context* _context;
-  string _password;
-  pollfdType _pollfds;
+	typedef vector<struct pollfd> pollfdType;
+	Socket* _socket;
+	struct sockaddr_in _address;
+	Context* _context;
+	string _password;
+	pollfdType _pollfds;
 
 public:
-  Server(string, string, string);
-  ~Server();
+	Server(string, string, string);
+	~Server();
 
-  void createSocket();
-  void start();
-  void polling();
-  void acceptNewClients();
-  bool receiveMessage(User* user);
+	void createSocket();
+	void start();
+	void polling();
+	void acceptNewClients();
+	bool receiveMessage(User* user);
 
 private:
-  Server(Server const &);         // Don't Implement.
-  void operator=(Server const &); // Don't implement.
+	Server(Server const&); // Don't Implement.
+	void operator=(Server const&); // Don't implement.
 
-  pair<string, string> _getConnectionInfo(int userFd);
-
+	pair<string, string> _getConnectionInfo(int userFd);
+	string _parseMessage(string buffer, User* user);
 };
 
 #endif

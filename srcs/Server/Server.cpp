@@ -90,9 +90,7 @@ bool Server::receiveMessage(User* user)
 
 	if (bytesRead > 0) {
 		buffer[bytesRead] = '\0';
-		cout << "The message was: " << buffer;
-		user->appendMessage(string(buffer, bytesRead));
-		_context->handleMessage(user); // TODO: вынести отсюда
+		_context->handleMessage(user, buffer);
 	}
 
 	return true;
@@ -104,15 +102,17 @@ bool Server::receiveMessage(User* user)
  */
 pair<string, string> Server::_getConnectionInfo(int userfd)
 {
-	char host[NI_MAXHOST]; // Client's remote name
-	char service[NI_MAXSERV]; // Service (i.e. port) the client is connect on
-	memset(host, 0, NI_MAXHOST);
-	memset(service, 0, NI_MAXSERV);
+	string host, service;
+	host.reserve(NI_MAXHOST);
+	service.reserve(NI_MAXSERV);
 	cout << "new user fd is: " << userfd;
-	if (getnameinfo(reinterpret_cast<const struct sockaddr*>(&_address), sizeof(sockaddr), host, NI_MAXHOST, service,
-			NI_MAXSERV, 0)
+	if (getnameinfo(
+			reinterpret_cast<const struct sockaddr*>(&_address), sizeof(sockaddr),
+			const_cast<char*>(host.data()), NI_MAXHOST,
+			const_cast<char*>(service.data()), NI_MAXSERV,
+			0)
 		!= 0) {
-		inet_ntop(AF_INET, &_address.sin_addr, host, NI_MAXHOST);
+		inet_ntop(AF_INET, &_address.sin_addr, const_cast<char*>(host.data()), NI_MAXHOST);
 	}
 	cout << " connected on host:" << host << " port: " << service << endl;
 	return make_pair(string(host), string(service));
