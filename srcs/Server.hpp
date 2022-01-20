@@ -1,5 +1,6 @@
-#ifndef IRC_SERVER_HPP
-#define IRC_SERVER_HPP
+#ifndef SERVER_HPP
+#define SERVER_HPP
+
 #include <arpa/inet.h>
 #include <cerrno>
 #include <cstdlib> // For exit() and EXIT_FAILURE
@@ -47,7 +48,7 @@ private:
   void _acceptNewClients(pollfd *serverPollFd);
   void _startListening(int socketfd);
   void _bindSocket(string addr, int port);
-  void _printConnectionInfo(int userFd);
+  pair<string, string> _getConnectionInfo(int userFd);
 };
 
 #endif // IRC_SERVER_HPP

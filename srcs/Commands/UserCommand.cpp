@@ -1,6 +1,7 @@
 #include "UserCommand.hpp"
 
-UserCommand::UserCommand(vector<User> *usersPtr, vector<Channel> *channelsPtr) : ACommand(usersPtr, channelsPtr) {
+UserCommand::UserCommand(string serverName, userVector *usersPtr, channelMap *channelsPtr)
+    : ACommand(serverName, usersPtr, channelsPtr) {
   _name = "USER";
 }
 
@@ -11,7 +12,6 @@ UserCommand::UserCommand(vector<User> *usersPtr, vector<Channel> *channelsPtr) :
  * @param user
  * @param cmd
  */
-// TODO:: should we ignore hostname and servername?
 void UserCommand::execute(User *user, string cmd) {
   cout << "Execute command" << cmd << endl;
   user->setRealname(cmd.substr(cmd.find(':') + 1));
@@ -20,10 +20,9 @@ void UserCommand::execute(User *user, string cmd) {
 
   if (!user->getNickname().empty() && !user->getRealname().empty() && !user->getUsername().empty()) {
     user->setIsRegistered(true);
-    string msg =
-        RPL_MOTDSTART(string("IRCat"), user->getNickname())
-        RPL_MOTD(string("IRCat"), user->getNickname())
-        RPL_ENDOFMOTD(string("IRCat"), user->getNickname());
+    string msg = RPL_MOTDSTART(_serverName, user->getNickname()) + //
+                 RPL_MOTD(_serverName, user->getNickname()) +      //
+                 RPL_ENDOFMOTD(_serverName, user->getNickname());  //
     sendMessage(user->getFD(), msg);
   }
 }

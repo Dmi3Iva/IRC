@@ -5,22 +5,23 @@
 #include "utils.hpp"
 
 /**
- * TODO::
- * @param s
- * @param delim
- * @return
+ * split string with delimiter
+ * @param s source string
+ * @param delim delimiter string
+ * @return vector of strings
  */
-vector<string> ft_split(string s, const string &delim) {
-  vector<string> result;
-  size_t pos = 0;
+vector<string> ft_split(string s, const string &delimiter) {
+  size_t pos_start = 0, pos_end, delim_len = delimiter.length();
   string token;
-  while ((pos = s.find(delim)) != std::string::npos) {
-    token = s.substr(0, pos);
-    if (!token.empty())
-      result.push_back(token);
-    s.erase(0, pos + delim.length());
+  vector<string> res;
+
+  while ((pos_end = s.find(delimiter, pos_start)) != string::npos) {
+    token = s.substr(pos_start, pos_end - pos_start);
+    pos_start = pos_end + delim_len;
+    res.push_back(token);
   }
-  return result;
+  res.push_back(s.substr(pos_start));
+  return res;
 }
 
 /**
@@ -47,3 +48,18 @@ std::string &rtrim(std::string &str, const std::string &chars) {
 }
 
 std::string &trim(std::string &str, const std::string &chars) { return ltrim(rtrim(str, chars), chars); }
+
+int isChannelName(string channelName) {
+  if (channelName.empty() || (channelName[0] != '#' && channelName[0] != '&'))
+    return 0;
+  return 1;
+}
+
+bool isPUserInVector(User *pUser, vector<User *> userList) {
+  for (vector<User *>::iterator it = userList.begin(), ite = userList.end(); it != ite; ++it) {
+    if ((*it)->getNickname() == pUser->getNickname()) {
+      return 1;
+    }
+  }
+  return 0;
+}

@@ -1,20 +1,59 @@
-//
-// Created by Shandy Mephesto on 1/10/22.
-//
+#ifndef CHANNEL_HPP
+#define CHANNEL_HPP
 
-#ifndef CHANNEL
-#define CHANNEL
-
+#include "User.hpp"
+#include "utils.hpp"
 #include <string>
+#include <vector>
 
 using std::string;
+using std::vector;
 
+class User;
+
+/**
+ * Channel store password users, who owner and e.t.c.
+ */
 class Channel {
 public:
-  Channel() {}
+  typedef vector<User *> usersVectorType;
+  Channel(const string name);
+  ~Channel();
+
+  const string &getName() const;
+  const string &getPassword() const;
+  void setPassword(const string password);
+  const string &getTopic() const;
+  void setTopic(const string &topic);
+  const usersVectorType &getMembers() const;
+  const usersVectorType &getOperators() const;
+  const usersVectorType &getBannedUsers() const;
+  bool isOnlyInviteChannel() const;
+  void setIsOnlyInviteChannel(bool is_only_invite_channel);
+  int getUsersLimit() const;
+  void setUsersLimit(int users_limit);
+
+  void addUser(User *pUser);
+  void removeUser(User *pUser);
+  int isOperator(User *pUser) const;
+
+  bool isFullOfMembers();
 
 private:
-  string name;
+  const string _name;
+  string _topic;
+  string _password;
+  bool _isOnlyInviteChannel;
+  User *_owner;
+  ssize_t _usersLimit;
+
+  // all participant of the channel
+  usersVectorType _members;
+  // only operators
+  usersVectorType _operators;
+  usersVectorType _bannedUsers;
+
+  int _removeUserByNickname(usersVectorType &users, string nickname);
 };
 
 #endif

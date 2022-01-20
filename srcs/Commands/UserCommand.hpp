@@ -1,5 +1,5 @@
-#ifndef USERCOMMAND
-#define USERCOMMAND
+#ifndef USERCOMMAND_HPP
+#define USERCOMMAND_HPP
 
 #include "../ACommand.hpp"
 #include "../Context.hpp"
@@ -7,18 +7,13 @@
 #include <iostream>
 #include <vector>
 
-using std::cout;
-using std::endl;
-using std::string;
-using std::vector;
-
 class ACommand;
 class Context;
 class User;
 
 class UserCommand : public ACommand {
 public:
-  UserCommand(vector<User> *usersPtr, vector<Channel> *channelsPtr);
+  UserCommand(string serverName, userVector *usersPtr, channelMap *channelsPtr);
   void execute(User *user, string cmd);
 };
 
