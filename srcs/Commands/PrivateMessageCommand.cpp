@@ -1,7 +1,7 @@
 #include "PrivateMessageCommand.hpp"
 
-PrivateMessageCommand::PrivateMessageCommand(vector<User> *usersPtr, vector<Channel> *channelsPtr) :
-		ACommand(usersPtr, channelsPtr) {
+PrivateMessageCommand::PrivateMessageCommand(string serverName, userVector *usersPtr, channelMap *channelsPtr) :
+		ACommand(serverName, usersPtr, channelsPtr) {
 	
 	_name = "PRIVMSG";
 	_description = "PRIVMSG <receiver>{,<receiver>} <text to be sent>";
@@ -10,57 +10,110 @@ PrivateMessageCommand::PrivateMessageCommand(vector<User> *usersPtr, vector<Chan
 PrivateMessageCommand::~PrivateMessageCommand() {}
 
 void	PrivateMessageCommand::execute(User *user, string cmd) {
-	cout << "CMD " << cmd << endl;
-	cout << "PRIVMSG DO NOTHING FOR NOW" << std::endl;
 
 	if (!user->getIsRegistered()) {
-		cout << "484 * :Your connection is restricted!" << endl;
+		sendMessage(user->getFD(), ERR_USERNOTREGISTEREDINSERVER);
 		return ;
 	}
 
-	vector<string> receivers = getReceivers(cmd);
+	vector<string> receivers = _getReceivers(cmd);
 	if (receivers.size() == 0 || receivers[0] == "" || receivers[0].c_str()[0] == ':') {
-		cout << "401 * :No such nick/channel" << endl;
+		sendMessage(user->getFD(), ERR_NORECIPIENT(_serverName, user->getNickname(), _name, _description));
 		return ;
 	}
 
-	string message = getMSG(cmd);
+	string message = _constructMessage(cmd);
+
+	if (message.size() == 0 || message == "") {
+		sendMessage(user->getFD(), ERR_NOTEXTTOSEND(_serverName, user->getNickname()));
+		return ;
+	}
+	_sendMessageToReceivers(user, receivers, message);
+}
+
+string			PrivateMessageCommand::_constructMessage(string cmd) {
+	size_t receiversLen = cmd.find(' ');
+	cmd.erase(0, receiversLen);
+
+	int		i = 0;
+	while (cmd[i] && cmd[i] == ' ')
+		i++;
+	cmd.erase(0, i);
+
+	cmd.erase(remove(cmd.begin(), cmd.end(), ':'), cmd.end());
+	return (cmd);
+}
+
+vector<string>	PrivateMessageCommand::_getReceivers(string &cmd) {
+	vector<string>	receivers;
+
+	int		i = 0;
+	while (cmd[i] && cmd[i] == ' ')
+		i++;
+	cmd.erase(0, i);
+
+	size_t receiversLen = cmd.find(' ');
+	if (receiversLen == string::npos) {
+		return (receivers);
+	}
+	string	receiversStr = cmd.substr(0, cmd.find(' '));
+	receivers = ft_split(receiversStr, ",");
+	return (receivers);
+}
+
+void			PrivateMessageCommand::_sendMessageToReceivers(User *user, vector<string> &receivers, string message) {
+	list<string>	handledReceivers;
 
 	for (vector<string>::iterator it = receivers.begin(); it < receivers.end(); it++) {
-		User	*userReceiver = this->getUserFromArray(*it);
-		if (userReceiver) {
-			this->sendMessage(userReceiver->getFD(), RPL_PRIVMSG(user->getNickname(),
-																user->getUsername(),
-																user->getUsername(),
-																*it,
-																message));
+		if (_isChannel(*it)) {
+			channelMap::iterator channel = _channelsPtr->find(*it);
+			if (channel != _channelsPtr->end()) {
+				if (_isReceiverAlredyGotMessage(handledReceivers, channel->second->getName())) {
+					sendMessage(user->getFD(), ERR_TOOMANYTARGETS(_serverName, user->getNickname(), *it));
+				} else {
+					channel->second->sendToAllChannelMembers(user, RPL_PRIVMSG(user->getNickname(),
+																		user->getUsername(),
+																		user->getUsername(),
+																		*it,
+																		message));
+					handledReceivers.push_back(channel->second->getName());
+				}
+			} else {
+				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, *it));
+			}
+		} else {
+			User	*userReceiver = this->getUserFromArray(*it);
+			if (userReceiver) {
+				if (_isReceiverAlredyGotMessage(handledReceivers, userReceiver->getNickname())) {
+					sendMessage(user->getFD(), ERR_TOOMANYTARGETS(_serverName, user->getNickname(), *it));
+				} else {
+					if (userReceiver->getNickname() != user->getNickname())
+						this->sendMessage(userReceiver->getFD(), RPL_PRIVMSG(user->getNickname(),
+																			user->getUsername(),
+																			user->getUsername(),
+																			*it,
+																			message));
+					handledReceivers.push_back(userReceiver->getNickname());
+				}
+			} else {
+				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, *it));
+			}
 		}
 	}
 }
 
-string			PrivateMessageCommand::getMSG(string cmd) {
-	size_t receiversLen = cmd.find(' ');
-	cmd.erase(0, receiversLen);
-
-	char	*cmd_char = (char*)cmd.c_str();
-	int		i = 0;
-	while (cmd_char[i] && cmd_char[i] == ' ')
-		i++;
-
-	cmd.erase(0, i);
-	cmd.erase(remove(cmd.begin(), cmd.end(), ':'), cmd.end());
-	// cout << "MSG is " << cmd << endl;
-	return (cmd);
+bool			PrivateMessageCommand::_isChannel(string receiver) {
+	if (receiver[0] == '#' || receiver[0] == '&') {
+		return (true);
+	}
+	return (false);
 }
 
-vector<string>	PrivateMessageCommand::getReceivers(string &cmd) {
-	string	receiversStr = cmd.substr(0, cmd.find(' '));
-	cout << endl << "Receivers " << receiversStr << endl << "Other cmd " << cmd << endl << endl;
-	vector<string>	receivers = ft_split(receiversStr, ",");
-	// cout << endl << "Receivers: " << endl;
-	// for (size_t i = 0; i < receivers.size(); i++) {
-	// 	cout << receivers[i] << endl;
-	// }
-	// cout << endl;
-	return (receivers);
+bool			PrivateMessageCommand::_isReceiverAlredyGotMessage(list<string> &handledReceivers, string nick) {
+	for (list<string>::iterator it = handledReceivers.begin(); it != handledReceivers.end(); it++) {
+		if (*it == nick) {
+			return (true);
+		}
+	}
+	return (false);
 }

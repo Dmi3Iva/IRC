@@ -3,24 +3,27 @@
 Context::Context() { _setupCommands(); }
 
 void Context::_setupCommands() {
-  // TODO:: replace with init list
-  _commandsMap["NICK"] = new NickCommand(&_users, &_channels);
-  _commandsMap["USER"] = new UserCommand(&_users, &_channels);
-  _commandsMap["PRIVMSG"] = new PrivateMessageCommand(&_users, &_channels);
+  string serverName = "localhost";
+  _commandsMap["NICK"] = new NickCommand(serverName, &_users, &_channels);
+  _commandsMap["USER"] = new UserCommand(serverName, &_users, &_channels);
+  _commandsMap["JOIN"] = new JoinCommand(serverName, &_users, &_channels);
+  _commandsMap["PART"] = new PartCommand(serverName, &_users, &_channels);
+  _commandsMap["PRIVMSG"] = new PrivateMessageCommand(serverName, &_users, &_channels);
+  _commandsMap["NOTICE"] = new PrivateMessageCommand(serverName, &_users, &_channels);
 }
 
 Context::~Context() {
-  _commandsMap.clear();
-  _users.clear();
-  _channels.clear();
+  fullDeleteMapContainer(_commandsMap);
+  fullDeleteMapContainer(_channels);
+  fullDeleteContainer(_users);
 }
 
-void Context::addUser(int userfd) { _users.push_back(User(userfd)); }
+void Context::addUser(int userfd, string hostname, string port) { _users.push_back(new User(userfd, hostname, port)); }
 
 void Context::listenUsers() {
   // TODO:: check all users fds here
-  for (std::vector<User>::iterator it = _users.begin(), ite = _users.end(); it != ite; ++it) {
-    pollfd *userfdArr = getPollFdFromFd(it->getFD());
+  for (vector<User *>::iterator it = _users.begin(), ite = _users.end(); it != ite; ++it) {
+    pollfd *userfdArr = getPollFdFromFd((*it)->getFD());
     // TODO:: move poll
     int ret = poll(userfdArr, 1, 800);
     cout << "User poll status " << ret << " revents: " << userfdArr[0].revents << endl;
@@ -29,7 +32,7 @@ void Context::listenUsers() {
     if (ret && (userfdArr[0].revents & POLLIN)) {
       {
         char buffer[IRC_MSG_LEN];
-        int fd = it->getFD();
+        int fd = (*it)->getFD();
         ssize_t bytesRead;
         cout << "User listens:" << endl;
         if ((bytesRead = recv(fd, buffer, sizeof(buffer), 0))) {
@@ -42,9 +45,8 @@ void Context::listenUsers() {
             buffer[bytesRead - 1] = '\0';
 
           cout << "The message was: " << buffer;
-          _handleMessage(&(*it), string(buffer));
+          _handleMessage(&(**it), string(buffer));
         } else {
-          it->closeFD();
           _users.erase(it);
           cout << "Client ended the _userfd!" << endl;
         }
@@ -53,6 +55,12 @@ void Context::listenUsers() {
 
     delete userfdArr;
   }
+}
+
+void Context::clearEmptyData() {
+  for (map<string, Channel *>::iterator it = _channels.begin(), ite = _channels.end(); it != ite; ++it)
+    if (it->second->getMembers().empty())
+      _channels.erase(it);
 }
 
 int Context::_executeCommand(User *user, string stringCommand) {

@@ -1,5 +1,5 @@
-#ifndef NICKCOMMAND
-#define NICKCOMMAND
+#ifndef NICKCOMMAND_HPP
+#define NICKCOMMAND_HPP
 
 #include "../ACommand.hpp"
 #include "../Context.hpp"
@@ -10,7 +10,7 @@ class ACommand;
 
 class NickCommand : public ACommand {
 public:
-  NickCommand(vector<User> *usersPtr, vector<Channel> *channelsPtr);
+  NickCommand(string serverName, vector<User *> *usersPtr, channelMap *channelsPtr);
   void execute(User *user, string cmd);
 };
 

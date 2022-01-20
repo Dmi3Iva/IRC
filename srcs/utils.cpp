@@ -5,10 +5,10 @@
 #include "utils.hpp"
 
 /**
- * TODO::
- * @param s
- * @param delim
- * @return
+ * split string with delimiter
+ * @param s source string
+ * @param delim delimiter string
+ * @return vector of strings
  */
 
 vector<string> ft_split (string s, const string &delimiter) {
@@ -50,3 +50,18 @@ std::string &rtrim(std::string &str, const std::string &chars) {
 }
 
 std::string &trim(std::string &str, const std::string &chars) { return ltrim(rtrim(str, chars), chars); }
+
+int isChannelName(string channelName) {
+  if (channelName.empty() || (channelName[0] != '#' && channelName[0] != '&'))
+    return 0;
+  return 1;
+}
+
+bool isPUserInVector(User *pUser, vector<User *> userList) {
+  for (vector<User *>::iterator it = userList.begin(), ite = userList.end(); it != ite; ++it) {
+    if ((*it)->getNickname() == pUser->getNickname()) {
+      return 1;
+    }
+  }
+  return 0;
+}
