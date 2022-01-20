@@ -6,6 +6,7 @@
 #include "Commands/JoinCommand.hpp"
 #include "Commands/NickCommand.hpp"
 #include "Commands/PartCommand.hpp"
+#include "Commands/PingCommand.hpp"
 #include "Commands/UserCommand.hpp"
 #include "Commands/PrivateMessageCommand.hpp"
 #include "User.hpp"
@@ -26,6 +27,7 @@ private:
   commandsMapType _commandsMap;
   vector<User *> _users;
   map<string, Channel *> _channels;
+  string _serverName;
 
   void _setupCommands();
   void _handleMessage(User *user, string msg);

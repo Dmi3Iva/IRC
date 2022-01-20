@@ -17,3 +17,5 @@ User	*ACommand::getUserFromArray(string userNick) {
 	}
 	return (NULL);
 }
+
+ACommand::~ACommand() {}
