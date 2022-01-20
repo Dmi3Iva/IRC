@@ -1,16 +1,5 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
-//#include <arpa/inet.h>
-//#include <cerrno>
-//#include <cstdlib> // For exit() and EXIT_FAILURE
-//#include <fcntl.h>
-//#include <netdb.h>
-//#include <netinet/in.h> // For sockaddr_in
-//#include <poll.h>
-//#include <string>
-//#include <sys/socket.h> // For socket functions
-//#include <unistd.h>
-//#include <vector>
 
 # include <iostream>
 # include "Socket.hpp"
@@ -35,19 +24,23 @@ class Server {
 private:
   typedef vector<struct pollfd> pollfdType;
   Socket* _socket;
-  Context* _сontext;
+  struct sockaddr_in _address;
+  Context* _context;
   string _password;
   pollfdType _pollfds;
+  int _timeout;
 
 public:
-  Server(in_addr_t, int, string);
+  Server(string, string, string);
   ~Server();
 
+  void setTimeout(int timeout);
+
+  void createSocket();
   void start();
   void polling();
   void acceptNewClients();
-  void closeConnections(int);
-  bool receiveRequest();
+  bool receiveMessage(User*);
   bool toSendResponse();
 
 private:

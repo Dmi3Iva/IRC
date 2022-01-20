@@ -42,4 +42,6 @@ void fullDeleteMapContainer(MapContainer& c)
 	c.clear();
 }
 
+struct pollfd fillPollfd(int sd, short events);
+
 #endif

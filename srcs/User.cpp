@@ -15,7 +15,7 @@ User& User::operator=(const User& user)
 	_realname = user.getRealname();
 	_hostname = user.getHostname();
 	_port = user.getHostname();
-	_isRegistered = user.getIsRegistered();
+	_isRegistered = user.isRegistered();
 	_channels = user.getChannels();
 	return *this;
 }
@@ -32,7 +32,7 @@ void User::setUsername(string username) { _username = username; }
 
 void User::setRealname(string realname) { _realname = realname; }
 
-bool User::getIsRegistered() const { return _isRegistered; }
+bool User::isRegistered() const { return _isRegistered; }
 
 void User::setIsRegistered(bool isRegistered) { _isRegistered = isRegistered; }
 
@@ -41,6 +41,8 @@ string User::getNickname() const { return _nickname; }
 string User::getUsername() const { return _username; }
 
 string User::getRealname() const { return _realname; }
+
+string User::getMessage() const { return _message; }
 
 /**
  * Add the user to the channel
