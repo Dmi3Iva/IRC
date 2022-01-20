@@ -1,8 +1,8 @@
 #include "Context.hpp"
 
 Context::Context() {
-  _setupCommands();
   _serverName = "localhost";
+  _setupCommands();
 }
 
 void Context::_setupCommands() {
