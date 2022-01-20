@@ -8,11 +8,9 @@ void ACommand::sendMessage(int fd, string msg) {
   send(fd, msg.c_str(), msg.size(), 0);
 }
 
-int ACommand::isPUserInVector(User *pUser, vector<User *> userList) {
-  for (vector<User *>::iterator it = userList.begin(), ite = userList.end(); it != ite; ++it) {
-    if ((*it)->getNickname() == pUser->getNickname()) {
-      return 1;
-    }
+void ACommand::sendToAllChannelMembers(Channel *channel, string message) {
+  for (Channel::usersVectorType::const_iterator it = channel->getMembers().begin(), ite = channel->getMembers().end();
+       it != ite; ++it) {
+    sendMessage((*it)->getFD(), message);
   }
-  return 0;
 }

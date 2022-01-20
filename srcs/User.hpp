@@ -42,7 +42,6 @@ public:
   User(int userFd, string hostname, string port);
   ~User();
 
-  void closeFD();
   int getFD() const;
   void setNickname(string nickname);
   void setUsername(string username);
@@ -55,7 +54,7 @@ public:
   const string &getPort() const;
   void setIsRegistered(bool isRegistered);
 
-  void addChannel(Channel *pChannel);
+  bool addChannel(Channel *pChannel);
   int quitChannel(string channelName);
   int getMaxOfChannels() const;
   bool isFullOfChannels();

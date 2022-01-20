@@ -11,9 +11,9 @@ void Context::_setupCommands() {
 }
 
 Context::~Context() {
-  _commandsMap.clear();
-  _users.clear();
-  _channels.clear();
+  fullDeleteMapContainer(_commandsMap);
+  fullDeleteMapContainer(_channels);
+  fullDeleteContainer(_users);
 }
 
 void Context::addUser(int userfd, string hostname, string port) { _users.push_back(new User(userfd, hostname, port)); }
@@ -45,7 +45,6 @@ void Context::listenUsers() {
           cout << "The message was: " << buffer;
           _handleMessage(&(**it), string(buffer));
         } else {
-          (*it)->closeFD();
           _users.erase(it);
           cout << "Client ended the _userfd!" << endl;
         }

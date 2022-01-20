@@ -72,10 +72,11 @@ void JoinCommand::_joinChannel(User *user, string channelName, string key) {
 
   // add user to channel
   it->second->addUser(user);
-  // add channel to user's channel list
-  user->addChannel(it->second);
-  // send all required messages
-  _userHasJoinedChannel(user, it);
+  // add channel to user's channel list. Do nothing if user already in channel
+  if (user->addChannel(it->second)) {
+    // send all required messages
+    _userHasJoinedChannel(user, it);
+  }
 }
 
 /**

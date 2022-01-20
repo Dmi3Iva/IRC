@@ -11,6 +11,7 @@
 
 using std::cout;
 using std::endl;
+using std::make_pair;
 using std::map;
 using std::string;
 using std::vector;
@@ -21,10 +22,10 @@ public:
   typedef map<string, Channel *> channelMap;
 
   ACommand(string serverName, userVector *usersPtr, channelMap *channelsPtr);
-  ~ACommand(){};
+  virtual ~ACommand(){};
   virtual void execute(User *user, string cmd) = 0;
   void sendMessage(int fd, string msg);
-  int isPUserInVector(User *pUser, vector<User *> userList);
+  void sendToAllChannelMembers(Channel *channel, string message);
 
 protected:
   string _name;

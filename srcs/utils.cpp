@@ -54,3 +54,12 @@ int isChannelName(string channelName) {
     return 0;
   return 1;
 }
+
+bool isPUserInVector(User *pUser, vector<User *> userList) {
+  for (vector<User *>::iterator it = userList.begin(), ite = userList.end(); it != ite; ++it) {
+    if ((*it)->getNickname() == pUser->getNickname()) {
+      return 1;
+    }
+  }
+  return 0;
+}

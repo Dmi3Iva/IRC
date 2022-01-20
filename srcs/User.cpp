@@ -16,9 +16,7 @@ User &User::operator=(const User &user) {
 
 User::User(const User &user) { *this = user; }
 
-User::~User() {}
-
-void User::closeFD() { close(_fd); }
+User::~User() { close(_fd); }
 
 int User::getFD() const { return _fd; }
 
@@ -38,11 +36,18 @@ string User::getUsername() const { return _username; }
 
 string User::getRealname() const { return _realname; }
 
-void User::addChannel(Channel *pChannel) {
+/**
+ * Add the user to the channel
+ * @param pChannel
+ * @return true if the user was added, false if user already in the channel
+ */
+bool User::addChannel(Channel *pChannel) {
   pair<userChannels::iterator, bool> result = _channels.insert(make_pair(pChannel->getName(), pChannel));
   if (!result.second) {
-    cerr << "User->" << _nickname << ": channel " << pChannel->getName() << " already in user list!" << endl;
+    cout << "User->" << _nickname << ": channel " << pChannel->getName() << " already in user list!" << endl;
+    return false;
   }
+  return true;
 }
 
 int User::quitChannel(string channelName) {

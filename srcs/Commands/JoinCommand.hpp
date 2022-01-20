@@ -8,12 +8,6 @@
 #include <iostream>
 #include <utility>
 
-using std::cout;
-using std::endl;
-using std::make_pair;
-using std::string;
-using std::vector;
-
 class ACommand;
 class Context;
 class User;

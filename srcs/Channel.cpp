@@ -17,11 +17,14 @@ const string &Channel::getPassword() const { return _password; }
 
 void Channel::setPassword(const string password) { _password = password; }
 
-void Channel::addUser(User *p_user) {
-  _members.push_back(p_user);
-  if (!_owner) {
-    _owner = p_user;
-    _operators.push_back(p_user);
+void Channel::addUser(User *pUser) {
+  // if user already in the channel don't add him/her
+  if (!isPUserInVector(pUser, _members)) {
+    _members.push_back(pUser);
+    if (!_owner) {
+      _owner = pUser;
+      _operators.push_back(pUser);
+    }
   }
 }
 const string &Channel::getTopic() const { return _topic; }

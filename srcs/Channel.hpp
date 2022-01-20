@@ -2,6 +2,7 @@
 #define CHANNEL_HPP
 
 #include "User.hpp"
+#include "utils.hpp"
 #include <string>
 #include <vector>
 
@@ -32,7 +33,7 @@ public:
   int getUsersLimit() const;
   void setUsersLimit(int users_limit);
 
-  void addUser(User *p_user);
+  void addUser(User *pUser);
   void removeUser(User *pUser);
   int isOperator(User *pUser) const;
 
