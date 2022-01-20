@@ -7,6 +7,8 @@ PrivateMessageCommand::PrivateMessageCommand(vector<User> *usersPtr, vector<Chan
 	_description = "PRIVMSG <receiver>{,<receiver>} <text to be sent>";
 }
 
+PrivateMessageCommand::~PrivateMessageCommand() {}
+
 void	PrivateMessageCommand::execute(User *user, string cmd) {
 	cout << "CMD " << cmd << endl;
 	cout << "PRIVMSG DO NOTHING FOR NOW" << std::endl;
@@ -27,9 +29,9 @@ void	PrivateMessageCommand::execute(User *user, string cmd) {
 	for (vector<string>::iterator it = receivers.begin(); it < receivers.end(); it++) {
 		User	*userReceiver = this->getUserFromArray(*it);
 		if (userReceiver) {
-			this->sendMessage(userReceiver->getFD(), RPL_PRIVMSG(userReceiver->getNickname(),
-																userReceiver->getUsername(),
-																userReceiver->getUsername(),
+			this->sendMessage(userReceiver->getFD(), RPL_PRIVMSG(user->getNickname(),
+																user->getUsername(),
+																user->getUsername(),
 																*it,
 																message));
 		}
@@ -53,7 +55,7 @@ string			PrivateMessageCommand::getMSG(string cmd) {
 
 vector<string>	PrivateMessageCommand::getReceivers(string &cmd) {
 	string	receiversStr = cmd.substr(0, cmd.find(' '));
-	// cout << endl << "Receivers " << receiversStr << endl << "Other cmd " << cmd << endl << endl;
+	cout << endl << "Receivers " << receiversStr << endl << "Other cmd " << cmd << endl << endl;
 	vector<string>	receivers = ft_split(receiversStr, ",");
 	// cout << endl << "Receivers: " << endl;
 	// for (size_t i = 0; i < receivers.size(); i++) {

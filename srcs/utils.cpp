@@ -10,18 +10,6 @@
  * @param delim
  * @return
  */
-// vector<string> ft_split(string s, const string &delim) {
-//   vector<string> result;
-//   size_t pos = 0;
-//   string token;
-//   while ((pos = s.find(delim)) != std::string::npos) {
-//     token = s.substr(0, pos);
-//     if (!token.empty())
-//       result.push_back(token);
-//     s.erase(0, pos + delim.length());
-//   }
-//   return result;
-// }
 
 vector<string> ft_split (string s, const string &delimiter) {
     size_t pos_start = 0, pos_end, delim_len = delimiter.length();

@@ -12,6 +12,8 @@ class PrivateMessageCommand : public ACommand {
 
 public:
 	PrivateMessageCommand(vector<User> *usersPtr, vector<Channel> *channelsPtr);
+	virtual ~PrivateMessageCommand();
+
 	void			execute(User *user, string cmd);
 
 	vector<string>	getReceivers(string &cmd);
