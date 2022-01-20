@@ -4,15 +4,14 @@
 
 #include "User.hpp"
 
-User::User(int userFd) : _fd(userFd), _isRegistered(false) {}
+User::User(int userFd)
+    :_fd(userFd),
+     _isRegistered(false) {}
+
 User::~User() {}
 
-// int User::listen() {
-//   // Read from the _userfd
-// }
-
-void User::closeFD() { close(_fd); }
 int User::getFD() { return _fd; }
+
 void User::setNickname(string nickname) {
   cout << "set nickname: " << nickname << endl;
   _nickname = nickname;
@@ -28,10 +27,21 @@ void User::setRealname(string realname) {
   _realname = realname;
 }
 
-bool User::getIsRegistered() { return _isRegistered; }
+void User::setMessage(string message) {
+  cout << "set message: " << message << endl;
+  _message = message;
+}
+
+void User::appendMessage(string message) {
+  cout << "append message: " << message << endl;
+  _message.append(message);
+}
+
+bool User::isRegistered() { return _isRegistered; }
 
 void User::setIsRegistered(bool isRegistered) { _isRegistered = isRegistered; }
 
 string User::getNickname() { return _nickname; }
 string User::getUsername() { return _username; }
 string User::getRealname() { return _realname; }
+string User::getMessage() { return _message; }

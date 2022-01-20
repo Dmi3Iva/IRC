@@ -47,3 +47,11 @@ std::string &rtrim(std::string &str, const std::string &chars) {
 }
 
 std::string &trim(std::string &str, const std::string &chars) { return ltrim(rtrim(str, chars), chars); }
+
+struct pollfd fillPollfd(int sd, short events) {
+  struct pollfd fd;
+  fd.fd = sd;
+  fd.events = events;
+  fd.revents = 0;
+  return fd;
+}

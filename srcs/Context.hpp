@@ -24,7 +24,6 @@ private:
   vector<User> _users;
   vector<Channel> _channels;
 
-  User* findUserByFd(int);
   void _setupCommands();
   int _executeCommand(User *user, string stringCommand);
 
@@ -32,9 +31,10 @@ public:
   Context();
   ~Context();
 
-  void addUser(int userfd);
-  void deleteUser(int userfd);
-  void _handleMessage(int userfd, string msg);
+  User* findUserByFd(int userfd);
+  void addUser(User* user);
+  void deleteUser(User* user);
+  void _handleMessage(User* user);
 };
 
 #endif

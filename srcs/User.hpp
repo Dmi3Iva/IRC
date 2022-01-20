@@ -36,17 +36,18 @@ public:
   User(int userFd);
   ~User();
 
-  //  int listen();
-//  void closeFD();
   int getFD();
   void setNickname(string nickname);
   void setUsername(string username);
   void setRealname(string realname);
+  void setMessage(string message);
+  void appendMessage(string message);
   string getNickname();
   string getUsername();
   string getRealname();
+  string getMessage();
 
-  bool getIsRegistered();
+  bool isRegistered();
   void setIsRegistered(bool isRegistered);
 
 private:
@@ -54,10 +55,9 @@ private:
   string _nickname;
   string _username;
   string _realname;
+  string _message;
   bool _isRegistered;
 
-  //  void _handleMessage(string msg);
-  //  void _handleRegistration(string msg);
 };
 
 #endif

@@ -15,22 +15,20 @@
 class Socket {
 
 private:
-  struct sockaddr_in _address;
   int _sockfd;
   int _backlog;
 
 public:
-  Socket(int, int, int, int, in_addr_t, int);
+  Socket(int, int, int);
   ~Socket();
 
-  const sockaddr_in& getAddress() const;
   int getSockfd() const;
   int getBacklog() const;
 
-  void allowReuseAddress();
+  void setAddressReuseMode();
   void setNonblockMode();
-  void bindSocket();
-  void startListening();
+  void bindToAddress(struct sockaddr*);
+  void startListening(int);
 
 private:
   Socket();

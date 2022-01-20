@@ -14,11 +14,11 @@ Context::~Context() {
   _channels.clear();
 }
 
-void Context::addUser(int userfd) { _users.push_back(User(userfd)); }
+void Context::addUser(User* user) { _users.push_back(*user); }
 
-void Context::deleteUser(int userfd) {
+void Context::deleteUser(User* user) {
   for (std::vector<User>::iterator it = _users.begin(), ite = _users.end(); it != ite; ++it)
-    if (it->getFD() == userfd)
+    if (it->getFD() == user->getFD())
       _users.erase(it);
 }
 
@@ -27,7 +27,7 @@ User* Context::findUserByFd(int fd) {
    if (_users[i].getFD() == fd)
      return &_users[i];
   }
-  return nullptr;
+  return NULL;
 }
 
 int Context::_executeCommand(User *user, string stringCommand) {
@@ -43,11 +43,11 @@ int Context::_executeCommand(User *user, string stringCommand) {
   return 0;
 }
 
-void Context::_handleMessage(int userfd, string msg) {
+void Context::_handleMessage(User* user) {
   // parse
-  vector<string> commands = ft_split(msg, DELIMITER);
+  vector<string> commands = ft_split(user->getMessage(), DELIMITER);
   // execute in order
   for (vector<string>::iterator it = commands.begin(), ite = commands.end(); it != ite; ++it) {
-    _executeCommand(findUserByFd(userfd), *it);
+    _executeCommand(user, *it);
   }
 }
