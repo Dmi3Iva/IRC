@@ -51,6 +51,7 @@ public:
 	string getNickname() const;
 	string getUsername() const;
 	string getRealname() const;
+	const string& getMessage() const;
 	bool isRegistered() const;
 	const string& getHostname() const;
 	const string& getPort() const;

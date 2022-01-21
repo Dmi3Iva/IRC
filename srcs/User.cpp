@@ -22,7 +22,7 @@ User& User::operator=(const User& user)
 
 User::User(const User& user) { *this = user; }
 
-User::~User() { close(_fd); }
+User::~User() { }
 
 int User::getFD() const { return _fd; }
 
@@ -31,6 +31,10 @@ void User::setNickname(string nickname) { _nickname = nickname; }
 void User::setUsername(string username) { _username = username; }
 
 void User::setRealname(string realname) { _realname = realname; }
+
+void User::setMessage(string message) { _message = message; }
+
+void User::appendMessage(string message) { _message.append(message); }
 
 bool User::isRegistered() const { return _isRegistered; }
 
@@ -42,7 +46,7 @@ string User::getUsername() const { return _username; }
 
 string User::getRealname() const { return _realname; }
 
-string User::getMessage() const { return _message; }
+const string& User::getMessage() const { return _message; }
 
 /**
  * Add the user to the channel

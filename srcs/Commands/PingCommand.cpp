@@ -8,7 +8,7 @@ PingCommand::PingCommand(string serverName, userVector* usersPtr, channelMap* ch
 
 void PingCommand::execute(User* user, string cmd)
 {
-	if (!user->getIsRegistered()) {
+	if (!user->isRegistered()) {
 		sendMessage(
 			user->getFD(),
 			ERR_NOTREGISTERED(_serverName, (user->getNickname().empty() ? std::string("*") : user->getNickname()), _name));

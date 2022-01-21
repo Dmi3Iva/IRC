@@ -24,20 +24,22 @@ Context::~Context()
 	fullDeleteContainer(_users);
 }
 
-void Context::addUser(User* user) { _users.push_back(*user); }
+void Context::addUser(User* user) { _users.push_back(user); }
 
-void Context::deleteUser(User* user) {
-  for (std::vector<User>::iterator it = _users.begin(), ite = _users.end(); it != ite; ++it)
-    if (it->getFD() == user->getFD())
-      _users.erase(it);
+void Context::deleteUser(User* user)
+{
+	for (std::vector<User*>::iterator it = _users.begin(), ite = _users.end(); it != ite; ++it)
+		if ((*it)->getFD() == user->getFD())
+			_users.erase(it);
 }
 
-User* Context::findUserByFd(int fd) {
-  for (size_t i = _users.size(); i >= 0; --i) {
-   if (_users[i].getFD() == fd)
-     return &_users[i];
-  }
-  return NULL;
+User* Context::findUserByFd(int fd)
+{
+	for (size_t i = 0; i < _users.size(); ++i) {
+		if (_users[i]->getFD() == fd)
+			return _users[i];
+	}
+	return NULL;
 }
 
 void Context::clearEmptyData()
@@ -68,14 +70,14 @@ int Context::_executeCommand(User* user, string stringCommand)
 		}
 	} else {
 		// if User is registered we should reply with error that error wasn't found
-		if (user->getIsRegistered()) {
+		if (user->isRegistered()) {
 			sendMessage(user->getFD(), ERR_UNKNOWNCOMMAND(_serverName, user->getNickname(), commandName));
 		}
 	}
 	return 0;
 }
 
-void Context::_handleMessage(User* user)
+void Context::handleMessage(User* user)
 {
 	// parse
 	vector<string> commands = ft_split(user->getMessage(), DELIMITER);
@@ -83,4 +85,5 @@ void Context::_handleMessage(User* user)
 	for (vector<string>::iterator it = commands.begin(), ite = commands.end(); it != ite; ++it) {
 		_executeCommand(user, trim(*it));
 	}
+	user->setMessage("");
 }

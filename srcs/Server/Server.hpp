@@ -43,7 +43,8 @@ private:
   Server(Server const &);         // Don't Implement.
   void operator=(Server const &); // Don't implement.
 
-  void _printConnectionInfo(int userFd);
+  pair<string, string> _getConnectionInfo(int userFd);
+
 };
 
 #endif
