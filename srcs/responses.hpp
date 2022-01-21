@@ -90,9 +90,6 @@ commandName, description)                                               \
 #define ERR_NOTEXTTOSEND(servername, nickname)                          \
   std::string(":") + servername + " 412 " + nickname + std::string(" :No text to send") + DELIMITER
 
-#define ERR_USERNOTREGISTEREDINSERVER                                   \
-  std::string(":Your connection is restricted!") + DELIMITER
-
 #define ERR_TOOMANYTARGETS(servername, nickname, target)                \
   std::string(":") + servername + " 407 " + nickname + std::string(target) + " :Duplicate recipients. No message delivered" + DELIMITER
 

@@ -80,9 +80,8 @@ void Channel::setUsersLimit(int users_limit) { _usersLimit = users_limit; }
 
 bool Channel::isFullOfMembers() { return _usersLimit != -1 && _members.size() >= static_cast<size_t>(_usersLimit); }
 
-void Channel::sendToAllChannelMembers(User *sender, string message) {
+void Channel::sendToAllChannelMembers(string message) {
   for (usersVectorType::iterator user = _members.begin(); user != _members.end(); user++) {
-    if ((*user)->getNickname() != sender->getNickname())
-      send((*user)->getFD(), message.c_str(), message.size(), 0);
+    send((*user)->getFD(), message.c_str(), message.size(), 0);
   }
 }

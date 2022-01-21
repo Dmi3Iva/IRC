@@ -15,5 +15,5 @@ User	*ACommand::getUserFromArray(string userNick) {
 			return (*it);
 		}
 	}
-	return (nullptr);
+	return (NULL);
 }

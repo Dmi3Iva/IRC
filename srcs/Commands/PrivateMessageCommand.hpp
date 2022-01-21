@@ -22,6 +22,7 @@ private:
 	void			_sendMessageToReceivers(User *user, vector<string> &receivers, string message);
 	bool			_isChannel(string receiver);
 	bool			_isReceiverAlredyGotMessage(list<string> &handledReceivers, string nick);
+	void			_eraseSacesInFront(string &cmd);
 };
 
 #endif

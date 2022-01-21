@@ -12,7 +12,7 @@ PrivateMessageCommand::~PrivateMessageCommand() {}
 void	PrivateMessageCommand::execute(User *user, string cmd) {
 
 	if (!user->getIsRegistered()) {
-		sendMessage(user->getFD(), ERR_USERNOTREGISTEREDINSERVER);
+		sendMessage(user->getFD(), ERR_NOTREGISTERED(_serverName, user->getNickname(), "PRIVMSG"));
 		return ;
 	}
 
@@ -33,13 +33,11 @@ void	PrivateMessageCommand::execute(User *user, string cmd) {
 
 string			PrivateMessageCommand::_constructMessage(string cmd) {
 	size_t receiversLen = cmd.find(' ');
+	if (receiversLen == string::npos) {
+		return ("");
+	}
 	cmd.erase(0, receiversLen);
-
-	int		i = 0;
-	while (cmd[i] && cmd[i] == ' ')
-		i++;
-	cmd.erase(0, i);
-
+	_eraseSacesInFront(cmd);
 	cmd.erase(remove(cmd.begin(), cmd.end(), ':'), cmd.end());
 	return (cmd);
 }
@@ -47,11 +45,7 @@ string			PrivateMessageCommand::_constructMessage(string cmd) {
 vector<string>	PrivateMessageCommand::_getReceivers(string &cmd) {
 	vector<string>	receivers;
 
-	int		i = 0;
-	while (cmd[i] && cmd[i] == ' ')
-		i++;
-	cmd.erase(0, i);
-
+	_eraseSacesInFront(cmd);
 	size_t receiversLen = cmd.find(' ');
 	if (receiversLen == string::npos) {
 		return (receivers);
@@ -71,7 +65,7 @@ void			PrivateMessageCommand::_sendMessageToReceivers(User *user, vector<string>
 				if (_isReceiverAlredyGotMessage(handledReceivers, channel->second->getName())) {
 					sendMessage(user->getFD(), ERR_TOOMANYTARGETS(_serverName, user->getNickname(), *it));
 				} else {
-					channel->second->sendToAllChannelMembers(user, RPL_PRIVMSG(user->getNickname(),
+					channel->second->sendToAllChannelMembers(RPL_PRIVMSG(user->getNickname(),
 																		user->getUsername(),
 																		user->getUsername(),
 																		*it,
@@ -87,12 +81,11 @@ void			PrivateMessageCommand::_sendMessageToReceivers(User *user, vector<string>
 				if (_isReceiverAlredyGotMessage(handledReceivers, userReceiver->getNickname())) {
 					sendMessage(user->getFD(), ERR_TOOMANYTARGETS(_serverName, user->getNickname(), *it));
 				} else {
-					if (userReceiver->getNickname() != user->getNickname())
-						this->sendMessage(userReceiver->getFD(), RPL_PRIVMSG(user->getNickname(),
-																			user->getUsername(),
-																			user->getUsername(),
-																			*it,
-																			message));
+					this->sendMessage(userReceiver->getFD(), RPL_PRIVMSG(user->getNickname(),
+																		user->getUsername(),
+																		user->getUsername(),
+																		*it,
+																		message));
 					handledReceivers.push_back(userReceiver->getNickname());
 				}
 			} else {
@@ -116,4 +109,11 @@ bool			PrivateMessageCommand::_isReceiverAlredyGotMessage(list<string> &handledR
 		}
 	}
 	return (false);
+}
+
+void			PrivateMessageCommand::_eraseSacesInFront(string &cmd) {
+	int		i = 0;
+	while (cmd[i] && cmd[i] == ' ')
+		i++;
+	cmd.erase(0, i);
 }
