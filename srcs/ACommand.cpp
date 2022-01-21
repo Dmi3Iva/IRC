@@ -8,9 +8,12 @@ void ACommand::sendMessage(int fd, string msg) {
   send(fd, msg.c_str(), msg.size(), 0);
 }
 
-void ACommand::sendToAllChannelMembers(Channel *channel, string message) {
-  for (Channel::usersVectorType::const_iterator it = channel->getMembers().begin(), ite = channel->getMembers().end();
-       it != ite; ++it) {
-    sendMessage((*it)->getFD(), message);
-  }
+User	*ACommand::getUserFromArray(string userNick) {
+	
+	for (userVector::iterator it = _usersPtr->begin(); it != _usersPtr->end(); it++) {
+		if ((*it)->getNickname() == userNick) {
+			return (*it);
+		}
+	}
+	return (NULL);
 }

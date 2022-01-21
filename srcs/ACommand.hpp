@@ -6,9 +6,13 @@
 #include "User.hpp"
 #include <iostream>
 #include <map>
+#include <list>
 #include <string>
 #include <sys/socket.h>
+#include <cstring>
+#include "responses.hpp"
 
+using std::list;
 using std::cout;
 using std::endl;
 using std::make_pair;
@@ -25,12 +29,14 @@ public:
   virtual ~ACommand(){};
   virtual void execute(User *user, string cmd) = 0;
   void sendMessage(int fd, string msg);
-  void sendToAllChannelMembers(Channel *channel, string message);
+  User	*getUserFromArray(string userName);
 
 protected:
   string _name;
   string _serverName;
+  string _description;
   userVector *_usersPtr;
   channelMap *_channelsPtr;
 };
+
 #endif

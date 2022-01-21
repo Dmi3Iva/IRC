@@ -3,6 +3,7 @@
 NickCommand::NickCommand(string serverName, userVector *usersPtr, channelMap *channelsPtr)
     : ACommand(serverName, usersPtr, channelsPtr) {
   _name = "NICK";
+  _description = "NICK <nickname> [ <hopcount> ]";
 }
 
 void NickCommand::execute(User *user, string cmd) {

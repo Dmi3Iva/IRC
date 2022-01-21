@@ -39,6 +39,11 @@
 #define PART_RPL(nickname, username, host, channel)                                                                    \
   std::string(":") + nickname + "!" + username + "@" + host + " PART " + channel + DELIMITER
 
+
+#define RPL_PRIVMSG(nickname, username, host, receiver, message)            \
+  std::string(":") + nickname + "!" + username + "@" + host + " PRIVMSG " + receiver + std::string(" :") + message + DELIMITER
+
+
 /**
  * ERRORS
  */
@@ -74,5 +79,18 @@
 
 #define ERR_BADCHANNELKEY(servername, nickname, channelName)                                                           \
   std::string(":") + servername + " 475 " + nickname + " " + channelName + ":Cannot join channel (+k)." + DELIMITER
+
+#define ERR_NOSUCHNICK(servername, nickname)                            \
+  std::string(":") + servername + " 401 " + std::string(nickname) + " PRIVMSG" + DELIMITER
+
+#define ERR_NORECIPIENT(servername, nickname,                           \
+commandName, description)                                               \
+  std::string(":") + servername + " 411 " + nickname + std::string(" :No recipient given (") + commandName + ")" + DELIMITER + description + DELIMITER
+
+#define ERR_NOTEXTTOSEND(servername, nickname)                          \
+  std::string(":") + servername + " 412 " + nickname + std::string(" :No text to send") + DELIMITER
+
+#define ERR_TOOMANYTARGETS(servername, nickname, target)                \
+  std::string(":") + servername + " 407 " + nickname + std::string(target) + " :Duplicate recipients. No message delivered" + DELIMITER
 
 #endif

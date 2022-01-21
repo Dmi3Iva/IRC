@@ -8,6 +8,8 @@ void Context::_setupCommands() {
   _commandsMap["USER"] = new UserCommand(serverName, &_users, &_channels);
   _commandsMap["JOIN"] = new JoinCommand(serverName, &_users, &_channels);
   _commandsMap["PART"] = new PartCommand(serverName, &_users, &_channels);
+  _commandsMap["PRIVMSG"] = new PrivateMessageCommand(serverName, &_users, &_channels);
+  _commandsMap["NOTICE"] = new PrivateMessageCommand(serverName, &_users, &_channels);
 }
 
 Context::~Context() {

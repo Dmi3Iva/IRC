@@ -16,7 +16,7 @@ void PartCommand::execute(User *user, string cmd) {
     // user should quit Channel
     channelMap::iterator chIterator = _channelsPtr->find(*it);
     if (chIterator != _channelsPtr->end()) {
-      sendToAllChannelMembers(chIterator->second, PART_RPL(user->getNickname(), user->getUsername(),
+      chIterator->second->sendToAllChannelMembers(PART_RPL(user->getNickname(), user->getUsername(),
                                                            user->getHostname(), chIterator->second->getName()));
       user->quitChannel(chIterator->second->getName());
       return;

@@ -7,6 +7,7 @@
 #include "Commands/NickCommand.hpp"
 #include "Commands/PartCommand.hpp"
 #include "Commands/UserCommand.hpp"
+#include "Commands/PrivateMessageCommand.hpp"
 #include "User.hpp"
 #include "utils.hpp"
 #include <map>

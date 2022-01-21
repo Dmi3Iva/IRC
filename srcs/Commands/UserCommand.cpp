@@ -3,6 +3,7 @@
 UserCommand::UserCommand(string serverName, userVector *usersPtr, channelMap *channelsPtr)
     : ACommand(serverName, usersPtr, channelsPtr) {
   _name = "USER";
+  _description = "USER <username> <hostname> <servername> <realname>";
 }
 
 /**
