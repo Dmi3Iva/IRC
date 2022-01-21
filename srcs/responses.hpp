@@ -114,4 +114,7 @@
 #define ERR_NICKNAMEINUSE(servername, nickname, nick) \
 	std::string(":") + servername + " 433 " + nickname + " " + nick + " :Nickname is already in use" + DELIMITER
 
+#define ERR_ALREADYREGISTRED(servername, nickname) \
+	std::string(":") + servername + " 462 " + nickname + " :You may not reregister" + DELIMITER
+
 #endif

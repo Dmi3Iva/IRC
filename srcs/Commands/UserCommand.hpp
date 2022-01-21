@@ -15,6 +15,9 @@ class UserCommand : public ACommand {
 public:
 	UserCommand(string serverName, userVector* usersPtr, channelMap* channelsPtr);
 	void execute(User* user, string cmd);
+
+private:
+	string	_constructRealnameAndEraseFromCmd(string &cmd, size_t colonPos);
 };
 
 #endif

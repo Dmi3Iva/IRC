@@ -46,6 +46,7 @@ public:
 	void setNickname(string nickname);
 	void setUsername(string username);
 	void setRealname(string realname);
+	void setHostname(string hostname);
 	string getNickname() const;
 	string getUsername() const;
 	string getRealname() const;

@@ -25,10 +25,9 @@ void NickCommand::execute(User* user, string cmd)
 	user->setIsNickPerformed(true);
 	if (!user->getIsRegistered() && user->getIsNickPerformed() && user->getIsUserPerformed()) {
 		user->setIsRegistered(true);
-		string msg =
-			RPL_MOTDSTART(_serverName, user->getNickname())
+		string msg = RPL_MOTDSTART(_serverName, user->getNickname())
 			RPL_MOTD(_serverName, user->getNickname())
-			RPL_ENDOFMOTD(_serverName, user->getNickname());
+				RPL_ENDOFMOTD(_serverName, user->getNickname());
 		sendMessage(user->getFD(), msg);
 	}
 }

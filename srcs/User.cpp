@@ -34,6 +34,8 @@ void User::setUsername(string username) { _username = username; }
 
 void User::setRealname(string realname) { _realname = realname; }
 
+void User::setHostname(string hostname) { _hostname = hostname; }
+
 bool User::getIsRegistered() const { return _isRegistered; }
 
 void User::setIsRegistered(bool isRegistered) { _isRegistered = isRegistered; }
