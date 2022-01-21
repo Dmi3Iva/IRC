@@ -6,8 +6,9 @@
 #include "Commands/JoinCommand.hpp"
 #include "Commands/NickCommand.hpp"
 #include "Commands/PartCommand.hpp"
-#include "Commands/UserCommand.hpp"
+#include "Commands/PingCommand.hpp"
 #include "Commands/PrivateMessageCommand.hpp"
+#include "Commands/UserCommand.hpp"
 #include "User.hpp"
 #include "utils.hpp"
 #include <map>
@@ -22,26 +23,27 @@ using std::vector;
 
 class Context {
 private:
-  typedef map<string, ACommand *> commandsMapType;
-  commandsMapType _commandsMap;
-  vector<User *> _users;
-  map<string, Channel *> _channels;
+	typedef map<string, ACommand*> commandsMapType;
+	commandsMapType _commandsMap;
+	vector<User*> _users;
+	map<string, Channel*> _channels;
+	string _serverName;
 
-  void _setupCommands();
-  void _handleMessage(User *user, string msg);
-  int _executeCommand(User *user, string stringCommand);
+	void _setupCommands();
+	void _handleMessage(User* user, string msg);
+	int _executeCommand(User* user, string stringCommand);
 
 public:
-  Context();
-  ~Context();
+	Context();
+	~Context();
 
-  void addUser(int userfd, string hostname, string port);
-  void listenUsers();
+	void addUser(int userfd, string hostname, string port);
+	void listenUsers();
 
-  /**
+	/**
    * Remove empty channels and removed users from storage
    */
-  void clearEmptyData();
+	void clearEmptyData();
 };
 
 #endif

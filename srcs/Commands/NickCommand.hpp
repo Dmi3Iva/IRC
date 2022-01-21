@@ -10,13 +10,13 @@ class ACommand;
 
 class NickCommand : public ACommand {
 public:
-  NickCommand(string serverName, vector<User *> *usersPtr, channelMap *channelsPtr);
-  virtual ~NickCommand();
-  void execute(User *user, string cmd);
+	NickCommand(string serverName, vector<User*>* usersPtr, channelMap* channelsPtr);
+	virtual ~NickCommand();
+	void execute(User* user, string cmd);
 
 private:
-  string  _getNickname(string cmd);
-  bool    _validateNick(string nick);
+	string _getNickname(string cmd);
+	bool _validateNick(User *user, string nick);
 };
 
 #endif

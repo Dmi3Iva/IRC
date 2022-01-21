@@ -23,21 +23,20 @@ using std::vector;
 
 class ACommand {
 public:
-    typedef vector<User *> userVector;
-    typedef map<string, Channel *> channelMap;
+	typedef vector<User*> userVector;
+	typedef map<string, Channel*> channelMap;
 
-    ACommand(string serverName, userVector *usersPtr, channelMap *channelsPtr);
-    virtual ~ACommand(){};
-    virtual void execute(User *user, string cmd) = 0;
-    void sendMessage(int fd, string msg);
-    User *getUserFromArray(string userName);
+	ACommand(string serverName, userVector* usersPtr, channelMap* channelsPtr);
+	virtual ~ACommand();
+	virtual void execute(User* user, string cmd) = 0;
+	User* getUserFromArray(string userName);
 
 protected:
-    string _name;
-    string _serverName;
-    string _description;
-    userVector *_usersPtr;
-    channelMap *_channelsPtr;
+	string _name;
+	string _serverName;
+	string _description;
+	userVector* _usersPtr;
+	channelMap* _channelsPtr;
 };
 
 #endif

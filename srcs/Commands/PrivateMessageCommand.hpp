@@ -1,9 +1,9 @@
 #ifndef PRIVATEMESSAGECOMMAND_HPP
-# define PRIVATEMESSAGECOMMAND_HPP
+#define PRIVATEMESSAGECOMMAND_HPP
 
 #include "../ACommand.hpp"
-#include "../responses.hpp"
 #include "../Context.hpp"
+#include "../responses.hpp"
 #include <iostream>
 
 class ACommand;
@@ -11,10 +11,10 @@ class ACommand;
 class PrivateMessageCommand : public ACommand {
 
 public:
-	PrivateMessageCommand(string serverName, userVector *usersPtr, channelMap *channelsPtr);
+	PrivateMessageCommand(string serverName, userVector* usersPtr, channelMap* channelsPtr);
 	virtual ~PrivateMessageCommand();
 
-	void			execute(User *user, string cmd);
+	void execute(User* user, string cmd);
 
 private:
 	vector<string>	_getReceivers(string &cmd);

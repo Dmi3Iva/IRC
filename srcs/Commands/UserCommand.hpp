@@ -13,8 +13,8 @@ class User;
 
 class UserCommand : public ACommand {
 public:
-  UserCommand(string serverName, userVector *usersPtr, channelMap *channelsPtr);
-  void execute(User *user, string cmd);
+	UserCommand(string serverName, userVector* usersPtr, channelMap* channelsPtr);
+	void execute(User* user, string cmd);
 };
 
 #endif
