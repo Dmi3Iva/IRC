@@ -27,7 +27,6 @@ public:
   ACommand(string serverName, userVector *usersPtr, channelMap *channelsPtr);
   virtual ~ACommand();
   virtual void execute(User *user, string cmd) = 0;
-  static void sendMessage(int fd, string msg);
   User	*getUserFromArray(string userName);
 
 protected:

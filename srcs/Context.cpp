@@ -87,7 +87,7 @@ int Context::_executeCommand(User *user, string stringCommand) {
   } else {
     // if User is registered we should reply with error that error wasn't found
     if (user->getIsRegistered()) {
-      ACommand::sendMessage(user->getFD(), ERR_UNKNOWNCOMMAND(_serverName, user->getNickname(), commandName));
+      sendMessage(user->getFD(), ERR_UNKNOWNCOMMAND(_serverName, user->getNickname(), commandName));
     }
   }
   return 0;

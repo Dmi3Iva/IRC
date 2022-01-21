@@ -22,6 +22,8 @@ std::string ltrim(std::string str, const std::string &chars = "\t\n\v\f\r ");
 std::string rtrim(std::string str, const std::string &chars = "\t\n\v\f\r ");
 std::string trim(std::string str, const std::string &chars = "\t\n\v\f\r ");
 
+void sendMessage(int fd, string msg);
+
 template <class Container> void fullDeleteContainer(Container &c) {
   for (typename Container::iterator it = c.begin(), ite = c.end(); it != ite; ++it) {
     delete &(*it);

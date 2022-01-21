@@ -54,6 +54,11 @@ std::string rtrim(std::string str, const std::string &chars) {
 
 std::string trim(std::string str, const std::string &chars) { return ltrim(rtrim(str, chars), chars); }
 
+void sendMessage(int fd, string msg) {
+  cout << "sending message to " << fd << ": " << msg << endl;
+  send(fd, msg.c_str(), msg.size(), 0);
+}
+
 int isChannelName(string channelName) {
   if (channelName.empty() || (channelName[0] != '#' && channelName[0] != '&'))
     return 0;
