@@ -32,7 +32,7 @@ public:
   void setIsOnlyInviteChannel(bool is_only_invite_channel);
   ssize_t getUsersLimit() const;
   void setUsersLimit(int users_limit);
-  void sendToAllChannelMembers(string message);
+  void sendToAllChannelMembers(string message, User *sender = NULL);
 
   void addUser(User *pUser);
   void removeUser(User *pUser);

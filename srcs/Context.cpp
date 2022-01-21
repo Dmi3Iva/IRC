@@ -11,8 +11,8 @@ void Context::_setupCommands() {
   _commandsMap["JOIN"] = new JoinCommand(_serverName, &_users, &_channels);
   _commandsMap["PART"] = new PartCommand(_serverName, &_users, &_channels);
   _commandsMap["PING"] = new PingCommand(_serverName, &_users, &_channels);
-  _commandsMap["PRIVMSG"] = new PrivateMessageCommand(serverName, &_users, &_channels);
-  _commandsMap["NOTICE"] = new PrivateMessageCommand(serverName, &_users, &_channels);
+  _commandsMap["PRIVMSG"] = new PrivateMessageCommand(_serverName, &_users, &_channels);
+  _commandsMap["NOTICE"] = new PrivateMessageCommand(_serverName, &_users, &_channels);
 }
 
 Context::~Context() {

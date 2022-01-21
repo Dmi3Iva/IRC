@@ -10,13 +10,8 @@ JoinCommand::JoinCommand(string serverName, userVector *usersPtr, channelMap *ch
  * @param user
  */
 void JoinCommand::_userHasJoinedChannel(User *user, channelMap::iterator chIterator) {
-  // resend user message to channel members
-  for (Channel::usersVectorType::const_iterator it = chIterator->second->getMembers().begin(),
-                                                ite = chIterator->second->getMembers().end();
-       it != ite; ++it)
-    sendMessage((*it)->getFD(),
-                JOIN_RPL(user->getNickname(), user->getUsername(), user->getHostname(), chIterator->second->getName()));
-
+  chIterator->second->sendToAllChannelMembers(
+      JOIN_RPL(user->getNickname(), user->getUsername(), user->getHostname(), chIterator->second->getName()));
   // send channel topic to the user
   sendMessage(user->getFD(), RPL_TOPIC(_serverName, chIterator->second->getName(), chIterator->second->getTopic()));
 
