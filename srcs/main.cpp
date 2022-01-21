@@ -5,8 +5,9 @@
  * Parse args, if they okay execute server
  * @return
  */
-int main(void) {
-  Server *app = Server::getInstance();
-  app->start();
-  return (0);
+int main(void)
+{
+	Server* app = Server::getInstance();
+	app->start();
+	return (0);
 }

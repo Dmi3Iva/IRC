@@ -10,8 +10,8 @@ class ACommand;
 
 class NickCommand : public ACommand {
 public:
-  NickCommand(string serverName, vector<User *> *usersPtr, channelMap *channelsPtr);
-  void execute(User *user, string cmd);
+	NickCommand(string serverName, vector<User*>* usersPtr, channelMap* channelsPtr);
+	void execute(User* user, string cmd);
 };
 
 #endif

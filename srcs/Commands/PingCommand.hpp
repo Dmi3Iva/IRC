@@ -5,8 +5,8 @@
 
 class PingCommand : public ACommand {
 public:
-  PingCommand(string serverName, userVector *usersPtr, channelMap *channelsPtr);
-  void execute(User *user, string cmd);
+	PingCommand(string serverName, userVector* usersPtr, channelMap* channelsPtr);
+	void execute(User* user, string cmd);
 };
 
 #endif

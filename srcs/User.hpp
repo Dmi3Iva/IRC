@@ -35,41 +35,41 @@ class Channel;
 
 class User {
 public:
-  typedef map<string, Channel *> userChannels;
+	typedef map<string, Channel*> userChannels;
 
-  User &operator=(const User &user);
-  User(const User &user);
-  User(int userFd, string hostname, string port);
-  ~User();
+	User& operator=(const User& user);
+	User(const User& user);
+	User(int userFd, string hostname, string port);
+	~User();
 
-  int getFD() const;
-  void setNickname(string nickname);
-  void setUsername(string username);
-  void setRealname(string realname);
-  string getNickname() const;
-  string getUsername() const;
-  string getRealname() const;
-  bool getIsRegistered() const;
-  const string &getHostname() const;
-  const string &getPort() const;
-  void setIsRegistered(bool isRegistered);
+	int getFD() const;
+	void setNickname(string nickname);
+	void setUsername(string username);
+	void setRealname(string realname);
+	string getNickname() const;
+	string getUsername() const;
+	string getRealname() const;
+	bool getIsRegistered() const;
+	const string& getHostname() const;
+	const string& getPort() const;
+	void setIsRegistered(bool isRegistered);
 
-  bool addChannel(Channel *pChannel);
-  int quitChannel(string channelName);
-  int getMaxOfChannels() const;
-  bool isFullOfChannels();
-  const userChannels &getChannels() const;
+	bool addChannel(Channel* pChannel);
+	int quitChannel(string channelName);
+	int getMaxOfChannels() const;
+	bool isFullOfChannels();
+	const userChannels& getChannels() const;
 
 private:
-  int _fd;
-  string _nickname;
-  string _username;
-  string _realname;
-  string _hostname;
-  string _port;
-  bool _isRegistered;
-  userChannels _channels;
-  static const int _MAX_OF_CHANNELS = 10;
+	int _fd;
+	string _nickname;
+	string _username;
+	string _realname;
+	string _hostname;
+	string _port;
+	bool _isRegistered;
+	userChannels _channels;
+	static const int _MAX_OF_CHANNELS = 10;
 };
 
 #endif

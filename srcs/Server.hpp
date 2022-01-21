@@ -32,23 +32,23 @@ class Context;
  */
 class Server {
 public:
-  static Server *getInstance();
-  void start();
-  ~Server();
+	static Server* getInstance();
+	void start();
+	~Server();
 
 private:
-  int _socketfd;
-  sockaddr_in _sockaddr;
-  Context *_ctx;
+	int _socketfd;
+	sockaddr_in _sockaddr;
+	Context* _ctx;
 
-  Server();
-  Server(Server const &);         // Don't Implement.
-  void operator=(Server const &); // Don't implement.
+	Server();
+	Server(Server const&); // Don't Implement.
+	void operator=(Server const&); // Don't implement.
 
-  void _acceptNewClients(pollfd *serverPollFd);
-  void _startListening(int socketfd);
-  void _bindSocket(string addr, int port);
-  pair<string, string> _getConnectionInfo(int userFd);
+	void _acceptNewClients(pollfd* serverPollFd);
+	void _startListening(int socketfd);
+	void _bindSocket(string addr, int port);
+	pair<string, string> _getConnectionInfo(int userFd);
 };
 
 #endif // IRC_SERVER_HPP
