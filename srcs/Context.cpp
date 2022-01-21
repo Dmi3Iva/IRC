@@ -17,6 +17,7 @@ void Context::_setupCommands()
 	_commandsMap["NOTICE"] = new PrivateMessageCommand(_serverName, &_users, &_channels);
 }
 
+<<<<<<< HEAD
 Context::~Context()
 {
 	fullDeleteMapContainer(_commandsMap);
@@ -47,6 +48,22 @@ void Context::clearEmptyData()
 	for (map<string, Channel*>::iterator it = _channels.begin(), ite = _channels.end(); it != ite; ++it)
 		if (it->second->getMembers().empty())
 			_channels.erase(it);
+=======
+void Context::addUser(User* user) { _users.push_back(*user); }
+
+void Context::deleteUser(User* user) {
+  for (std::vector<User>::iterator it = _users.begin(), ite = _users.end(); it != ite; ++it)
+    if (it->getFD() == user->getFD())
+      _users.erase(it);
+}
+
+User* Context::findUserByFd(int fd) {
+  for (size_t i = _users.size(); i >= 0; --i) {
+   if (_users[i].getFD() == fd)
+     return &_users[i];
+  }
+  return NULL;
+>>>>>>> 47d11f854bbd249013107e56f971bae3c3de3713
 }
 
 /**
@@ -77,6 +94,7 @@ int Context::_executeCommand(User* user, string stringCommand)
 	return 0;
 }
 
+<<<<<<< HEAD
 void Context::handleMessage(User* user)
 {
 	// parse
@@ -86,4 +104,13 @@ void Context::handleMessage(User* user)
 		_executeCommand(user, trim(*it));
 	}
 	user->setMessage("");
+=======
+void Context::_handleMessage(User* user) {
+  // parse
+  vector<string> commands = ft_split(user->getMessage(), DELIMITER);
+  // execute in order
+  for (vector<string>::iterator it = commands.begin(), ite = commands.end(); it != ite; ++it) {
+    _executeCommand(user, *it);
+  }
+>>>>>>> 47d11f854bbd249013107e56f971bae3c3de3713
 }

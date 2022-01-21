@@ -35,6 +35,7 @@ class Channel;
 
 class User {
 public:
+<<<<<<< HEAD
 	typedef map<string, Channel*> userChannels;
 
 	User& operator=(const User& user);
@@ -74,6 +75,38 @@ private:
 	string _message;
 	userChannels _channels;
 	static const int _MAX_OF_CHANNELS = 10;
+=======
+  // TODO::
+  //  User(const User &user) {  }
+  // TODO::
+  //  User &operator=(const User &user) {  };
+
+  User(int userFd);
+  ~User();
+
+  int getFD();
+  void setNickname(string nickname);
+  void setUsername(string username);
+  void setRealname(string realname);
+  void setMessage(string message);
+  void appendMessage(string message);
+  string getNickname();
+  string getUsername();
+  string getRealname();
+  string getMessage();
+
+  bool isRegistered();
+  void setIsRegistered(bool isRegistered);
+
+private:
+  int _fd;
+  string _nickname;
+  string _username;
+  string _realname;
+  string _message;
+  bool _isRegistered;
+
+>>>>>>> 47d11f854bbd249013107e56f971bae3c3de3713
 };
 
 #endif

@@ -44,4 +44,12 @@ void fullDeleteMapContainer(MapContainer& c)
 
 struct pollfd fillPollfd(int sd, short events);
 
+<<<<<<< HEAD
+=======
+std::string &ltrim(std::string &str, const std::string &chars = "\t\n\v\f\r ");
+std::string &rtrim(std::string &str, const std::string &chars = "\t\n\v\f\r ");
+std::string &trim(std::string &str, const std::string &chars = "\t\n\v\f\r ");
+struct pollfd fillPollfd(int sd, short events);
+
+>>>>>>> 47d11f854bbd249013107e56f971bae3c3de3713
 #endif

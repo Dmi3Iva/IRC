@@ -55,6 +55,7 @@ std::string rtrim(std::string str, const std::string& chars)
 	return str;
 }
 
+<<<<<<< HEAD
 std::string trim(std::string str, const std::string& chars) { return ltrim(rtrim(str, chars), chars); }
 
 void sendMessage(int fd, string msg)
@@ -69,6 +70,9 @@ int isChannelName(string channelName)
 		return 0;
 	return 1;
 }
+=======
+std::string &trim(std::string &str, const std::string &chars) { return ltrim(rtrim(str, chars), chars); }
+>>>>>>> 47d11f854bbd249013107e56f971bae3c3de3713
 
 struct pollfd fillPollfd(int sd, short events) {
   struct pollfd fd;

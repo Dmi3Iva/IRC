@@ -29,18 +29,30 @@ private:
 	map<string, Channel*> _channels;
 	string _serverName;
 
+<<<<<<< HEAD
 	void _setupCommands();
 	int _executeCommand(User* user, string stringCommand);
+=======
+  void _setupCommands();
+  int _executeCommand(User *user, string stringCommand);
+>>>>>>> 47d11f854bbd249013107e56f971bae3c3de3713
 
 public:
 	Context();
 	~Context();
 
+<<<<<<< HEAD
 	User* findUserByFd(int userfd);
 	void addUser(User* user);
 	void deleteUser(User* user);
 	void handleMessage(User* user);
 	void clearEmptyData();
+=======
+  User* findUserByFd(int userfd);
+  void addUser(User* user);
+  void deleteUser(User* user);
+  void _handleMessage(User* user);
+>>>>>>> 47d11f854bbd249013107e56f971bae3c3de3713
 };
 
 #endif
