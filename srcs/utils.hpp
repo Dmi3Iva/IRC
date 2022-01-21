@@ -38,4 +38,7 @@ template <class MapContainer> void fullDeleteMapContainer(MapContainer &c) {
 
 bool isPUserInVector(User *pUser, vector<User *> userList);
 
+void			eraseSpacesInFront(string &cmd);
+bool      findCharInSring(char c, string str);
+
 #endif

@@ -65,3 +65,19 @@ bool isPUserInVector(User *pUser, vector<User *> userList) {
   }
   return 0;
 }
+
+void			eraseSpacesInFront(string &cmd) {
+	int		i = 0;
+	while (cmd[i] && cmd[i] == ' ')
+		i++;
+	cmd.erase(0, i);
+}
+
+bool      findCharInSring(char c, string str) {
+  for (int i = 0; str[i] != '\0'; i++) {
+    if (c == str[i]) {
+      return (true);
+    }
+  }
+  return (false);
+}

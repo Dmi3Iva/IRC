@@ -6,6 +6,8 @@
 
 #define DELIMITER  "\r\n"
 
+#define ALLOWED_NICK_SECIAL_CHARACTERS	std::string("`|^_-{}[]\\")
+
 
 
 #endif
