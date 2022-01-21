@@ -19,7 +19,7 @@ void Channel::setPassword(const string password) { _password = password; }
 
 void Channel::addUser(User *pUser) {
   // if user already in the channel don't add him/her
-  if (!isPUserInVector(pUser, _members)) {
+  if (!isUserMember(pUser)) {
     _members.push_back(pUser);
     if (!_owner) {
       _owner = pUser;
@@ -68,20 +68,39 @@ int Channel::isOperator(User *pUser) const {
   }
   return 0;
 }
-const Channel::usersVectorType &Channel::getBannedUsers() const { return _bannedUsers; }
+const vector<string> &Channel::getBannedUsers() const { return _bannedUsers; }
 
 bool Channel::isOnlyInviteChannel() const { return _isOnlyInviteChannel; }
 
 void Channel::setIsOnlyInviteChannel(bool is_only_invite_channel) { _isOnlyInviteChannel = is_only_invite_channel; }
 
-int Channel::getUsersLimit() const { return _usersLimit; }
+ssize_t Channel::getUsersLimit() const { return _usersLimit; }
 
 void Channel::setUsersLimit(int users_limit) { _usersLimit = users_limit; }
 
 bool Channel::isFullOfMembers() { return _usersLimit != -1 && _members.size() >= static_cast<size_t>(_usersLimit); }
 
-void Channel::sendToAllChannelMembers(string message) {
+void Channel::sendToAllChannelMembers(string message, User *sender) {
   for (usersVectorType::iterator user = _members.begin(); user != _members.end(); user++) {
-    send((*user)->getFD(), message.c_str(), message.size(), 0);
+    if (!sender || sender->getNickname() != (*user)->getNickname())
+      send((*user)->getFD(), message.c_str(), message.size(), 0);
   }
+}
+
+bool Channel::isUserMember(User *pUser) const {
+  for (vector<User *>::const_iterator it = _members.begin(), ite = _members.end(); it != ite; ++it) {
+    if ((*it)->getNickname() == pUser->getNickname()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool Channel::isUserBanned(User *pUser) const {
+  for (vector<string>::const_iterator it = _bannedUsers.begin(), ite = _bannedUsers.end(); it != ite; ++it) {
+    if (*it == pUser->getNickname()) {
+      return true;
+    }
+  }
+  return false;
 }

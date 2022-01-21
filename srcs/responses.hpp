@@ -10,7 +10,7 @@
 #define RPL_MOTDSTART(server, nickname) ":" + server + " 375 " + nickname + " Message of the day - " + DELIMITER
 
 #define RPL_MOTD(server, nickname)                                                                                     \
-  ":" + server + " 372 " + nickname + " :- " + "Welcome to the Internet Relay Network" + DELIMITER
+  ":" + server + " 372 " + nickname + " :- Welcome to the Internet Relay Network" + DELIMITER
 
 #define RPL_ENDOFMOTD(server, nickname) ":" + server + " 376 " + nickname + " :End of /MOTD command" + DELIMITER
 
@@ -44,41 +44,56 @@
   std::string(":") + nickname + "!" + username + "@" + host + " PRIVMSG " + receiver + std::string(" :") + message + DELIMITER
 
 
+#define PONG_RPL(msg) std::string("PONG :") + msg + DELIMITER
+
 /**
  * ERRORS
  */
 
 #define ERR_NOSUCHCHANNEL(servername, nickname, channelName)                                                           \
-  std::string(":") + servername + " 403 " + nickname + " " + channelName + ":No such channel" + DELIMITER
+  std::string(":") + servername + " 403 " + nickname + " " + channelName + " :No such channel" + DELIMITER
 
 #define ERR_TOOMANYCHANNELS(servername, nickname, channelName)                                                         \
-  std::string(":") + servername + " 403 " + nickname + " " + channelName + ":You have joined too many channels" +      \
+  std::string(":") + servername + " 403 " + nickname + " " + channelName + " :You have joined too many channels" +     \
       DELIMITER
+
+/**
+ * example: ":karma.freenode.net 421 batman PPPP :Unknown command"
+ */
+#define ERR_UNKNOWNCOMMAND(servername, nickname, command)                                                              \
+  std::string(":") + servername + " 421 " + nickname + " " + command + " :Unknown command" + DELIMITER
+
+/**
+ * example: ":teepee.freenode.net 409 batman :No origin specified"
+ */
+#define ERR_NOORIGIN(servername, nickname)                                                                             \
+  std::string(":") + servername + " 409 " + nickname + " :No origin specified" + DELIMITER
+
 /**
  * example:
  * ":karma.freenode.net 461 nickerere NICK :Not enough parameters."
  * ":karma.freenode.net 650 nickerere NICK :<newnick>"
  */
 #define ERR_NEEDMOREPARAMS(servername, nickname, commandName)                                                          \
-  std::string(":") + servername + " 461 " + nickname + " " + commandName + ":Not enough parameters." + DELIMITER
+  std::string(":") + servername + " 461 " + nickname + " " + commandName + " :Not enough parameters." + DELIMITER
 
 /**
  * example: ":karma.freenode.net 451 * JOIN :You have not registered."
  */
 #define ERR_NOTREGISTERED(servername, nickname, commandName)                                                           \
-  std::string(":") + servername + " 451 " + nickname + " " + commandName + ":You have not registered." + DELIMITER
+  std::string(":") + servername + " 451 " + nickname + " " + commandName + " :You have not registered." + DELIMITER
 
 #define ERR_CHANNELISFULL(servername, nickname, channelName)                                                           \
-  std::string(":") + servername + " 471 " + nickname + " " + channelName + ":Cannot join channel (+l)." + DELIMITER
+  std::string(":") + servername + " 471 " + nickname + " " + channelName + " :Cannot join channel (+l)." + DELIMITER
 
 #define ERR_INVITEONLYCHAN(servername, nickname, channelName)                                                          \
-  std::string(":") + servername + " 473 " + nickname + " " + channelName + ":Cannot join channel (+i)." + DELIMITER
+  std::string(":") + servername + " 473 " + nickname + " " + channelName + " :Cannot join channel (+i)." + DELIMITER
 
 #define ERR_BANNEDFROMCHAN(servername, nickname, channelName)                                                          \
-  std::string(":") + servername + " 474 " + nickname + " " + channelName + ":Cannot join channel (+b)." + DELIMITER
+  std::string(":") + servername + " 474 " + nickname + " " + channelName + " :Cannot join channel (+b)." + DELIMITER
 
 #define ERR_BADCHANNELKEY(servername, nickname, channelName)                                                           \
-  std::string(":") + servername + " 475 " + nickname + " " + channelName + ":Cannot join channel (+k)." + DELIMITER
+  std::string(":") + servername + " 475 " + nickname + " " + channelName + " :Cannot join channel (+k)." + DELIMITER
 
 #define ERR_NOSUCHNICK(servername, nickname)                            \
   std::string(":") + servername + " 401 " + std::string(nickname) + " PRIVMSG" + DELIMITER

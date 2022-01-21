@@ -9,7 +9,6 @@
 #include <list>
 #include <string>
 #include <sys/socket.h>
-#include <cstring>
 #include "responses.hpp"
 
 using std::list;
@@ -26,9 +25,8 @@ public:
   typedef map<string, Channel *> channelMap;
 
   ACommand(string serverName, userVector *usersPtr, channelMap *channelsPtr);
-  virtual ~ACommand(){};
+  virtual ~ACommand();
   virtual void execute(User *user, string cmd) = 0;
-  void sendMessage(int fd, string msg);
   User	*getUserFromArray(string userName);
 
 protected:

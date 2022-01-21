@@ -18,9 +18,11 @@ vector<string> ft_split(string s, const string &delim);
 pollfd *getPollFdFromFd(int fd);
 int isChannelName(string channelName);
 
-std::string &ltrim(std::string &str, const std::string &chars = "\t\n\v\f\r ");
-std::string &rtrim(std::string &str, const std::string &chars = "\t\n\v\f\r ");
-std::string &trim(std::string &str, const std::string &chars = "\t\n\v\f\r ");
+std::string ltrim(std::string str, const std::string &chars = "\t\n\v\f\r ");
+std::string rtrim(std::string str, const std::string &chars = "\t\n\v\f\r ");
+std::string trim(std::string str, const std::string &chars = "\t\n\v\f\r ");
+
+void sendMessage(int fd, string msg);
 
 template <class Container> void fullDeleteContainer(Container &c) {
   for (typename Container::iterator it = c.begin(), ite = c.end(); it != ite; ++it) {
@@ -35,7 +37,5 @@ template <class MapContainer> void fullDeleteMapContainer(MapContainer &c) {
   }
   c.clear();
 }
-
-bool isPUserInVector(User *pUser, vector<User *> userList);
 
 #endif
