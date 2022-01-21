@@ -98,3 +98,7 @@ const string& User::getPort() const { return _port; }
 bool User::isFullOfChannels() { return _userChannels.size() >= USER_MAX_CHANNELS_COUNT; }
 
 const User::userChannels& User::getChannels() const { return _userChannels; }
+
+bool User::isOper() const { return _isOper; }
+
+void User::setIsOper(bool is_oper) { _isOper = is_oper; }

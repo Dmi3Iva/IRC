@@ -5,6 +5,7 @@
 #include "Channel.hpp"
 #include "Commands/JoinCommand.hpp"
 #include "Commands/NickCommand.hpp"
+#include "Commands/OperCommand.hpp"
 #include "Commands/PartCommand.hpp"
 #include "Commands/PingCommand.hpp"
 #include "Commands/PrivateMessageCommand.hpp"

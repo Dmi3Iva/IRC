@@ -66,6 +66,8 @@ public:
 	int quitChannel(string channelName);
 	bool isFullOfChannels();
 	const userChannels& getChannels() const;
+	bool isOper() const;
+	void setIsOper(bool is_oper);
 
 private:
 	int _fd;
@@ -75,6 +77,7 @@ private:
 	string _hostname;
 	string _port;
 	bool _isRegistered;
+	bool _isOper;
 	bool _isNickPerformed;
 	bool _isUserPerformed;
 	string _message;
