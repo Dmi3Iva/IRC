@@ -70,7 +70,7 @@ void PrivateMessageCommand::_sendMessageToReceivers(User* user, vector<string>& 
 					sendMessage(user->getFD(), ERR_TOOMANYTARGETS(_serverName, user->getNickname(), *it));
 				} else {
 					channel->second->sendToAllChannelMembers(
-						RPL_PRIVMSG(user->getNickname(), user->getUsername(), user->getUsername(), *it, message));
+						RPL_PRIVMSG(user->getNickname(), user->getUsername(), user->getUsername(), *it, message), user);
 					handledReceivers.push_back(channel->second->getName());
 				}
 			} else {
