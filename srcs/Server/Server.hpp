@@ -28,20 +28,16 @@ private:
   Context* _context;
   string _password;
   pollfdType _pollfds;
-  int _timeout;
 
 public:
   Server(string, string, string);
   ~Server();
 
-  void setTimeout(int timeout);
-
   void createSocket();
   void start();
   void polling();
   void acceptNewClients();
-  bool receiveMessage(User*);
-  bool toSendResponse();
+  bool receiveMessage(User* user);
 
 private:
   Server(Server const &);         // Don't Implement.

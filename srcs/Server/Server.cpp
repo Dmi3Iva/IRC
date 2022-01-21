@@ -3,8 +3,7 @@
 Server::Server(string ip, string port, string password)
     :_socket(NULL),
     _context(new Context()),
-      _password(password),
-      _timeout(-1) {
+      _password(password) {
   _address.sin_family = AF_INET;
   _address.sin_port = htons(atoi(port.c_str())); //TODO: добавить валидацию
   _address.sin_addr.s_addr = inet_addr(ip.c_str()); //TODO: добавить валидацию
@@ -21,7 +20,7 @@ void Server::createSocket() {
   _socket->setAddressReuseMode();
   _socket->setNonblockMode();
   _socket->bindToAddress(reinterpret_cast<struct sockaddr *>(&_address));
-  _socket->startListening(32);
+  _socket->startListening(SOMAXCONN);
 }
 
 /**
@@ -36,7 +35,7 @@ void Server::start() {
     for (pollfdType::iterator it = _pollfds.begin(), ite = _pollfds.end(); it != ite; ++it) {
       if (it->revents == 0)
         continue;
-      if (it->revents & POLLIN) {
+      if (it->revents) {
         if (it->fd == _socket->getSockfd())
           acceptNewClients();
         else if (!receiveMessage(_context->findUserByFd(it->fd))) {
@@ -44,15 +43,12 @@ void Server::start() {
           break;
         }
       }
-      if (it->revents & POLLOUT) {
-
-      }
     }
   }
 }
 
 void Server::polling() {
-  if (poll(&(_pollfds.front()), _pollfds.size(), _timeout) < 0)
+  if (poll(&(_pollfds.front()), _pollfds.size(), POLL_TIMEOUT) < 0)
     cerr << "  poll() failed: " << strerror(errno) << endl;
 }
 
@@ -64,7 +60,7 @@ void Server::acceptNewClients() {
     if (userfd <= 0)
       break;
     _printConnectionInfo(userfd);
-    _pollfds.push_back(fillPollfd(userfd, POLLIN | POLLOUT));
+    _pollfds.push_back(fillPollfd(userfd, POLLIN));
     _context->addUser(new User(userfd));
   }
 }
@@ -93,8 +89,6 @@ bool Server::receiveMessage(User* user) {
   return true;
 }
 
-bool Server::toSendResponse() { return true; }
-
 /**
  * Print host and port on with user was connected
  * @param userfd
@@ -111,4 +105,3 @@ void Server::_printConnectionInfo(int userfd) {
   }
   cout << " connected on host:" << host << " port: " << service << endl;
 }
-void Server::setTimeout(int timeout) { _timeout = timeout; }
