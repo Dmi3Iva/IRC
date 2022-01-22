@@ -77,3 +77,10 @@ void eraseSpacesInFront(string& cmd)
 		i++;
 	cmd.erase(0, i);
 }
+struct pollfd fillPollfd(int sd, short events) {
+  struct pollfd fd;
+  fd.fd = sd;
+  fd.events = events;
+  fd.revents = 0;
+  return fd;
+}

@@ -30,19 +30,16 @@ private:
 	string _serverName;
 
 	void _setupCommands();
-	void _handleMessage(User* user, string msg);
 	int _executeCommand(User* user, string stringCommand);
 
 public:
 	Context();
 	~Context();
 
-	void addUser(int userfd, string hostname, string port);
-	void listenUsers();
-
-	/**
-   * Remove empty channels and removed users from storage
-   */
+	User* findUserByFd(int userfd);
+	void addUser(User* user);
+	void deleteUser(User* user);
+	void handleMessage(User* user);
 	void clearEmptyData();
 };
 

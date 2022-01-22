@@ -11,7 +11,7 @@ PrivateMessageCommand::~PrivateMessageCommand() { }
 void PrivateMessageCommand::execute(User* user, string cmd)
 {
 
-	if (!user->getIsRegistered()) {
+	if (!user->isRegistered()) {
 		sendMessage(user->getFD(), ERR_NOTREGISTERED(_serverName, user->getNickname(), "PRIVMSG"));
 		return;
 	}

@@ -47,10 +47,13 @@ public:
 	void setUsername(string username);
 	void setRealname(string realname);
 	void setHostname(string hostname);
+	void setMessage(string message);
+	void appendMessage(string message);
 	string getNickname() const;
 	string getUsername() const;
 	string getRealname() const;
-	bool getIsRegistered() const;
+	const string& getMessage() const;
+	bool isRegistered() const;
 	const string& getHostname() const;
 	const string& getPort() const;
 	void setIsRegistered(bool isRegistered);
@@ -76,6 +79,7 @@ private:
 	bool _isRegistered;
 	bool _isNickPerformed;
 	bool _isUserPerformed;
+	string _message;
 	userChannels _channels;
 	static const int _MAX_OF_CHANNELS = 10;
 };
