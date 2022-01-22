@@ -44,7 +44,6 @@ private:
 	void operator=(Server const&); // Don't implement.
 
 	pair<string, string> _getConnectionInfo(int userFd);
-	string _parseMessage(string buffer, User* user);
 };
 
 #endif

@@ -43,8 +43,7 @@ void Server::start()
 				if (it->fd == _socket->getSockfd()) {
 					acceptNewClients();
 					break;
-				}
-				else if (!receiveMessage(_context->findUserByFd(it->fd))) {
+				} else if (!receiveMessage(_context->findUserByFd(it->fd))) {
 					_pollfds.erase(it);
 					break;
 				}

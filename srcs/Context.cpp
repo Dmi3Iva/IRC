@@ -84,13 +84,13 @@ int Context::_executeCommand(User* user, string stringCommand)
 	return 0;
 }
 
-void Context::handleMessage(User* user, string msg)
+void Context::handleMessage(User* user, string message)
 {
-	cout << "Handle message: " << msg << endl;
-	string newMessage = _parseMessage(user, msg);
-	if (!newMessage.empty()) {
+	cout << "Handle message: " << message << endl;
+	string wholeMessage = _parseMessage(user, message);
+	if (!wholeMessage.empty()) {
 		// parse
-		vector<string> commands = ft_split(msg, "\n");
+		vector<string> commands = ft_split(wholeMessage, "\n");
 		// execute in order
 		for (vector<string>::iterator it = commands.begin(), ite = commands.end(); it != ite; ++it) {
 			_executeCommand(user, trim(*it));
@@ -107,7 +107,7 @@ string Context::_parseMessage(User* user, string buffer)
 	// find for delimiter
 	size_t pos = wholeMessage.rfind('\n');
 	if (pos == string::npos) {
-		cout << "It is not whole message just keep it " << wholeMessage;
+		cout << "It is not whole message just keep it: " << wholeMessage << endl;
 		user->setMessage(wholeMessage);
 		return "";
 	}

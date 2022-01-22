@@ -40,7 +40,7 @@ public:
 	User* findUserByFd(int userfd);
 	void addUser(User* user);
 	void deleteUser(User* user);
-	void handleMessage(User* user, string newMessage);
+	void handleMessage(User* user, string message);
 	void clearEmptyData();
 };
 

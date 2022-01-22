@@ -25,7 +25,11 @@ User& User::operator=(const User& user)
 
 User::User(const User& user) { *this = user; }
 
-User::~User() { }
+User::~User()
+{
+	cout << "User destructor was called nickname:" << _nickname << endl;
+	close(_fd);
+}
 
 int User::getFD() const { return _fd; }
 
