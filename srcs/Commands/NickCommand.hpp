@@ -16,7 +16,7 @@ public:
 
 private:
 	string _getNickname(string cmd);
-	bool _validateNick(User *user, string nick);
+	bool _validateNick(User* user, string nick);
 };
 
 #endif

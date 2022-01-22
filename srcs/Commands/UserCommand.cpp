@@ -1,9 +1,8 @@
 #include "UserCommand.hpp"
 
 UserCommand::UserCommand(string serverName, userVector* usersPtr, channelMap* channelsPtr)
-	: ACommand(serverName, usersPtr, channelsPtr)
+	: ACommand(serverName, usersPtr, channelsPtr, "USER")
 {
-	_name = "USER";
 	_description = "USER <username> <hostname> <servername> <:realname>";
 }
 
@@ -56,13 +55,14 @@ void UserCommand::execute(User* user, string cmd)
 string UserCommand::_constructRealnameAndEraseFromCmd(string& cmd, size_t colonPos)
 {
 	string name = cmd.substr(colonPos + 1);
-	unsigned long whiteSpaces = 0;
+	unsigned long whiteSpacesCount = 0;
+	string whiteSpaces = " \t";
 	for (int i = 0; name[i]; i++) {
-		if (findCharInSring(name[i], " \t")) {
-			whiteSpaces++;
+		if (whiteSpaces.find(name[i]) != string::npos) {
+			whiteSpacesCount++;
 		}
 	}
-	if (whiteSpaces == name.size())
+	if (whiteSpacesCount == name.size())
 		return ("");
 	cmd.erase(colonPos, cmd.size());
 	eraseSpacesInFront(name);

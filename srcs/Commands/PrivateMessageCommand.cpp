@@ -1,9 +1,8 @@
 #include "PrivateMessageCommand.hpp"
 
 PrivateMessageCommand::PrivateMessageCommand(string serverName, userVector* usersPtr, channelMap* channelsPtr)
-	: ACommand(serverName, usersPtr, channelsPtr)
+	: ACommand(serverName, usersPtr, channelsPtr, "PRIVMSG")
 {
-	_name = "PRIVMSG";
 	_description = "PRIVMSG <receiver>{,<receiver>} <text to be sent>";
 }
 

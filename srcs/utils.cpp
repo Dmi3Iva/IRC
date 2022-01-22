@@ -77,13 +77,3 @@ void eraseSpacesInFront(string& cmd)
 		i++;
 	cmd.erase(0, i);
 }
-
-bool findCharInSring(char c, string str)
-{
-	for (int i = 0; str[i] != '\0'; i++) {
-		if (c == str[i]) {
-			return (true);
-		}
-	}
-	return (false);
-}

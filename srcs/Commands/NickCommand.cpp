@@ -1,9 +1,8 @@
 #include "NickCommand.hpp"
 
 NickCommand::NickCommand(string serverName, userVector* usersPtr, channelMap* channelsPtr)
-	: ACommand(serverName, usersPtr, channelsPtr)
+	: ACommand(serverName, usersPtr, channelsPtr, "NICK")
 {
-	_name = "NICK";
 	_description = "NICK <nickname> [ <hopcount> ]";
 }
 
@@ -35,7 +34,8 @@ void NickCommand::execute(User* user, string cmd)
 string NickCommand::_getNickname(string cmd)
 {
 	int i = 0;
-	while (!findCharInSring(cmd[i], " \n\r\0\t") && cmd[i]) {
+	string delimiters(" \n\r\0\t");
+	while (delimiters.find(cmd[i]) == string::npos && cmd[i]) {
 		i++;
 	}
 	string nick = cmd.substr(0, i);
@@ -44,16 +44,13 @@ string NickCommand::_getNickname(string cmd)
 
 bool NickCommand::_validateNick(User* user, string nick)
 {
-	if (nick.size() >= 10) {
+	if (nick.size() >= 10 || isdigit(nick[0])) {
 		sendMessage(user->getFD(), ERR_ERRONEUSNICKNAME(_serverName, "", nick));
 		return (false);
 	}
-	if (isdigit(nick[0])) {
-		sendMessage(user->getFD(), ERR_ERRONEUSNICKNAME(_serverName, "", nick));
-		return (false);
-	}
+	string allowedSpecialChars(ALLOWED_NICK_SECIAL_CHARACTERS);
 	for (int i = 0; nick[i] != '\0'; i++) {
-		if (!findCharInSring(nick[i], ALLOWED_NICK_SECIAL_CHARACTERS) && !isalpha(nick[i]) && !isdigit(nick[i])) {
+		if (allowedSpecialChars.find(nick[i]) == string::npos && !isalpha(nick[i]) && !isdigit(nick[i])) {
 			sendMessage(user->getFD(), ERR_ERRONEUSNICKNAME(_serverName, "", nick));
 			return (false);
 		}

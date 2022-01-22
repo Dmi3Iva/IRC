@@ -43,6 +43,5 @@ void fullDeleteMapContainer(MapContainer& c)
 }
 
 void eraseSpacesInFront(string& cmd);
-bool findCharInSring(char c, string str);
 
 #endif

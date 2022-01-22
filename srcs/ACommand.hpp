@@ -26,13 +26,13 @@ public:
 	typedef vector<User*> userVector;
 	typedef map<string, Channel*> channelMap;
 
-	ACommand(string serverName, userVector* usersPtr, channelMap* channelsPtr);
+	ACommand(string serverName, userVector* usersPtr, channelMap* channelsPtr, const string name);
 	virtual ~ACommand();
 	virtual void execute(User* user, string cmd) = 0;
 	User* getUserFromArray(string userName);
 
 protected:
-	string _name;
+	const string _name;
 	string _serverName;
 	string _description;
 	userVector* _usersPtr;

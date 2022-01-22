@@ -1,9 +1,9 @@
 #include "JoinCommand.hpp"
 
 JoinCommand::JoinCommand(string serverName, userVector* usersPtr, channelMap* channelsPtr)
-	: ACommand(serverName, usersPtr, channelsPtr)
+	: ACommand(serverName, usersPtr, channelsPtr, "JOIN")
 {
-	_name = "JOIN";
+	_description = "JOIN <channel>{,<channel>} [<key>{,<key>}]";
 }
 
 /**
@@ -24,7 +24,7 @@ void JoinCommand::_userHasJoinedChannel(User* user, channelMap::iterator chItera
 		sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, chIterator->second->getName(), ""));
 	} else {
 		for (Channel::usersVectorType::const_iterator it = chIterator->second->getMembers().begin(),
-														ite = chIterator->second->getMembers().end();
+													  ite = chIterator->second->getMembers().end();
 			 it != ite; ++it)
 			sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, chIterator->second->getName(), (chIterator->second->isOperator(*it) ? "@" + (*it)->getNickname() : (*it)->getNickname())));
 	}

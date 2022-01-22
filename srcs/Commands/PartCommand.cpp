@@ -1,9 +1,9 @@
 #include "PartCommand.hpp"
 
 PartCommand::PartCommand(string serverName, userVector* usersPtr, channelMap* channelsPtr)
-	: ACommand(serverName, usersPtr, channelsPtr)
+	: ACommand(serverName, usersPtr, channelsPtr, "PART")
 {
-	_name = "PART";
+	_description = "PART <channel>{,<channel>}";
 }
 
 void PartCommand::execute(User* user, string cmd)

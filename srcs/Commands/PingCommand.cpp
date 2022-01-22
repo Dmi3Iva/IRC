@@ -1,9 +1,9 @@
 #include "PingCommand.hpp"
 
 PingCommand::PingCommand(string serverName, userVector* usersPtr, channelMap* channelsPtr)
-	: ACommand(serverName, usersPtr, channelsPtr)
+	: ACommand(serverName, usersPtr, channelsPtr, "PING")
 {
-	_name = "PING";
+	_description = "PING <server1> [<server2>]";
 }
 
 void PingCommand::execute(User* user, string cmd)

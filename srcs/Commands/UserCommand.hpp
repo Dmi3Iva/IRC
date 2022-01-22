@@ -17,7 +17,7 @@ public:
 	void execute(User* user, string cmd);
 
 private:
-	string	_constructRealnameAndEraseFromCmd(string &cmd, size_t colonPos);
+	string _constructRealnameAndEraseFromCmd(string& cmd, size_t colonPos);
 };
 
 #endif
