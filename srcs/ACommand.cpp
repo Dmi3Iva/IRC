@@ -1,6 +1,6 @@
 #include "ACommand.hpp"
 
-ACommand::ACommand(string serverName, userVector* usersPtr, channelMap* channelsPtr, string name)
+ACommand::ACommand(string serverName, userVector* usersPtr, channelMap* channelsPtr, const string name)
 	: _name(name)
 	, _serverName(serverName)
 	, _usersPtr(usersPtr)

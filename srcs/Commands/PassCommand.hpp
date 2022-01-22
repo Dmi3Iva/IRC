@@ -6,11 +6,6 @@
 #define PASSCOMMAND_HPP
 
 #include "../ACommand.hpp"
-#include "../User.hpp"
-#include "../responses.hpp"
-#include "../utils.hpp"
-#include <iostream>
-#include <utility>
 
 class PassCommand : public ACommand {
 private:
