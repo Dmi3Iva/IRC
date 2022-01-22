@@ -44,9 +44,16 @@ User* Context::findUserByFd(int fd)
 
 void Context::clearEmptyData()
 {
-	for (map<string, Channel*>::iterator it = _channels.begin(), ite = _channels.end(); it != ite; ++it)
-		if (it->second->getMembers().empty())
-			_channels.erase(it);
+	map<string, Channel*>::iterator it = _channels.begin(), ite = _channels.end();
+
+	while (it != ite) {
+		if (it->second->getMembers().empty()) {
+			delete it->second;
+			it = _channels.erase(it);
+		} else {
+			++it;
+		}
+	}
 }
 
 /**
@@ -77,13 +84,34 @@ int Context::_executeCommand(User* user, string stringCommand)
 	return 0;
 }
 
-void Context::handleMessage(User* user)
+void Context::handleMessage(User* user, string message)
 {
-	// parse
-	vector<string> commands = ft_split(user->getMessage(), DELIMITER);
-	// execute in order
-	for (vector<string>::iterator it = commands.begin(), ite = commands.end(); it != ite; ++it) {
-		_executeCommand(user, trim(*it));
+	cout << "Handle message: " << message << endl;
+	string wholeMessage = _parseMessage(user, message);
+	if (!wholeMessage.empty()) {
+		// parse
+		vector<string> commands = ft_split(wholeMessage, "\n");
+		// execute in order
+		for (vector<string>::iterator it = commands.begin(), ite = commands.end(); it != ite; ++it) {
+			_executeCommand(user, trim(*it));
+		}
 	}
-	user->setMessage("");
+}
+
+string Context::_parseMessage(User* user, string buffer)
+{
+	// remove all \r from the string
+	buffer.erase(std::remove(buffer.begin(), buffer.end(), '\r'), buffer.end());
+	// retrieve previous message
+	string wholeMessage = user->getMessage() + buffer;
+	// find for delimiter
+	size_t pos = wholeMessage.rfind('\n');
+	if (pos == string::npos) {
+		cout << "It is not whole message just keep it: " << wholeMessage << endl;
+		user->setMessage(wholeMessage);
+		return "";
+	}
+	string newMessage = wholeMessage.substr(0, pos);
+	user->setMessage(wholeMessage.substr(pos + 1));
+	return newMessage;
 }

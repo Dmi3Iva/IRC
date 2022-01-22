@@ -31,6 +31,7 @@ private:
 
 	void _setupCommands();
 	int _executeCommand(User* user, string stringCommand);
+	string _parseMessage(User* user, string buffer);
 
 public:
 	Context();
@@ -39,7 +40,7 @@ public:
 	User* findUserByFd(int userfd);
 	void addUser(User* user);
 	void deleteUser(User* user);
-	void handleMessage(User* user);
+	void handleMessage(User* user, string message);
 	void clearEmptyData();
 };
 

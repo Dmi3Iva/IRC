@@ -7,6 +7,7 @@ User::User(int userFd, string hostname, string port)
 	, _isRegistered(false)
 	, _isNickPerformed(false)
 	, _isUserPerformed(false)
+	, _message("")
 {
 }
 
@@ -18,13 +19,17 @@ User& User::operator=(const User& user)
 	_hostname = user.getHostname();
 	_port = user.getHostname();
 	_isRegistered = user.isRegistered();
-	_channels = user.getChannels();
+	_userChannels = user.getChannels();
 	return *this;
 }
 
 User::User(const User& user) { *this = user; }
 
-User::~User() { }
+User::~User()
+{
+	cout << "User destructor was called nickname:" << _nickname << endl;
+	close(_fd);
+}
 
 int User::getFD() const { return _fd; }
 
@@ -37,8 +42,6 @@ void User::setRealname(string realname) { _realname = realname; }
 void User::setHostname(string hostname) { _hostname = hostname; }
 
 void User::setMessage(string message) { _message = message; }
-
-void User::appendMessage(string message) { _message.append(message); }
 
 bool User::isRegistered() const { return _isRegistered; }
 
@@ -67,7 +70,7 @@ const string& User::getMessage() const { return _message; }
  */
 bool User::addChannel(Channel* pChannel)
 {
-	pair<userChannels::iterator, bool> result = _channels.insert(make_pair(pChannel->getName(), pChannel));
+	pair<userChannels::iterator, bool> result = _userChannels.insert(make_pair(pChannel->getName(), pChannel));
 	if (!result.second) {
 		cout << "User->" << _nickname << ": channel " << pChannel->getName() << " already in user list!" << endl;
 		return false;
@@ -77,10 +80,10 @@ bool User::addChannel(Channel* pChannel)
 
 int User::quitChannel(string channelName)
 {
-	userChannels::iterator chIterator = _channels.find(channelName);
-	if (chIterator != _channels.end()) {
+	userChannels::iterator chIterator = _userChannels.find(channelName);
+	if (chIterator != _userChannels.end()) {
 		chIterator->second->removeUser(this);
-		_channels.erase(chIterator);
+		_userChannels.erase(chIterator);
 		return 1;
 	}
 	cout << "User->" << _nickname << " : "
@@ -92,8 +95,6 @@ const string& User::getHostname() const { return _hostname; }
 
 const string& User::getPort() const { return _port; }
 
-int User::getMaxOfChannels() const { return _MAX_OF_CHANNELS; }
+bool User::isFullOfChannels() { return _userChannels.size() >= USER_MAX_CHANNELS_COUNT; }
 
-bool User::isFullOfChannels() { return _channels.size() >= _MAX_OF_CHANNELS; }
-
-const User::userChannels& User::getChannels() const { return _channels; }
+const User::userChannels& User::getChannels() const { return _userChannels; }
