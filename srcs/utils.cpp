@@ -84,3 +84,11 @@ struct pollfd fillPollfd(int sd, short events) {
   fd.revents = 0;
   return fd;
 }
+
+bool isChannel(string receiver)
+{
+	if (receiver[0] == '#' || receiver[0] == '&') {
+		return (true);
+	}
+	return (false);
+}

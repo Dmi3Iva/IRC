@@ -44,5 +44,6 @@ void fullDeleteMapContainer(MapContainer& c)
 
 void eraseSpacesInFront(string& cmd);
 struct pollfd fillPollfd(int sd, short events);
+bool isChannel(string receiver);
 
 #endif

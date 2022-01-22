@@ -7,6 +7,7 @@ User::User(int userFd, string hostname, string port)
 	, _isRegistered(false)
 	, _isNickPerformed(false)
 	, _isUserPerformed(false)
+	, _isAway(false)
 {
 }
 
@@ -59,6 +60,10 @@ string User::getUsername() const { return _username; }
 string User::getRealname() const { return _realname; }
 
 const string& User::getMessage() const { return _message; }
+
+void User::setIsAway(bool value) { _isAway = value; }
+
+bool User::getIsAway() const { return _isAway; }
 
 /**
  * Add the user to the channel

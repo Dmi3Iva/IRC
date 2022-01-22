@@ -15,6 +15,7 @@ void Context::_setupCommands()
 	_commandsMap["PING"] = new PingCommand(_serverName, &_users, &_channels);
 	_commandsMap["PRIVMSG"] = new PrivateMessageCommand(_serverName, &_users, &_channels);
 	_commandsMap["NOTICE"] = new PrivateMessageCommand(_serverName, &_users, &_channels);
+	_commandsMap["WHO"] = new WhoCommand(_serverName, &_users, &_channels);
 }
 
 Context::~Context()
@@ -69,6 +70,8 @@ int Context::_executeCommand(User* user, string stringCommand)
 			it->second->execute(user, trim(stringCommand.substr(pos)));
 		}
 	} else {
+		if (commandName == "WHO")
+			cout << "WHO - " << stringCommand << endl;
 		// if User is registered we should reply with error that error wasn't found
 		if (user->isRegistered()) {
 			sendMessage(user->getFD(), ERR_UNKNOWNCOMMAND(_serverName, user->getNickname(), commandName));

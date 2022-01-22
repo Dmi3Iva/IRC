@@ -62,7 +62,7 @@ void PrivateMessageCommand::_sendMessageToReceivers(User* user, vector<string>& 
 	list<string> handledReceivers;
 
 	for (vector<string>::iterator it = receivers.begin(); it < receivers.end(); it++) {
-		if (_isChannel(*it)) {
+		if (isChannel(*it)) {
 			channelMap::iterator channel = _channelsPtr->find(*it);
 			if (channel != _channelsPtr->end()) {
 				if (_isReceiverAlredyGotMessage(handledReceivers, channel->second->getName())) {
@@ -90,14 +90,6 @@ void PrivateMessageCommand::_sendMessageToReceivers(User* user, vector<string>& 
 			}
 		}
 	}
-}
-
-bool PrivateMessageCommand::_isChannel(string receiver)
-{
-	if (receiver[0] == '#' || receiver[0] == '&') {
-		return (true);
-	}
-	return (false);
 }
 
 bool PrivateMessageCommand::_isReceiverAlredyGotMessage(list<string>& handledReceivers, string nick)

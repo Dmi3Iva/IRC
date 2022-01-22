@@ -59,6 +59,8 @@ public:
 	void setIsRegistered(bool isRegistered);
 	bool getIsNickPerformed() const;
 	void setIsNickPerformed(bool value);
+	void setIsAway(bool value);
+	bool getIsAway() const;
 
 	bool getIsUserPerformed() const;
 	void setIsUserPerformed(bool value);
@@ -79,6 +81,7 @@ private:
 	bool _isRegistered;
 	bool _isNickPerformed;
 	bool _isUserPerformed;
+	bool _isAway;
 	string _message;
 	userChannels _channels;
 	static const int _MAX_OF_CHANNELS = 10;

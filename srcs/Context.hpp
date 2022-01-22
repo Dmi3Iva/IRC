@@ -9,6 +9,7 @@
 #include "Commands/PingCommand.hpp"
 #include "Commands/PrivateMessageCommand.hpp"
 #include "Commands/UserCommand.hpp"
+#include "Commands/WhoCommand.hpp"
 #include "User.hpp"
 #include "utils.hpp"
 #include <map>

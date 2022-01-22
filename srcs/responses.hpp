@@ -21,6 +21,12 @@
 #define RPL_ENDOFNAMES(server, channel) \
 	std::string(":") + server + " 366 " + channel + " :End of /NAMES list" + DELIMITER
 
+#define RPL_WHOREPLY(server, nickname, channel, username, host, userNick, awaystatus, operator, realname) \
+	std::string(":") + server + " 352 " + nickname + " " + channel + " ~" + username + " " + host + " " + server + " " + userNick + " " + awaystatus + operator+ " :0 " + realname + DELIMITER
+
+#define RPL_ENDOFWHO(server, nickname, name) \
+	std::string(":") + server + " 315 " + nickname + " " + name + " :End of /WHO list" + DELIMITER
+
 /**
  * CUSTOM REPLIES
  */
@@ -116,5 +122,8 @@
 
 #define ERR_ALREADYREGISTRED(servername, nickname) \
 	std::string(":") + servername + " 462 " + nickname + " :You may not reregister" + DELIMITER
+
+#define ERR_NOSUCHSERVER(servername, nickname) \
+	std::string(":") + servername + " 402 " + nickname + " " + servername + " :No such server" + DELIMITER
 
 #endif
