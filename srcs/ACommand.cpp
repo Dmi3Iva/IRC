@@ -10,7 +10,6 @@ ACommand::ACommand(string serverName, userVector* usersPtr, channelMap* channels
 
 User* ACommand::getUserFromArray(string userNick)
 {
-
 	for (userVector::iterator it = _usersPtr->begin(); it != _usersPtr->end(); it++) {
 		if ((*it)->getNickname() == userNick) {
 			return (*it);

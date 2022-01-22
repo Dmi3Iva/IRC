@@ -4,36 +4,8 @@
 
 #include "utils.hpp"
 
-/**
- * split string with delimiter. It skips empty strings
- * @param s source string
- * @param delim delimiter string
- * @return vector of strings
- */
+std::vector<string> ft_split(const string& s, const string& delimiter) { return ft_split<vector<string> >(s, delimiter); }
 
-vector<string> ft_split(string s, const string& delimiter)
-{
-	size_t pos_start = 0, pos_end, delim_len = delimiter.length();
-	string token;
-	vector<string> res;
-
-	while ((pos_end = s.find(delimiter, pos_start)) != string::npos) {
-		token = s.substr(pos_start, pos_end - pos_start);
-		pos_start = pos_end + delim_len;
-		if (!token.empty())
-			res.push_back(token);
-	}
-	token = s.substr(pos_start);
-	if (!token.empty())
-		res.push_back(token);
-	return res;
-}
-
-/**
- * Create pollFdPointer with pollFd structure
- * @param fd
- * @return
- */
 pollfd* getPollFdFromFd(int fd)
 {
 	pollfd* pollfdPtr = new pollfd[1];
@@ -77,10 +49,11 @@ void eraseSpacesInFront(string& cmd)
 		i++;
 	cmd.erase(0, i);
 }
-struct pollfd fillPollfd(int sd, short events) {
-  struct pollfd fd;
-  fd.fd = sd;
-  fd.events = events;
-  fd.revents = 0;
-  return fd;
+struct pollfd fillPollfd(int sd, short events)
+{
+	struct pollfd fd;
+	fd.fd = sd;
+	fd.events = events;
+	fd.revents = 0;
+	return fd;
 }

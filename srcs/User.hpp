@@ -69,6 +69,12 @@ public:
 	bool isFullOfChannels();
 	const userChannels& getChannels() const;
 	bool isOper() const;
+	bool isInvisible() const;
+	void setIsInvisible(bool is_invisible);
+	bool isReceiptNotice() const;
+	void setIsReceiptNotice(bool is_receipt_notice);
+	bool isReceivesWallops() const;
+	void setIsReceivesWallops(bool is_receives_wallops);
 	void setIsOper(bool is_oper);
 
 private:
@@ -83,6 +89,9 @@ private:
 	bool _isNickPerformed;
 	bool _isUserPerformed;
 	bool _isAuthenticated;
+	bool _isInvisible;
+	bool _isReceivesWallops; // MODE w
+	bool _isReceiptNotice; // MODE s
 	string _message;
 	userChannels _userChannels;
 };

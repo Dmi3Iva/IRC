@@ -3,9 +3,14 @@
 Channel::Channel(const string name)
 	: _name(name)
 	, _topic("default topic: welcome to the channel! :)")
-	, _isOnlyInviteChannel(false)
-	, _owner(NULL)
+	, _isPrivate(false)
+	, _isSecret(false)
+	, _isInviteOnlyChannel(false)
+	, _isTopicSettableOnlyByOpers(false)
+	, _isNoMessageOutside(false)
+	, _isModerated(false)
 	, _usersLimit(-1)
+	, _owner(NULL)
 {
 }
 
@@ -80,9 +85,9 @@ int Channel::isOperator(User* pUser) const
 }
 const vector<string>& Channel::getBannedUsers() const { return _bannedUsers; }
 
-bool Channel::isOnlyInviteChannel() const { return _isOnlyInviteChannel; }
+bool Channel::isInviteOnlyChannel() const { return _isInviteOnlyChannel; }
 
-void Channel::setIsOnlyInviteChannel(bool is_only_invite_channel) { _isOnlyInviteChannel = is_only_invite_channel; }
+void Channel::setIsInviteOnlyChannel(bool is_only_invite_channel) { _isInviteOnlyChannel = is_only_invite_channel; }
 
 ssize_t Channel::getUsersLimit() const { return _usersLimit; }
 
@@ -100,7 +105,7 @@ void Channel::sendToAllChannelMembers(string message, User* sender)
 
 bool Channel::isUserMember(User* pUser) const
 {
-	for (vector<User*>::const_iterator it = _members.begin(), ite = _members.end(); it != ite; ++it) {
+	for (usersVectorType ::const_iterator it = _members.begin(), ite = _members.end(); it != ite; ++it) {
 		if ((*it)->getNickname() == pUser->getNickname()) {
 			return true;
 		}
@@ -117,3 +122,73 @@ bool Channel::isUserBanned(User* pUser) const
 	}
 	return false;
 }
+
+bool Channel::addOper(User* pUser)
+{
+	if (isOperator(pUser))
+		return false;
+	_operators.push_back(pUser);
+	return true;
+}
+
+bool Channel::removeOper(User* pUser)
+{
+	for (usersVectorType::const_iterator it = _operators.begin(), ite = _operators.end(); it != ite; ++it) {
+		if ((*it)->getNickname() == pUser->getNickname()) {
+			_operators.erase(it);
+			return true;
+		}
+	}
+	return false;
+}
+bool Channel::isPrivate() const { return _isPrivate; }
+void Channel::setIsPrivate(bool is_private) { _isPrivate = is_private; }
+bool Channel::isSecret() const { return _isSecret; }
+void Channel::setIsSecret(bool is_secret) { _isSecret = is_secret; }
+bool Channel::isTopicSettableOnlyByOpers() const { return _isTopicSettableOnlyByOpers; }
+void Channel::setIsTopicSettableOnlyByOpers(bool is_topic_settable_only_by_opers) { _isTopicSettableOnlyByOpers = is_topic_settable_only_by_opers; }
+bool Channel::isNoMessageOutside() const { return _isNoMessageOutside; }
+void Channel::setIsNoMessageOutside(bool is_no_meesage_outside) { _isNoMessageOutside = is_no_meesage_outside; }
+bool Channel::isModerated() const { return _isModerated; }
+void Channel::setIsModerated(bool is_moderated) { _isModerated = is_moderated; }
+
+bool Channel::addBannerMask(const string& mask)
+{
+	if (std::find(_bannedUsers.begin(), _bannedUsers.end(), mask) != _bannedUsers.end()) {
+		_bannedUsers.push_back(mask);
+		return true;
+	}
+	return false;
+}
+
+bool Channel::removeBannerMask(const string& mask)
+{
+	vector<string>::iterator it = std::find(_bannedUsers.begin(), _bannedUsers.end(), mask);
+	if (it != _bannedUsers.end()) {
+		_bannedUsers.erase(it);
+		return true;
+	}
+	return false;
+}
+
+bool Channel::addSpeaker(User* pUser)
+{
+	for (usersVectorType::const_iterator it = _speakers.begin(), ite = _speakers.end(); it != ite; ++it) {
+		if ((*it)->getNickname() == pUser->getNickname())
+			return false;
+	}
+	_speakers.push_back(pUser);
+	return true;
+}
+
+bool Channel::removeSpeaker(User* pUser)
+{
+	for (usersVectorType::const_iterator it = _speakers.begin(), ite = _speakers.end(); it != ite; ++it) {
+		if ((*it)->getNickname() == pUser->getNickname()) {
+			_speakers.erase(it);
+			return true;
+		}
+	}
+	return false;
+}
+bool Channel::isBannedMask(string mask) { return std::find(_bannedUsers.begin(), _bannedUsers.end(), mask) != _bannedUsers.end(); }
