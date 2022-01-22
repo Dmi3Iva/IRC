@@ -2,8 +2,7 @@
 
 Server::Server(string ip, string port, string password)
 	: _socket(NULL)
-	, _context(new Context())
-	, _password(password)
+	, _context(new Context("localhost", password))
 {
 	_address.sin_family = AF_INET;
 	_address.sin_port = htons(atoi(port.c_str())); // TODO: добавить валидацию
@@ -68,7 +67,7 @@ void Server::acceptNewClients()
 			break;
 		pair<string, string> info = _getConnectionInfo(userfd);
 		_pollfds.push_back(fillPollfd(userfd, POLLIN));
-		_context->addUser(new User(userfd, info.first, info.second));
+		_context->addUser(new User(userfd, info.first, info.second, !_context->isPasswordSet()));
 	}
 }
 

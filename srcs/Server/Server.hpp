@@ -26,7 +26,6 @@ private:
 	Socket* _socket;
 	struct sockaddr_in _address;
 	Context* _context;
-	string _password;
 	pollfdType _pollfds;
 
 public:
