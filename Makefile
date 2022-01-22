@@ -12,6 +12,7 @@ SRC = srcs/main.cpp \
  	srcs/Commands/PartCommand.cpp\
 	srcs/Commands/PrivateMessageCommand.cpp \
  	srcs/Commands/PingCommand.cpp\
+ 	srcs/Commands/OperCommand.cpp\
 	srcs/Channel.cpp \
 	srcs/Context.cpp \
 	srcs/Server/Server.cpp \
@@ -30,6 +31,7 @@ HEADERS = srcs/constants.hpp \
  	srcs/Commands/PartCommand.hpp\
 	srcs/Commands/PrivateMessageCommand.hpp \
  	srcs/Commands/PingCommand.hpp\
+ 	srcs/Commands/OperCommand.hpp\
 	srcs/Channel.hpp \
 	srcs/Context.hpp \
 	srcs/Server/Server.hpp \

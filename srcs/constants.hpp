@@ -11,4 +11,6 @@
 
 #define ALLOWED_NICK_SECIAL_CHARACTERS std::string("`|^_-{}[]\\")
 
+#define PASS_TO_OPER "4TYTwd"
+
 #endif
