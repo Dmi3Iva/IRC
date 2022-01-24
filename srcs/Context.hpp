@@ -5,6 +5,7 @@
 #include "Channel.hpp"
 #include "Commands/AwayCommand.hpp"
 #include "Commands/JoinCommand.hpp"
+#include "Commands/NamesCommand.hpp"
 #include "Commands/ModeCommand.hpp"
 #include "Commands/NamesCommand.hpp"
 #include "Commands/NickCommand.hpp"
