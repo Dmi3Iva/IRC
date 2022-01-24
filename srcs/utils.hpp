@@ -10,6 +10,7 @@
 using std::getline;
 using std::istringstream;
 using std::string;
+using std::stringstream;
 using std::vector;
 
 class User;
@@ -74,6 +75,7 @@ template <class MapContainer> void fullDeleteMapContainer(MapContainer& c)
 void eraseSpacesInFront(string& cmd);
 
 struct pollfd fillPollfd(int sd, short events);
+string getListOfNicknames(const vector<User*> users, string separator);
 bool isChannel(string receiver);
 
 template <class Container> typename Container::value_type getPopFront(Container c)

@@ -15,6 +15,7 @@ SRC = srcs/main.cpp \
 	srcs/Commands/WhoCommand.cpp \
  	srcs/Commands/PassCommand.cpp\
  	srcs/Commands/OperCommand.cpp\
+ 	srcs/Commands/NamesCommand.cpp\
  	srcs/Commands/ModeCommand.cpp\
 	srcs/Commands/AwayCommand.cpp\
 	srcs/Commands/NoticeCommand.cpp\
@@ -42,6 +43,7 @@ HEADERS = srcs/constants.hpp \
 	srcs/Commands/WhoCommand.hpp \
  	srcs/Commands/PassCommand.hpp\
  	srcs/Commands/OperCommand.hpp\
+ 	srcs/Commands/NamesCommand.hpp\
  	srcs/Commands/ModeCommand.hpp\
 	srcs/Commands/AwayCommand.hpp\
 	srcs/Commands/NoticeCommand.hpp\
