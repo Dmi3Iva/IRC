@@ -8,6 +8,12 @@ PartCommand::PartCommand(string serverName, userVector* usersPtr, channelMap* ch
 
 void PartCommand::execute(User* user, string cmd)
 {
+	if (!user->isRegistered()) {
+		sendMessage(
+			user->getFD(),
+			ERR_NOTREGISTERED(_serverName, (user->getNickname().empty() ? std::string("*") : user->getNickname()), _name));
+		return;
+	}
 	vector<string> channelNames = ft_split(cmd, ",");
 
 	if (channelNames.empty()) {
@@ -21,10 +27,8 @@ void PartCommand::execute(User* user, string cmd)
 			chIterator->second->sendToAllChannelMembers(PART_RPL(user->getNickname(), user->getUsername(),
 				user->getHostname(), chIterator->second->getName()));
 			user->quitChannel(chIterator->second->getName());
-			return;
 		} else {
 			sendMessage(user->getFD(), ERR_NOSUCHCHANNEL(_serverName, user->getNickname(), _name));
-			return;
 		}
 	}
 }

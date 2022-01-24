@@ -5,6 +5,7 @@
 #include "Channel.hpp"
 #include "Commands/JoinCommand.hpp"
 #include "Commands/NickCommand.hpp"
+#include "Commands/OperCommand.hpp"
 #include "Commands/PartCommand.hpp"
 #include "Commands/PingCommand.hpp"
 #include "Commands/PrivateMessageCommand.hpp"
@@ -32,6 +33,7 @@ private:
 
 	void _setupCommands();
 	int _executeCommand(User* user, string stringCommand);
+	string _parseMessage(User* user, string buffer);
 
 public:
 	Context();
@@ -40,7 +42,7 @@ public:
 	User* findUserByFd(int userfd);
 	void addUser(User* user);
 	void deleteUser(User* user);
-	void handleMessage(User* user);
+	void handleMessage(User* user, string message);
 	void clearEmptyData();
 };
 

@@ -18,8 +18,10 @@ public:
 
 private:
 	void _performWithChannel(User* user, string channelName, bool operatorFlag);
-	string getUserStatus(Channel *channel, User *user);
-	string getAwayStatus(User *user);
+	void _performWithUser(User* user, string userNick);
+	string _getUserStatus(Channel *channel, User *user);
+	string _getAwayStatus(User *user);
+	string _getChannelNameWichInUserParticipate(string userNick);
 };
 
 #endif

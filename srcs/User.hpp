@@ -48,7 +48,6 @@ public:
 	void setRealname(string realname);
 	void setHostname(string hostname);
 	void setMessage(string message);
-	void appendMessage(string message);
 	string getNickname() const;
 	string getUsername() const;
 	string getRealname() const;
@@ -67,9 +66,10 @@ public:
 
 	bool addChannel(Channel* pChannel);
 	int quitChannel(string channelName);
-	int getMaxOfChannels() const;
 	bool isFullOfChannels();
 	const userChannels& getChannels() const;
+	bool isOper() const;
+	void setIsOper(bool is_oper);
 
 private:
 	int _fd;
@@ -79,12 +79,12 @@ private:
 	string _hostname;
 	string _port;
 	bool _isRegistered;
+	bool _isOper;
 	bool _isNickPerformed;
 	bool _isUserPerformed;
 	bool _isAway;
 	string _message;
-	userChannels _channels;
-	static const int _MAX_OF_CHANNELS = 10;
+	userChannels _userChannels;
 };
 
 #endif

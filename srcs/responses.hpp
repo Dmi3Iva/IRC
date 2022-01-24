@@ -26,6 +26,8 @@
 
 #define RPL_ENDOFWHO(server, nickname, name) \
 	std::string(":") + server + " 315 " + nickname + " " + name + " :End of /WHO list" + DELIMITER
+#define RPL_YOUREOPER(server, nickname) \
+	std::string(":") + server + " 381 " + nickname + " :You are now an IRC operator" + DELIMITER
 
 /**
  * CUSTOM REPLIES
@@ -73,6 +75,12 @@
 	std::string(":") + servername + " 409 " + nickname + " :No origin specified" + DELIMITER
 
 /**
+ * example: ":karma.freenode.net 451 * JOIN :You have not registered."
+ */
+#define ERR_NOTREGISTERED(servername, nickname, commandName) \
+	std::string(":") + servername + " 451 " + nickname + " " + commandName + " :You have not registered." + DELIMITER
+
+/**
  * example:
  * ":karma.freenode.net 461 nickerere NICK :Not enough parameters."
  * ":karma.freenode.net 650 nickerere NICK :<newnick>"
@@ -80,11 +88,8 @@
 #define ERR_NEEDMOREPARAMS(servername, nickname, commandName) \
 	std::string(":") + servername + " 461 " + nickname + " " + commandName + " :Not enough parameters." + DELIMITER
 
-/**
- * example: ":karma.freenode.net 451 * JOIN :You have not registered."
- */
-#define ERR_NOTREGISTERED(servername, nickname, commandName) \
-	std::string(":") + servername + " 451 " + nickname + " " + commandName + " :You have not registered." + DELIMITER
+#define ERR_PASSWDMISMATCH(servername, nickname) \
+	std::string(":") + servername + " 464 " + nickname + " :Password incorrect" + DELIMITER
 
 #define ERR_CHANNELISFULL(servername, nickname, channelName) \
 	std::string(":") + servername + " 471 " + nickname + " " + channelName + " :Cannot join channel (+l)." + DELIMITER
@@ -97,6 +102,9 @@
 
 #define ERR_BADCHANNELKEY(servername, nickname, channelName) \
 	std::string(":") + servername + " 475 " + nickname + " " + channelName + " :Cannot join channel (+k)." + DELIMITER
+
+#define ERR_NOOPERHOST(servername, nickname) \
+	std::string(":") + servername + " 491 " + nickname + " :No O-lines for your host" + DELIMITER
 
 #define ERR_NOSUCHNICK(servername, nickname) \
 	std::string(":") + servername + " 401 " + std::string(nickname) + " PRIVMSG" + DELIMITER

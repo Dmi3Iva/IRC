@@ -95,17 +95,20 @@ void JoinCommand::execute(User* user, string cmd)
 		return;
 	}
 	vector<string> channels = ft_split(channelsAndKeys[0], ",");
-	for (vector<string>::iterator it = channels.begin(), ite = channels.end(); it != ite; ++it)
+	for (vector<string>::iterator it = channels.begin(), ite = channels.end(); it != ite;) {
 		if (!isChannelName(*it)) {
 			sendMessage(user->getFD(), ERR_NOSUCHCHANNEL(_serverName, user->getNickname(), _name));
-			return;
+			it = channels.erase(it);
 		}
+		else
+			++it;
+	}
 	vector<string> keys;
 	if (channelsAndKeys.size() > 1)
 		keys = ft_split(channelsAndKeys[1], ",");
 
 	// if channels and keys lists have different sizes, last channels received empty keys
 	for (size_t i = 0; i < channels.size(); ++i) {
-		_joinChannel(user, channels[0], i < keys.size() ? keys[i] : string());
+		_joinChannel(user, channels[i], i < keys.size() ? keys[i] : string());
 	}
 }
