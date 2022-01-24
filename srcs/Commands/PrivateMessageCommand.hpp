@@ -2,11 +2,6 @@
 #define PRIVATEMESSAGECOMMAND_HPP
 
 #include "../ACommand.hpp"
-#include "../Context.hpp"
-#include "../responses.hpp"
-#include <iostream>
-
-class ACommand;
 
 class PrivateMessageCommand : public ACommand {
 

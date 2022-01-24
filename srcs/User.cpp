@@ -1,13 +1,13 @@
 #include "User.hpp"
 
-User::User(int userFd, string hostname, string port)
+User::User(int userFd, string hostname, string port, bool isAuthenticated)
 	: _fd(userFd)
 	, _hostname(hostname)
 	, _port(port)
 	, _isRegistered(false)
 	, _isNickPerformed(false)
 	, _isUserPerformed(false)
-	, _message("")
+	, _isAuthenticated(isAuthenticated)
 {
 }
 
@@ -17,8 +17,9 @@ User& User::operator=(const User& user)
 	_nickname = user.getNickname();
 	_realname = user.getRealname();
 	_hostname = user.getHostname();
-	_port = user.getHostname();
+	_port = user.getPort();
 	_isRegistered = user.isRegistered();
+	_isAuthenticated = user.isAuthenticated();
 	_userChannels = user.getChannels();
 	return *this;
 }
@@ -45,6 +46,8 @@ void User::setMessage(string message) { _message = message; }
 
 bool User::isRegistered() const { return _isRegistered; }
 
+bool User::isAuthenticated() const { return _isAuthenticated; }
+
 void User::setIsRegistered(bool isRegistered) { _isRegistered = isRegistered; }
 
 bool User::getIsNickPerformed() const { return _isNickPerformed; }
@@ -54,6 +57,8 @@ void User::setIsNickPerformed(bool value) { _isNickPerformed = value; }
 bool User::getIsUserPerformed() const { return _isUserPerformed; }
 
 void User::setIsUserPerformed(bool value) { _isUserPerformed = value; }
+
+void User::setIsAuthenticated(bool isAuthenticated) { _isAuthenticated = isAuthenticated; }
 
 string User::getNickname() const { return _nickname; }
 

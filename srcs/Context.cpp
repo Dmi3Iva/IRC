@@ -1,8 +1,9 @@
 #include "Context.hpp"
 
-Context::Context()
+Context::Context(const string serverName, const string serverPassword)
+	: _serverName(serverName)
+	, _serverPassword(serverPassword)
 {
-	_serverName = "localhost";
 	_setupCommands();
 }
 
@@ -16,6 +17,7 @@ void Context::_setupCommands()
 	_commandsMap["PRIVMSG"] = new PrivateMessageCommand(_serverName, &_users, &_channels);
 	_commandsMap["NOTICE"] = new PrivateMessageCommand(_serverName, &_users, &_channels);
 	_commandsMap["OPER"] = new OperCommand(_serverName, &_users, &_channels);
+	_commandsMap["PASS"] = new PassCommand(_serverName, &_users, &_channels, _serverPassword);
 }
 
 Context::~Context()
@@ -24,6 +26,10 @@ Context::~Context()
 	fullDeleteMapContainer(_channels);
 	fullDeleteContainer(_users);
 }
+
+const string& Context::getServerName() const { return _serverName; }
+
+const string& Context::getServerPassword() const { return _serverPassword; }
 
 void Context::addUser(User* user) { _users.push_back(user); }
 
@@ -98,6 +104,9 @@ void Context::handleMessage(User* user, string message)
 		}
 	}
 }
+
+bool Context::isPasswordSet() { return !_serverPassword.empty(); }
+
 
 string Context::_parseMessage(User* user, string buffer)
 {

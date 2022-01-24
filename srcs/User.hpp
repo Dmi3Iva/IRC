@@ -39,7 +39,7 @@ public:
 
 	User& operator=(const User& user);
 	User(const User& user);
-	User(int userFd, string hostname, string port);
+	User(int userFd, string hostname, string port, bool isAuthenticated);
 	~User();
 
 	int getFD() const;
@@ -61,6 +61,8 @@ public:
 
 	bool getIsUserPerformed() const;
 	void setIsUserPerformed(bool value);
+	bool isAuthenticated() const;
+	void setIsAuthenticated(bool isAuthenticated);
 
 	bool addChannel(Channel* pChannel);
 	int quitChannel(string channelName);
@@ -80,6 +82,7 @@ private:
 	bool _isOper;
 	bool _isNickPerformed;
 	bool _isUserPerformed;
+	bool _isAuthenticated;
 	string _message;
 	userChannels _userChannels;
 };
