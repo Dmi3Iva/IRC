@@ -58,6 +58,7 @@
 
 /**
  * example: ":Guest36552!~uss@joseon-i28.29p.1d9n3c.IP MODE Guest36552 :-w"
+ * :Guest19803!~uss@joseon-i28.29p.1d9n3c.IP MODE #nnnn4 +l :10
  */
 #define MODE_RPL(nickname, username, host, targetNickname, changes)                                                                                                                \
 	std::string(":") + nickname + "!" + username + "@" + host + " MODE " + targetNickname + " :" + changes + DELIMITER
@@ -114,7 +115,7 @@
 
 #define ERR_NOOPERHOST(servername, nickname) std::string(":") + servername + " 491 " + nickname + " :No O-lines for your host" + DELIMITER
 
-#define ERR_NOSUCHNICK(servername, nickname) std::string(":") + servername + " 401 " + std::string(nickname) + " PRIVMSG" + DELIMITER
+#define ERR_NOSUCHNICK(servername, nickname) std::string(":") + servername + " 401 " + std::string(nickname) + " :No such nick/channel" + DELIMITER
 
 #define ERR_NORECIPIENT(servername, nickname, commandName, description)                                                                                                            \
 	std::string(":") + servername + " 411 " + nickname + std::string(" :No recipient given (") + commandName + ")" + DELIMITER + description + DELIMITER

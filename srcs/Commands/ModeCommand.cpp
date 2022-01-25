@@ -122,13 +122,10 @@ void ModeCommand::execute(User* user, string cmd)
 void ModeCommand::_executeChannelMod(User* user, Channel* channel, string arguments)
 {
 	bool isPlus;
-	User* userTarget;
 	size_t spacePos = arguments.find(' ');
 	string changes;
-	string argument;
 	string modes = arguments.substr(0, spacePos);
 	deque<string> optionalArguments = ft_split<deque<string> >(arguments.substr(spacePos), " ");
-	int l;
 
 	if (!channel->isUserMember(user)) {
 		sendMessage(user->getFD(), ERR_NOTONCHANNEL(_serverName, user->getNickname(), channel->getName()));
@@ -144,145 +141,154 @@ void ModeCommand::_executeChannelMod(User* user, Channel* channel, string argume
 	}
 	isPlus = arguments[0] == '+';
 	changes = string(1, arguments[0]);
-
-	// TODO:: think about error cases
-	// TODO:: positive cases
-	// TODO:: send messages about success
 	for (size_t i = 1; i < modes.size(); ++i) {
 		switch (modes[i]) {
 		case 'o':
-			if (optionalArguments.empty()) {
-				sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
-			} else if (!(userTarget = getUserFromArray(getPopFront(optionalArguments))) // if there aren't any user with this nickname
-				|| !channel->isUserMember(userTarget)) { // if this user not channel member
-				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, userTarget->getNickname()));
-			} else if ((isPlus ? channel->addOper(userTarget) //
-							   : channel->removeOper(userTarget) //
-						   )) {
-				changes += "o";
-			} else {
-				sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
-			}
+			_handleOFlag(user, channel, isPlus, optionalArguments);
 			break;
 		case 'p':
-			if (channel->isPrivate() != isPlus) {
-				channel->setIsPrivate(isPlus);
-				changes += "p";
-			} else {
-				sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
-			}
+			_handleCommonFlag(user, channel, isPlus, &Channel::setIsPrivate, channel->isPrivate(), "p", changes);
 			break;
 		case 's':
-			if (channel->isSecret()) {
-				channel->setIsSecret(isPlus);
-				changes += "s";
-			} else {
-				sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
-			}
+			_handleCommonFlag(user, channel, isPlus, &Channel::setIsSecret, channel->isSecret(), "s", changes);
 			break;
 		case 'i':
-			if (channel->isInviteOnlyChannel()) {
-				channel->setIsInviteOnlyChannel(isPlus);
-				changes += "i";
-			} else {
-				sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
-			}
+			_handleCommonFlag(user, channel, isPlus, &Channel::setIsInviteOnlyChannel, channel->isInviteOnlyChannel(), "i", changes);
 			break;
 		case 't':
-			if (channel->isTopicSettableOnlyByOpers()) {
-				channel->setIsTopicSettableOnlyByOpers(isPlus);
-				changes += "t";
-			} else {
-				sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
-			}
+			_handleCommonFlag(user, channel, isPlus, &Channel::setIsTopicSettableOnlyByOpers, channel->isTopicSettableOnlyByOpers(), "t", changes);
 			break;
 		case 'n':
-			if (channel->isNoMessageOutside()) {
-				channel->setIsNoMessageOutside(isPlus);
-				changes += "n";
-			} else {
-				sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
-			}
+			_handleCommonFlag(user, channel, isPlus, &Channel::setIsNoMessageOutside, channel->isNoMessageOutside(), "n", changes);
 			break;
 		case 'm':
-			if (channel->isModerated()) {
-				channel->setIsModerated(isPlus);
-				changes += "m";
-			} else {
-				sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
-			}
+			_handleCommonFlag(user, channel, isPlus, &Channel::setIsModerated, channel->isModerated(), "n", changes);
 			break;
 		case 'l':
-			argument = getPopFront(optionalArguments);
-			if (!argument.empty()) {
-				sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
-			} else {
-				l = stoi(argument);
-				if (l == channel->getUsersLimit()) {
-					sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
-				} else {
-					channel->setUsersLimit(l);
-					changes += "l";
-				}
-			}
+			_handleLFlag(user, channel, getPopFront(optionalArguments), isPlus, changes);
 			break;
 		case 'b':
-			argument = getPopFront(optionalArguments);
-			if (!argument.empty()) {
-				sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
-			} else {
-				if (isPlus ? channel->addBannerMask(argument) //
-						   : channel->removeBannerMask(argument) //
-				) {
-					changes += "b"; // TODO:: I think it should send RPL_BANLIST
-				} else {
-					if (channel->isBannedMask(argument)) {
-						sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
-					} else {
-						// remove didn't find such mask
-						// TODO:: hz
-					}
-				}
-			}
+			_handleBFLag(user, channel, isPlus, getPopFront(optionalArguments));
 			break;
 		case 'k':
-			argument = getPopFront(optionalArguments);
-			if (argument.empty()) {
-				sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
-			} else if (channel->getPassword() == argument) {
-				channel->setPassword(argument);
-				changes += 'k';
-			} else {
-				sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
-			}
+			_handleKFlag(user, channel, getPopFront(optionalArguments), changes);
 			break;
 		case 'v':
-			argument = getPopFront(optionalArguments);
-			if (!argument.empty()) {
-				sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
-			} else {
-				userTarget = getUserFromArray(argument);
-				if (!userTarget || !channel->isUserMember(userTarget)) {
-					sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, userTarget->getNickname()));
-				} else {
-					if (isPlus ? channel->addSpeaker(userTarget) //
-							   : channel->removeSpeaker(userTarget) //
-					) {
-						changes += "v";
-					} else {
-						sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName())); // TODO:: maybe it should be different?
-					}
-				}
-			}
-
+			_handleVFlag(user, channel, getPopFront(optionalArguments), isPlus);
 			break;
 		default:
-			sendMessage(user->getFD(), ERR_UNKNOWNMODE(_serverName, user->getNickname(), arguments[i])); // TODO:: should it be diff for channel?
+			sendMessage(user->getFD(), ERR_UNKNOWNMODE(_serverName, user->getNickname(), arguments[i]));
 			break;
 		}
 	}
 	if (changes.size() > 1) {
 		channel->sendToAllChannelMembers(MODE_RPL(user->getNickname(), user->getUsername(), user->getHostname(), channel->getName(), changes));
+	}
+}
+
+void ModeCommand::_handleOFlag(User* user, Channel* channel, bool isPlus, deque<string> optionalArguments)
+{
+	User* userTarget;
+
+	if (optionalArguments.empty()) {
+		sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
+	} else if (!(userTarget = getUserFromArray(getPopFront(optionalArguments))) // if there aren't any user with this nickname
+		|| !channel->isUserMember(userTarget)) { // if this user not channel member
+		sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, userTarget->getNickname()));
+	} else if ((isPlus ? channel->addOper(userTarget) //
+					   : channel->removeOper(userTarget) //
+				   )) {
+		channel->sendToAllChannelMembers(
+			MODE_RPL(user->getNickname(), user->getUsername(), user->getHostname(), channel->getName(), (isPlus ? "+o :" : "-o :") + userTarget->getNickname()));
+	} else {
+		sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
+	}
+}
+
+void ModeCommand::_handleCommonFlag(User* user, Channel* channel, bool isPlus, void (Channel::*setValue)(bool), bool isValue, string key, string& changes)
+{
+	if (isValue != isPlus) {
+		((*channel).*setValue)(isPlus);
+		changes += key;
+	} else {
+		sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
+	}
+}
+
+void ModeCommand::_handleLFlag(User* user, Channel* channel, string argument, bool isPlus, string& changes)
+{
+	int l;
+
+	if (isPlus) {
+		if (!argument.empty()) {
+			sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
+		} else {
+			l = stoi(argument);
+			if (l == channel->getUsersLimit()) {
+				sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
+			} else {
+				channel->setUsersLimit(l);
+				channel->sendToAllChannelMembers(MODE_RPL(user->getNickname(), user->getUsername(), user->getHostname(), channel->getName(), "+l :" + std::to_string(l)));
+			}
+		}
+	} else {
+		channel->setUsersLimit(-1);
+		changes += "l";
+	}
+}
+
+void ModeCommand::_handleBFLag(User* user, Channel* channel, bool isPlus, string argument)
+{
+	if (!argument.empty()) {
+		sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
+	} else {
+		if (isPlus ? channel->addBannerMask(argument) //
+				   : channel->removeBannerMask(argument) //
+		) {
+			channel->sendToAllChannelMembers(MODE_RPL(user->getNickname(), user->getUsername(), user->getHostname(), channel->getName(), (isPlus ? "+b :" : "-b :") + argument));
+		} else {
+			if (channel->isBannedMask(argument)) {
+				// already using mask
+				sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
+			} else {
+				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname()));
+			}
+		}
+	}
+}
+
+void ModeCommand::_handleKFlag(User* user, Channel* channel, string argument, string& changes)
+{
+	if (argument.empty()) {
+		sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
+	} else if (channel->getPassword() == argument) {
+		channel->setPassword(argument);
+		changes += 'k';
+	} else {
+		sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
+	}
+}
+
+void ModeCommand::_handleVFlag(User* user, Channel* channel, string argument, bool isPlus)
+{
+	User* userTarget;
+
+	if (!argument.empty()) {
+		sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
+	} else {
+		userTarget = getUserFromArray(argument);
+		if (!userTarget || !channel->isUserMember(userTarget)) {
+			sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, userTarget->getNickname()));
+		} else {
+			if (isPlus ? channel->addSpeaker(userTarget) //
+					   : channel->removeSpeaker(userTarget) //
+			) {
+				channel->sendToAllChannelMembers(
+					MODE_RPL(user->getNickname(), user->getUsername(), user->getHostname(), channel->getName(), (isPlus ? "+v :" : "-v :") + userTarget->getNickname()));
+			} else {
+				sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
+			}
+		}
 	}
 }
 
@@ -296,6 +302,7 @@ void ModeCommand::_executeChannelMod(User* user, Channel* channel, string argume
 void ModeCommand::_executeUserMod(User* user, User* userTarget, string arguments)
 {
 	bool isPlus;
+	string changes;
 
 	if (!user->isOper() && user->getNickname() != userTarget->getNickname()) {
 		sendMessage(user->getFD(), ERR_USERSDONTMATCH(_serverName, user->getNickname()));
@@ -307,32 +314,32 @@ void ModeCommand::_executeUserMod(User* user, User* userTarget, string arguments
 	}
 
 	isPlus = arguments[0] == '+';
+	changes = string(1, arguments[0]);
 	for (size_t i = 1; i < arguments.size(); ++i) {
 		switch (arguments[i]) {
 		case 'i':
 			userTarget->setIsInvisible(isPlus);
-			_sendMessageToUserAndHisChannels(
-				userTarget, MODE_RPL(user->getNickname(), user->getUsername(), user->getHostname(), userTarget->getNickname(), (isPlus ? "+" : "-") + "i"));
+			changes += "i";
 			break;
 		case 'w':
 			userTarget->setIsReceivesWallops(isPlus);
-			_sendMessageToUserAndHisChannels(
-				userTarget, MODE_RPL(user->getNickname(), user->getUsername(), user->getHostname(), userTarget->getNickname(), (isPlus ? "+" : "-") + "w"));
+			changes += "w";
 			break;
 		case 's':
 			userTarget->setIsReceiptNotice(isPlus);
-			_sendMessageToUserAndHisChannels(
-				userTarget, MODE_RPL(user->getNickname(), user->getUsername(), user->getHostname(), userTarget->getNickname(), (isPlus ? "+" : "-") + "s"));
+			changes += "s";
 			break;
 		case 'o':
 			userTarget->setIsOper(isPlus);
-			_sendMessageToUserAndHisChannels(
-				userTarget, MODE_RPL(user->getNickname(), user->getUsername(), user->getHostname(), userTarget->getNickname(), (isPlus ? "+" : "-") + "o"));
+			changes += "o";
 			break;
 		default:
 			sendMessage(user->getFD(), ERR_UMODEUNKNOWNFLAG(_serverName, user->getNickname()));
 			break;
 		}
+	}
+	if (changes.size() > 1) {
+		_sendMessageToUserAndHisChannels(userTarget, MODE_RPL(user->getNickname(), user->getUsername(), user->getHostname(), userTarget->getNickname(), changes));
 	}
 }
 
