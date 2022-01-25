@@ -24,7 +24,6 @@ void Context::_setupCommands()
 	_commandsMap["KICK"] = new KickCommand(_serverName, &_users, &_channels);
 	_commandsMap["WHOIS"] = new WhoisCommand(_serverName, &_users, &_channels);
 	_commandsMap["INVITE"] = new InviteCommand(_serverName, &_users, &_channels);
-	_commandsMap["NAMES"] = new NamesCommand(_serverName, &_users, &_channels);
 }
 
 Context::~Context()
