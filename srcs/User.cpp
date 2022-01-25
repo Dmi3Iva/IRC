@@ -8,6 +8,10 @@ User::User(int userFd, string hostname, string port, bool isAuthenticated)
 	, _isNickPerformed(false)
 	, _isUserPerformed(false)
 	, _isAuthenticated(isAuthenticated)
+	, _isInvisible(false) // TODO:: is correct values by default?
+	, _isReceivesWallops(false) // TODO:: is correct values by default?
+	, _isReceiptNotice(false) // TODO:: is correct values by default?
+	, _message()
 {
 }
 
@@ -107,3 +111,15 @@ const User::userChannels& User::getChannels() const { return _userChannels; }
 bool User::isOper() const { return _isOper; }
 
 void User::setIsOper(bool is_oper) { _isOper = is_oper; }
+
+bool User::isInvisible() const { return _isInvisible; }
+
+void User::setIsInvisible(bool is_invisible) { _isInvisible = is_invisible; }
+
+bool User::isReceiptNotice() const { return _isReceiptNotice; }
+
+void User::setIsReceiptNotice(bool is_receipt_notice) { _isReceiptNotice = is_receipt_notice; }
+
+bool User::isReceivesWallops() const { return _isReceivesWallops; }
+
+void User::setIsReceivesWallops(bool is_receives_wallops) { _isReceivesWallops = is_receives_wallops; }

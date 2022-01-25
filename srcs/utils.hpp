@@ -14,8 +14,39 @@ using std::vector;
 
 class User;
 
-vector<string> ft_split(string s, const string& delim);
+/**
+ * split string with delimiter. It skips empty strings
+ * @param s source string
+ * @param delim delimiter string
+ * @return vector of strings
+ */
+template <class Container> Container ft_split(const string& s, const string& delimiter)
+{
+	size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+	string token;
+	Container res;
+
+	while ((pos_end = s.find(delimiter, pos_start)) != string::npos) {
+		token = s.substr(pos_start, pos_end - pos_start);
+		pos_start = pos_end + delim_len;
+		if (!token.empty())
+			res.push_back(token);
+	}
+	token = s.substr(pos_start);
+	if (!token.empty())
+		res.push_back(token);
+	return res;
+}
+
+std::vector<string> ft_split(const string& s, const string& delimiter);
+
+/**
+ * Create pollFdPointer with pollFd structure
+ * @param fd
+ * @return
+ */
 pollfd* getPollFdFromFd(int fd);
+
 int isChannelName(string channelName);
 
 std::string ltrim(std::string str, const std::string& chars = "\t\n\v\f\r ");
@@ -24,8 +55,7 @@ std::string trim(std::string str, const std::string& chars = "\t\n\v\f\r ");
 
 void sendMessage(int fd, string msg);
 
-template <class Container>
-void fullDeleteContainer(Container& c)
+template <class Container> void fullDeleteContainer(Container& c)
 {
 	for (typename Container::iterator it = c.begin(), ite = c.end(); it != ite; ++it) {
 		delete &(*it);
@@ -33,8 +63,7 @@ void fullDeleteContainer(Container& c)
 	c.clear();
 }
 
-template <class MapContainer>
-void fullDeleteMapContainer(MapContainer& c)
+template <class MapContainer> void fullDeleteMapContainer(MapContainer& c)
 {
 	for (typename MapContainer::iterator it = c.begin(), ite = c.end(); it != ite; ++it) {
 		delete (it->second);
@@ -43,6 +72,14 @@ void fullDeleteMapContainer(MapContainer& c)
 }
 
 void eraseSpacesInFront(string& cmd);
+
 struct pollfd fillPollfd(int sd, short events);
+
+template <class Container> typename Container::value_type getPopFront(Container c)
+{
+	typename Container::value_type result = c.front();
+	c.erase(c.begin());
+	return result;
+}
 
 #endif

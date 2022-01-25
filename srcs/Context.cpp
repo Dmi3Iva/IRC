@@ -18,6 +18,7 @@ void Context::_setupCommands()
 	_commandsMap["NOTICE"] = new PrivateMessageCommand(_serverName, &_users, &_channels);
 	_commandsMap["OPER"] = new OperCommand(_serverName, &_users, &_channels);
 	_commandsMap["PASS"] = new PassCommand(_serverName, &_users, &_channels, _serverPassword);
+	_commandsMap["MODE"] = new ModeCommand(_serverName, &_users, &_channels);
 }
 
 Context::~Context()
@@ -106,7 +107,6 @@ void Context::handleMessage(User* user, string message)
 }
 
 bool Context::isPasswordSet() { return !_serverPassword.empty(); }
-
 
 string Context::_parseMessage(User* user, string buffer)
 {
