@@ -13,6 +13,9 @@ class NamesCommand : public ACommand {
 public:
 	NamesCommand(string serverName, userVector* usersPtr, channelMap* channelsPtr);
 	void execute(User* user, string cmd);
+
+private:
+	void _sendListOfChannelMembers(User* user, Channel* channel);
 };
 
 #endif
