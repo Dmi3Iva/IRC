@@ -1,5 +1,4 @@
 #include "Context.hpp"
-#include "Commands/ModeCommand.hpp"
 
 Context::Context(const string serverName, const string serverPassword)
 	: _serverName(serverName)
@@ -108,7 +107,6 @@ void Context::handleMessage(User* user, string message)
 }
 
 bool Context::isPasswordSet() { return !_serverPassword.empty(); }
-
 
 string Context::_parseMessage(User* user, string buffer)
 {

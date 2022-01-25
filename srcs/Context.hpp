@@ -4,6 +4,7 @@
 #include "ACommand.hpp"
 #include "Channel.hpp"
 #include "Commands/JoinCommand.hpp"
+#include "Commands/ModeCommand.hpp"
 #include "Commands/NickCommand.hpp"
 #include "Commands/OperCommand.hpp"
 #include "Commands/PartCommand.hpp"
