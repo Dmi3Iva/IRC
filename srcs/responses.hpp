@@ -22,11 +22,11 @@
 #define RPL_ENDOFNAMES(server, channel) std::string(":") + server + " 366 " + channel + " :End of /NAMES list" + DELIMITER
 
 #define RPL_WHOREPLY(server, nickname, channel, username, host, userNick, awaystatus, operator, realname)                                                                          \
-	std::string(":") + server + " 352 " + nickname + " " + channel + " ~" + username + " " + host + " " + server + " " + userNick + " " + awaystatus                               \
+	std::string(":") + server + " 352 " + nickname + " " + channel + " " + username + " " + host + " " + server + " " + userNick + " " + awaystatus                                \
 		+ operator+ " :0 " + realname + DELIMITER
 
 #define RPL_ENDOFWHO(server, nickname, name) std::string(":") + server + " 315 " + nickname + " " + name + " :End of /WHO list" + DELIMITER
-#define RPL_YOUREOPER(server, nickname) std::string(":") + server + " 381 " + nickname + " :You are now an IRC operator" + DELIMITER
+
 #define RPL_YOUREOPER(server, nickname) std::string(":") + server + " 381 " + nickname + " :You are now an IRC operator" + DELIMITER
 
 /**

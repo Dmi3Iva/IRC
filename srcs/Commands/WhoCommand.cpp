@@ -50,31 +50,40 @@ void WhoCommand::_performWithChannel(User* user, string channelName, bool operat
 	if (operatorFlag) {
 		vector<User*> users = channel->second->getOperators();
 		for (vector<User*>::iterator it = users.begin(); it != users.end(); it++) {
-			//TO DO - check if user is invisible
+			if ((*it)->isInvisible())
+				continue;
 			string awaystatus = _getAwayStatus(*it);
-			sendMessage(user->getFD(), RPL_WHOREPLY(_serverName, user->getNickname(), channel->second->getName(), (*it)->getUsername(), (*it)->getHostname(), (*it)->getNickname(), awaystatus, "@", (*it)->getRealname()));
+			sendMessage(user->getFD(),
+				RPL_WHOREPLY(_serverName, user->getNickname(), channel->second->getName(), (*it)->getUsername(), (*it)->getHostname(), (*it)->getNickname(), awaystatus, "@",
+					(*it)->getRealname()));
 		}
 	} else {
 		vector<User*> users = channel->second->getMembers();
 		for (vector<User*>::iterator it = users.begin(); it != users.end(); it++) {
-			//TO DO - check if user is invisible
+			if ((*it)->isInvisible())
+				continue;
 			string userStatus = _getUserStatus(channel->second, *it);
 			string awaystatus = _getAwayStatus(*it);
-			sendMessage(user->getFD(), RPL_WHOREPLY(_serverName, user->getNickname(), channel->second->getName(), (*it)->getUsername(), (*it)->getHostname(), (*it)->getNickname(), awaystatus, userStatus, (*it)->getRealname()));
+			sendMessage(user->getFD(),
+				RPL_WHOREPLY(_serverName, user->getNickname(), channel->second->getName(), (*it)->getUsername(), (*it)->getHostname(), (*it)->getNickname(), awaystatus, userStatus,
+					(*it)->getRealname()));
 		}
 	}
 }
 
 void WhoCommand::_performWithUser(User* user, string userNick)
 {
-	User *wantedUser = getUserFromArray(userNick);
+	User* wantedUser = getUserFromArray(userNick);
 	if (!wantedUser) {
 		sendMessage(user->getFD(), ERR_NOSUCHSERVER(_serverName, userNick));
 		return;
 	}
-	//TO DO - check if user is invisible
+	if (wantedUser->isInvisible())
+		return;
 	string channel = _getChannelNameWichInUserParticipate(wantedUser->getNickname());
-	sendMessage(user->getFD(), RPL_WHOREPLY(_serverName, user->getNickname(), channel, wantedUser->getUsername(), wantedUser->getHostname(), wantedUser->getNickname(), _getAwayStatus(wantedUser), "@", wantedUser->getRealname()));
+	sendMessage(user->getFD(),
+		RPL_WHOREPLY(_serverName, user->getNickname(), channel, wantedUser->getUsername(), wantedUser->getHostname(), wantedUser->getNickname(), _getAwayStatus(wantedUser), "@",
+			wantedUser->getRealname()));
 }
 
 string WhoCommand::_getUserStatus(Channel* channel, User* user)
