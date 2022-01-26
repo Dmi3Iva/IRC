@@ -21,8 +21,9 @@
 
 #define RPL_ENDOFNAMES(server, channel) std::string(":") + server + " 366 " + channel + " :End of /NAMES list" + DELIMITER
 
-#define RPL_WHOREPLY(server, nickname, channel, username, host, userNick, awaystatus, operator, realname)                                                                          \
-	std::string(":") + server + " 352 " + nickname + " " + channel + " " + username + " " + host + " " + server + " " + userNick + " " + awaystatus + operator+ " :0 " + realname + DELIMITER
+#define RPL_WHOREPLY(server, nickname, channel, username, host, userNick, awaystatus, serverstatus, operator, realname)                                                            \
+	std::string(":") + server + " 352 " + nickname + " " + channel + " " + username + " " + host + " " + server + " " + userNick + " " + awaystatus + serverstatus                 \
+		+ operator+ " :0 " + realname + DELIMITER
 
 #define RPL_ENDOFWHO(server, nickname, name) std::string(":") + server + " 315 " + nickname + " " + name + " :End of /WHO list" + DELIMITER
 

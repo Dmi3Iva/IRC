@@ -22,6 +22,7 @@ private:
 	string _getUserStatus(Channel *channel, User *user);
 	string _getAwayStatus(User *user);
 	string _getChannelNameWichInUserParticipate(string userNick);
+	string _getUserStatusOnServer(User *user);
 };
 
 #endif

@@ -53,9 +53,10 @@ void WhoCommand::_performWithChannel(User* user, string channelName, bool operat
 			if ((*it)->isInvisible())
 				continue;
 			string awaystatus = _getAwayStatus(*it);
+			string serverstatus = _getUserStatusOnServer(user);
 			sendMessage(user->getFD(),
-				RPL_WHOREPLY(_serverName, user->getNickname(), channel->second->getName(), (*it)->getUsername(), (*it)->getHostname(), (*it)->getNickname(), awaystatus, "@",
-					(*it)->getRealname()));
+				RPL_WHOREPLY(_serverName, user->getNickname(), channel->second->getName(), (*it)->getUsername(), (*it)->getHostname(), (*it)->getNickname(), awaystatus,
+					serverstatus, "@", (*it)->getRealname()));
 		}
 	} else {
 		vector<User*> users = channel->second->getMembers();
@@ -64,9 +65,10 @@ void WhoCommand::_performWithChannel(User* user, string channelName, bool operat
 				continue;
 			string userStatus = _getUserStatus(channel->second, *it);
 			string awaystatus = _getAwayStatus(*it);
+			string serverstatus = _getUserStatusOnServer(user);
 			sendMessage(user->getFD(),
-				RPL_WHOREPLY(_serverName, user->getNickname(), channel->second->getName(), (*it)->getUsername(), (*it)->getHostname(), (*it)->getNickname(), awaystatus, userStatus,
-					(*it)->getRealname()));
+				RPL_WHOREPLY(_serverName, user->getNickname(), channel->second->getName(), (*it)->getUsername(), (*it)->getHostname(), (*it)->getNickname(), awaystatus,
+					serverstatus, userStatus, (*it)->getRealname()));
 		}
 	}
 }
@@ -81,9 +83,10 @@ void WhoCommand::_performWithUser(User* user, string userNick)
 	if (wantedUser->isInvisible())
 		return;
 	string channel = _getChannelNameWichInUserParticipate(wantedUser->getNickname());
+	string serverstatus = _getUserStatusOnServer(user);
 	sendMessage(user->getFD(),
-		RPL_WHOREPLY(_serverName, user->getNickname(), channel, wantedUser->getUsername(), wantedUser->getHostname(), wantedUser->getNickname(), _getAwayStatus(wantedUser), "@",
-			wantedUser->getRealname()));
+		RPL_WHOREPLY(_serverName, user->getNickname(), channel, wantedUser->getUsername(), wantedUser->getHostname(), wantedUser->getNickname(), _getAwayStatus(wantedUser),
+			serverstatus, "@", wantedUser->getRealname()));
 }
 
 string WhoCommand::_getUserStatus(Channel* channel, User* user)
@@ -100,6 +103,13 @@ string WhoCommand::_getAwayStatus(User* user)
 		return ("G");
 	}
 	return ("H");
+}
+
+string WhoCommand::_getUserStatusOnServer(User* user)
+{
+	if (user->isOper())
+		return ("*");
+	return ("");
 }
 
 string WhoCommand::_getChannelNameWichInUserParticipate(string userNick)
