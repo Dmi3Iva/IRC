@@ -281,7 +281,7 @@ void ModeCommand::_handleVFlag(User* user, Channel* channel, string argument, bo
 	} else {
 		userTarget = getUserFromArray(argument);
 		if (!userTarget || !channel->isUserMember(userTarget)) {
-			sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, userTarget->getNickname()));
+			sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, argument));
 		} else {
 			if (isPlus ? channel->addSpeaker(userTarget) //
 					   : channel->removeSpeaker(userTarget) //

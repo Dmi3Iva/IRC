@@ -61,9 +61,12 @@ public:
 	bool addBannerMask(const string& s);
 	bool removeBannerMask(const string& s);
 	bool addSpeaker(User* pUser);
+	bool isSpeaker(User* pUser);
 	bool removeSpeaker(User* pUser);
 	bool isFullOfMembers();
 	bool isBannedMask(string mask);
+
+	bool isUserCanSpeak(User* pUser);
 
 private:
 	const string _name;

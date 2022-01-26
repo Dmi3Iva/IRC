@@ -65,7 +65,9 @@ void PrivateMessageCommand::_sendMessageToReceivers(User* user, vector<string>& 
 		if (isChannel(*it)) {
 			channelMap::iterator channel = _channelsPtr->find(*it);
 			if (channel != _channelsPtr->end()) {
-				if (_isReceiverAlredyGotMessage(handledReceivers, channel->second->getName())) {
+				if (!channel->second->isUserCanSpeak(user)) {
+					sendMessage(user->getFD(), ERR_CANNOTSENDTOCHAN(_serverName, user->getNickname(), *it));
+				} else if (_isReceiverAlredyGotMessage(handledReceivers, channel->second->getName())) {
 					sendMessage(user->getFD(), ERR_TOOMANYTARGETS(_serverName, user->getNickname(), *it));
 				} else {
 					channel->second->sendToAllChannelMembers(RPL_PRIVMSG(user->getNickname(), user->getUsername(), user->getUsername(), *it, message), user);
@@ -83,8 +85,7 @@ void PrivateMessageCommand::_sendMessageToReceivers(User* user, vector<string>& 
 					sendMessage(userReceiver->getFD(), RPL_PRIVMSG(user->getNickname(), user->getUsername(), user->getUsername(), *it, message));
 					handledReceivers.push_back(userReceiver->getNickname());
 					if (userReceiver->getIsAway()) {
-						sendMessage(user->getFD(),
-							RPL_AWAY(_serverName, user->getNickname(), userReceiver->getNickname(), userReceiver->getAwayMessage()));
+						sendMessage(user->getFD(), RPL_AWAY(_serverName, user->getNickname(), userReceiver->getNickname(), userReceiver->getAwayMessage()));
 					}
 				}
 			} else {

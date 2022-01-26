@@ -1,5 +1,6 @@
 #ifndef RESPONSES_HPP
 #define RESPONSES_HPP
+
 #include "constants.hpp"
 #include <string>
 
@@ -73,6 +74,8 @@
  */
 
 #define ERR_NOSUCHCHANNEL(servername, nickname, channelName) std::string(":") + servername + " 403 " + nickname + " " + channelName + " :No such channel" + DELIMITER
+
+#define ERR_CANNOTSENDTOCHAN(servername, nickname, channelName) std::string(":") + servername + " 404 " + nickname + " " + channelName + " :Cannot send to channel" + DELIMITER
 
 #define ERR_TOOMANYCHANNELS(servername, nickname, channelName)                                                                                                                     \
 	std::string(":") + servername + " 405 " + nickname + " " + channelName + " :You have joined too many channels" + DELIMITER

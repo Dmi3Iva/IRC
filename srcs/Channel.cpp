@@ -192,3 +192,15 @@ bool Channel::removeSpeaker(User* pUser)
 	return false;
 }
 bool Channel::isBannedMask(string mask) { return std::find(_bannedUsers.begin(), _bannedUsers.end(), mask) != _bannedUsers.end(); }
+
+bool Channel::isSpeaker(User* pUser)
+{
+	for (usersVectorType ::const_iterator it = _speakers.begin(); it != _speakers.end(); ++it) {
+		if ((*it)->getNickname() == pUser->getNickname()) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Channel::isUserCanSpeak(User* pUser) { return !_isModerated || isOperator(pUser) || isSpeaker(pUser); }
