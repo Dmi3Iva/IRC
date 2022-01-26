@@ -2,14 +2,6 @@
 #define USERCOMMAND_HPP
 
 #include "../ACommand.hpp"
-#include "../Context.hpp"
-#include "../utils.hpp"
-#include <iostream>
-#include <vector>
-
-class ACommand;
-class Context;
-class User;
 
 class UserCommand : public ACommand {
 public:

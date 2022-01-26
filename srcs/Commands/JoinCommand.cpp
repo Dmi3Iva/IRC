@@ -12,8 +12,7 @@ JoinCommand::JoinCommand(string serverName, userVector* usersPtr, channelMap* ch
  */
 void JoinCommand::_userHasJoinedChannel(User* user, channelMap::iterator chIterator)
 {
-	chIterator->second->sendToAllChannelMembers(
-		JOIN_RPL(user->getNickname(), user->getUsername(), user->getHostname(), chIterator->second->getName()));
+	chIterator->second->sendToAllChannelMembers(JOIN_RPL(user->getNickname(), user->getUsername(), user->getHostname(), chIterator->second->getName()));
 	// send channel topic to the user
 	sendMessage(user->getFD(), RPL_TOPIC(_serverName, chIterator->second->getName(), chIterator->second->getTopic()));
 
@@ -23,10 +22,9 @@ void JoinCommand::_userHasJoinedChannel(User* user, channelMap::iterator chItera
 		cerr << "ERROR: Channel " << chIterator->second->getName() << " after user joined still empty!" << endl;
 		sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, chIterator->second->getName(), ""));
 	} else {
-		for (Channel::usersVectorType::const_iterator it = chIterator->second->getMembers().begin(),
-													  ite = chIterator->second->getMembers().end();
-			 it != ite; ++it)
-			sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, chIterator->second->getName(), (chIterator->second->isOperator(*it) ? "@" + (*it)->getNickname() : (*it)->getNickname())));
+		for (Channel::usersVectorType::const_iterator it = chIterator->second->getMembers().begin(), ite = chIterator->second->getMembers().end(); it != ite; ++it)
+			sendMessage(
+				user->getFD(), RPL_NAMREPLY(_serverName, chIterator->second->getName(), (chIterator->second->isOperator(*it) ? "@" + (*it)->getNickname() : (*it)->getNickname())));
 	}
 	// end of sending
 	sendMessage(user->getFD(), RPL_ENDOFNAMES(_serverName, chIterator->second->getName()));
@@ -59,7 +57,7 @@ void JoinCommand::_joinChannel(User* user, string channelName, string key)
 			sendMessage(user->getFD(), ERR_BANNEDFROMCHAN(_serverName, user->getNickname(), channelName));
 			return;
 		}
-		if (it->second->isOnlyInviteChannel()) {
+		if (it->second->isInviteOnlyChannel()) {
 			sendMessage(user->getFD(), ERR_INVITEONLYCHAN(_serverName, user->getNickname(), channelName));
 			return;
 		}
@@ -83,9 +81,7 @@ void JoinCommand::execute(User* user, string cmd)
 {
 	cout << "JOIN executes: " << cmd << endl;
 	if (!user->isRegistered()) {
-		sendMessage(
-			user->getFD(),
-			ERR_NOTREGISTERED(_serverName, (user->getNickname().empty() ? std::string("*") : user->getNickname()), _name));
+		sendMessage(user->getFD(), ERR_NOTREGISTERED(_serverName, (user->getNickname().empty() ? std::string("*") : user->getNickname()), _name));
 		return;
 	}
 	vector<string> channelsAndKeys = ft_split(cmd, " ");
@@ -99,8 +95,7 @@ void JoinCommand::execute(User* user, string cmd)
 		if (!isChannelName(*it)) {
 			sendMessage(user->getFD(), ERR_NOSUCHCHANNEL(_serverName, user->getNickname(), _name));
 			it = channels.erase(it);
-		}
-		else
+		} else
 			++it;
 	}
 	vector<string> keys;

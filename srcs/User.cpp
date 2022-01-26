@@ -1,6 +1,6 @@
 #include "User.hpp"
 
-User::User(int userFd, string hostname, string port)
+User::User(int userFd, string hostname, string port, bool isAuthenticated)
 	: _fd(userFd)
 	, _hostname(hostname)
 	, _port(port)
@@ -8,6 +8,10 @@ User::User(int userFd, string hostname, string port)
 	, _isNickPerformed(false)
 	, _isUserPerformed(false)
 	, _isAway(false)
+	, _isAuthenticated(isAuthenticated)
+	, _isInvisible(false) // TODO:: is correct values by default?
+	, _isReceivesWallops(false) // TODO:: is correct values by default?
+	, _isReceiptNotice(false) // TODO:: is correct values by default?
 	, _message("")
 {
 }
@@ -18,8 +22,9 @@ User& User::operator=(const User& user)
 	_nickname = user.getNickname();
 	_realname = user.getRealname();
 	_hostname = user.getHostname();
-	_port = user.getHostname();
+	_port = user.getPort();
 	_isRegistered = user.isRegistered();
+	_isAuthenticated = user.isAuthenticated();
 	_userChannels = user.getChannels();
 	return *this;
 }
@@ -46,6 +51,8 @@ void User::setMessage(string message) { _message = message; }
 
 bool User::isRegistered() const { return _isRegistered; }
 
+bool User::isAuthenticated() const { return _isAuthenticated; }
+
 void User::setIsRegistered(bool isRegistered) { _isRegistered = isRegistered; }
 
 bool User::getIsNickPerformed() const { return _isNickPerformed; }
@@ -55,6 +62,8 @@ void User::setIsNickPerformed(bool value) { _isNickPerformed = value; }
 bool User::getIsUserPerformed() const { return _isUserPerformed; }
 
 void User::setIsUserPerformed(bool value) { _isUserPerformed = value; }
+
+void User::setIsAuthenticated(bool isAuthenticated) { _isAuthenticated = isAuthenticated; }
 
 string User::getNickname() const { return _nickname; }
 
@@ -107,3 +116,15 @@ const User::userChannels& User::getChannels() const { return _userChannels; }
 bool User::isOper() const { return _isOper; }
 
 void User::setIsOper(bool is_oper) { _isOper = is_oper; }
+
+bool User::isInvisible() const { return _isInvisible; }
+
+void User::setIsInvisible(bool is_invisible) { _isInvisible = is_invisible; }
+
+bool User::isReceiptNotice() const { return _isReceiptNotice; }
+
+void User::setIsReceiptNotice(bool is_receipt_notice) { _isReceiptNotice = is_receipt_notice; }
+
+bool User::isReceivesWallops() const { return _isReceivesWallops; }
+
+void User::setIsReceivesWallops(bool is_receives_wallops) { _isReceivesWallops = is_receives_wallops; }

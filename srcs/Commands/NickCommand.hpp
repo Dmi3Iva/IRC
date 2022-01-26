@@ -2,11 +2,6 @@
 #define NICKCOMMAND_HPP
 
 #include "../ACommand.hpp"
-#include "../Context.hpp"
-#include "../responses.hpp"
-#include <iostream>
-
-class ACommand;
 
 class NickCommand : public ACommand {
 public:

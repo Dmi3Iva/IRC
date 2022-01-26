@@ -39,7 +39,7 @@ public:
 
 	User& operator=(const User& user);
 	User(const User& user);
-	User(int userFd, string hostname, string port);
+	User(int userFd, string hostname, string port, bool isAuthenticated);
 	~User();
 
 	int getFD() const;
@@ -63,12 +63,20 @@ public:
 
 	bool getIsUserPerformed() const;
 	void setIsUserPerformed(bool value);
+	bool isAuthenticated() const;
+	void setIsAuthenticated(bool isAuthenticated);
 
 	bool addChannel(Channel* pChannel);
 	int quitChannel(string channelName);
 	bool isFullOfChannels();
 	const userChannels& getChannels() const;
 	bool isOper() const;
+	bool isInvisible() const;
+	void setIsInvisible(bool is_invisible);
+	bool isReceiptNotice() const;
+	void setIsReceiptNotice(bool is_receipt_notice);
+	bool isReceivesWallops() const;
+	void setIsReceivesWallops(bool is_receives_wallops);
 	void setIsOper(bool is_oper);
 
 private:
@@ -83,6 +91,10 @@ private:
 	bool _isNickPerformed;
 	bool _isUserPerformed;
 	bool _isAway;
+	bool _isAuthenticated;
+	bool _isInvisible;
+	bool _isReceivesWallops; // MODE w
+	bool _isReceiptNotice; // MODE s
 	string _message;
 	userChannels _userChannels;
 };

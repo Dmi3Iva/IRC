@@ -43,7 +43,7 @@ void UserCommand::execute(User* user, string cmd)
 	user->setHostname(userInfo[1]);
 	user->setIsUserPerformed(true);
 
-	if (!user->isRegistered() && user->getIsNickPerformed() && user->getIsUserPerformed()) {
+	if (!user->isRegistered() && user->isAuthenticated() && user->getIsNickPerformed() && user->getIsUserPerformed()) {
 		user->setIsRegistered(true);
 		string msg = RPL_MOTDSTART(_serverName, user->getNickname())
 			RPL_MOTD(_serverName, user->getNickname())

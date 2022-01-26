@@ -7,6 +7,7 @@
 #include "utils.hpp"
 #include <cctype>
 #include <cstring>
+#include <deque>
 #include <iostream>
 #include <list>
 #include <map>
@@ -14,6 +15,7 @@
 #include <sys/socket.h>
 
 using std::cout;
+using std::deque;
 using std::endl;
 using std::list;
 using std::make_pair;
