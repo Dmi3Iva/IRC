@@ -21,6 +21,7 @@ void Context::_setupCommands()
 	_commandsMap["PASS"] = new PassCommand(_serverName, &_users, &_channels, _serverPassword);
 	_commandsMap["MODE"] = new ModeCommand(_serverName, &_users, &_channels);
 	_commandsMap["AWAY"] = new AwayCommand(_serverName, &_users, &_channels);
+	_commandsMap["KICK"] = new KickCommand(_serverName, &_users, &_channels);
 }
 
 Context::~Context()

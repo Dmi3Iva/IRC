@@ -64,6 +64,7 @@ public:
 	bool removeSpeaker(User* pUser);
 	bool isFullOfMembers();
 	bool isBannedMask(string mask);
+	User* getUserFromMembers(string userNick);
 
 private:
 	const string _name;

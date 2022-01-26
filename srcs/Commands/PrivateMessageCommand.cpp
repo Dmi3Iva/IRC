@@ -65,7 +65,9 @@ void PrivateMessageCommand::_sendMessageToReceivers(User* user, vector<string>& 
 		if (isChannel(*it)) {
 			channelMap::iterator channel = _channelsPtr->find(*it);
 			if (channel != _channelsPtr->end()) {
-				if (_isReceiverAlredyGotMessage(handledReceivers, channel->second->getName())) {
+				if (!channel->second->isUserMember(user)) {
+					sendMessage(user->getFD(), ERR_CANNOTSENDTOCHAN(_serverName, user->getNickname(), channel->second->getName()));
+				} else if (_isReceiverAlredyGotMessage(handledReceivers, channel->second->getName())) {
 					sendMessage(user->getFD(), ERR_TOOMANYTARGETS(_serverName, user->getNickname(), *it));
 				} else {
 					channel->second->sendToAllChannelMembers(RPL_PRIVMSG(user->getNickname(), user->getUsername(), user->getUsername(), *it, message), user);

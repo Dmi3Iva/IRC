@@ -140,4 +140,6 @@
 
 #define ERR_NOSUCHSERVER(servername, nickname) std::string(":") + servername + " 402 " + nickname + " " + servername + " :No such server" + DELIMITER
 
+#define ERR_CANNOTSENDTOCHAN(servername, nickname, channelname) std::string(":") + servername + " 404 " + nickname + " " + channelname + " :Cannot send to channel" + DELIMITER
+
 #endif

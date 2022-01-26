@@ -113,6 +113,16 @@ bool Channel::isUserMember(User* pUser) const
 	return false;
 }
 
+User* Channel::getUserFromMembers(string userNick)
+{
+	for (usersVectorType ::const_iterator it = _members.begin(), ite = _members.end(); it != ite; ++it) {
+		if ((*it)->getNickname() == userNick) {
+			return *it;
+		}
+	}
+	return NULL;
+}
+
 bool Channel::isUserBanned(User* pUser) const
 {
 	for (vector<string>::const_iterator it = _bannedUsers.begin(), ite = _bannedUsers.end(); it != ite; ++it) {
