@@ -13,6 +13,8 @@
 #include "Commands/PrivateMessageCommand.hpp"
 #include "Commands/UserCommand.hpp"
 #include "Commands/WhoCommand.hpp"
+#include "Commands/AwayCommand.hpp"
+#include "Commands/NoticeCommand.hpp"
 #include "User.hpp"
 #include "utils.hpp"
 #include <map>

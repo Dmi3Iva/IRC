@@ -13,6 +13,7 @@ User::User(int userFd, string hostname, string port, bool isAuthenticated)
 	, _isReceivesWallops(false) // TODO:: is correct values by default?
 	, _isReceiptNotice(false) // TODO:: is correct values by default?
 	, _message("")
+	, _awayMessage("")
 {
 }
 
@@ -76,6 +77,10 @@ const string& User::getMessage() const { return _message; }
 void User::setIsAway(bool value) { _isAway = value; }
 
 bool User::getIsAway() const { return _isAway; }
+
+string User::getAwayMessage() const { return _awayMessage; }
+
+void User::setAwayMessage(string msg) { _awayMessage = msg; }
 
 /**
  * Add the user to the channel

@@ -1,37 +1,32 @@
-#include "PrivateMessageCommand.hpp"
+#include "NoticeCommand.hpp"
 
-PrivateMessageCommand::PrivateMessageCommand(string serverName, userVector* usersPtr, channelMap* channelsPtr)
-	: ACommand(serverName, usersPtr, channelsPtr, "PRIVMSG")
+NoticeCommand::NoticeCommand(string serverName, userVector* usersPtr, channelMap* channelsPtr)
+	: ACommand(serverName, usersPtr, channelsPtr, "NOTICE")
 {
-	_description = "PRIVMSG <receiver>{,<receiver>} <text to be sent>";
+	_description = "NOTICE <nickname> <text>";
 }
 
-PrivateMessageCommand::~PrivateMessageCommand() { }
+NoticeCommand::~NoticeCommand() { }
 
-void PrivateMessageCommand::execute(User* user, string cmd)
+void NoticeCommand::execute(User* user, string cmd)
 {
-
 	if (!user->isRegistered()) {
-		sendMessage(user->getFD(), ERR_NOTREGISTERED(_serverName, user->getNickname(), "PRIVMSG"));
 		return;
 	}
 
 	vector<string> receivers = _getReceivers(cmd);
 	if (receivers.size() == 0 || receivers[0] == "" || receivers[0].c_str()[0] == ':') {
-		sendMessage(user->getFD(), ERR_NORECIPIENT(_serverName, user->getNickname(), _name, _description));
 		return;
 	}
 
 	string message = _constructMessage(cmd);
-
 	if (message.size() == 0 || message == "") {
-		sendMessage(user->getFD(), ERR_NOTEXTTOSEND(_serverName, user->getNickname()));
 		return;
 	}
 	_sendMessageToReceivers(user, receivers, message);
 }
 
-string PrivateMessageCommand::_constructMessage(string cmd)
+string NoticeCommand::_constructMessage(string cmd)
 {
 	size_t receiversLen = cmd.find(' ');
 	if (receiversLen == string::npos) {
@@ -43,7 +38,7 @@ string PrivateMessageCommand::_constructMessage(string cmd)
 	return (cmd);
 }
 
-vector<string> PrivateMessageCommand::_getReceivers(string& cmd)
+vector<string> NoticeCommand::_getReceivers(string& cmd)
 {
 	vector<string> receivers;
 
@@ -57,7 +52,7 @@ vector<string> PrivateMessageCommand::_getReceivers(string& cmd)
 	return (receivers);
 }
 
-void PrivateMessageCommand::_sendMessageToReceivers(User* user, vector<string>& receivers, string message)
+void NoticeCommand::_sendMessageToReceivers(User* user, vector<string>& receivers, string message)
 {
 	list<string> handledReceivers;
 
@@ -65,36 +60,24 @@ void PrivateMessageCommand::_sendMessageToReceivers(User* user, vector<string>& 
 		if (isChannel(*it)) {
 			channelMap::iterator channel = _channelsPtr->find(*it);
 			if (channel != _channelsPtr->end()) {
-				if (_isReceiverAlredyGotMessage(handledReceivers, channel->second->getName())) {
-					sendMessage(user->getFD(), ERR_TOOMANYTARGETS(_serverName, user->getNickname(), *it));
-				} else {
+				if (!_isReceiverAlredyGotMessage(handledReceivers, channel->second->getName())) {
 					channel->second->sendToAllChannelMembers(RPL_PRIVMSG(user->getNickname(), user->getUsername(), user->getUsername(), *it, message), user);
 					handledReceivers.push_back(channel->second->getName());
 				}
-			} else {
-				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, *it));
 			}
 		} else {
 			User* userReceiver = this->getUserFromArray(*it);
 			if (userReceiver) {
-				if (_isReceiverAlredyGotMessage(handledReceivers, userReceiver->getNickname())) {
-					sendMessage(user->getFD(), ERR_TOOMANYTARGETS(_serverName, user->getNickname(), *it));
-				} else {
+				if (!_isReceiverAlredyGotMessage(handledReceivers, userReceiver->getNickname())) {
 					sendMessage(userReceiver->getFD(), RPL_PRIVMSG(user->getNickname(), user->getUsername(), user->getUsername(), *it, message));
 					handledReceivers.push_back(userReceiver->getNickname());
-					if (userReceiver->getIsAway()) {
-						sendMessage(user->getFD(),
-							RPL_AWAY(_serverName, user->getNickname(), userReceiver->getNickname(), userReceiver->getAwayMessage()));
-					}
 				}
-			} else {
-				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, *it));
 			}
 		}
 	}
 }
 
-bool PrivateMessageCommand::_isReceiverAlredyGotMessage(list<string>& handledReceivers, string nick)
+bool NoticeCommand::_isReceiverAlredyGotMessage(list<string>& handledReceivers, string nick)
 {
 	for (list<string>::iterator it = handledReceivers.begin(); it != handledReceivers.end(); it++) {
 		if (*it == nick) {

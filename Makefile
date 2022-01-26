@@ -16,6 +16,8 @@ SRC = srcs/main.cpp \
  	srcs/Commands/PassCommand.cpp\
  	srcs/Commands/OperCommand.cpp\
  	srcs/Commands/ModeCommand.cpp\
+	srcs/Commands/AwayCommand.cpp\
+	srcs/Commands/NoticeCommand.cpp\
 	srcs/Channel.cpp \
 	srcs/Context.cpp \
 	srcs/Server/Server.cpp \
@@ -38,6 +40,8 @@ HEADERS = srcs/constants.hpp \
  	srcs/Commands/PassCommand.hpp\
  	srcs/Commands/OperCommand.hpp\
  	srcs/Commands/ModeCommand.hpp\
+	srcs/Commands/AwayCommand.hpp\
+	srcs/Commands/NoticeCommand.hpp\
 	srcs/Channel.hpp \
 	srcs/Context.hpp \
 	srcs/Server/Server.hpp \

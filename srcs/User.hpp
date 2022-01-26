@@ -60,6 +60,8 @@ public:
 	void setIsNickPerformed(bool value);
 	void setIsAway(bool value);
 	bool getIsAway() const;
+	void setAwayMessage(string msg);
+	string getAwayMessage() const;
 
 	bool getIsUserPerformed() const;
 	void setIsUserPerformed(bool value);
@@ -96,6 +98,7 @@ private:
 	bool _isReceivesWallops; // MODE w
 	bool _isReceiptNotice; // MODE s
 	string _message;
+	string _awayMessage;
 	userChannels _userChannels;
 };
 
