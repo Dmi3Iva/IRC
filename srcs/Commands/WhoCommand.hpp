@@ -21,7 +21,7 @@ private:
 	void _performWithUser(User* user, string userNick);
 	string _getUserStatus(Channel *channel, User *user);
 	string _getAwayStatus(User *user);
-	string _getChannelNameWichInUserParticipate(string userNick);
+	string _getChannelNameWichInUserParticipate(User *user);
 	string _getUserStatusOnServer(User *user);
 };
 
