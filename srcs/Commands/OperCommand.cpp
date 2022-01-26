@@ -31,9 +31,9 @@ void OperCommand::execute(User* user, string cmd)
 		if (!target->isOper()) {
 			target->setIsOper(true);
 			sendMessage(target->getFD(), RPL_YOUREOPER(_serverName, target->getNickname()));
-			// sendMessage()
-			//  TODO:: If the client sending the OPER command supplies the correct password for the given user, the server then informs the rest of the network of the new operator
-			//  by issuing a "MODE +o" for the clients nickname.
+			for (userVector::iterator it = _usersPtr->begin(); it != _usersPtr->end(); ++it) {
+				sendMessage((*it)->getFD(), MODE_RPL(user->getNickname(), user->getUsername(), user->getHostname(), target->getNickname(), "+o :" + target->getNickname()));
+			}
 		}
 		return;
 	}

@@ -1,7 +1,5 @@
 #include "ModeCommand.hpp"
 
-// TODO:: OPER function required for MODE message
-
 ModeCommand::ModeCommand(string serverName, userVector* usersPtr, channelMap* channelsPtr)
 	: ACommand(serverName, usersPtr, channelsPtr, "MODE")
 {
@@ -125,7 +123,7 @@ void ModeCommand::_executeChannelMod(User* user, Channel* channel, string argume
 	size_t spacePos = arguments.find(' ');
 	string changes;
 	string modes = arguments.substr(0, spacePos);
-	deque<string> optionalArguments = ft_split<deque<string> >(arguments.substr(spacePos), " ");
+	deque<string> optionalArguments = ft_split<deque<string> >(spacePos == string::npos ? "" : arguments.substr(spacePos), " ");
 
 	if (!channel->isUserMember(user)) {
 		sendMessage(user->getFD(), ERR_NOTONCHANNEL(_serverName, user->getNickname(), channel->getName()));
@@ -171,7 +169,7 @@ void ModeCommand::_executeChannelMod(User* user, Channel* channel, string argume
 			_handleBFLag(user, channel, isPlus, getPopFront(optionalArguments));
 			break;
 		case 'k':
-			_handleKFlag(user, channel, getPopFront(optionalArguments), changes);
+			_handleKFlag(user, channel, getPopFront(optionalArguments), changes, isPlus);
 			break;
 		case 'v':
 			_handleVFlag(user, channel, getPopFront(optionalArguments), isPlus);
@@ -220,7 +218,7 @@ void ModeCommand::_handleLFlag(User* user, Channel* channel, string argument, bo
 	int l;
 
 	if (isPlus) {
-		if (!argument.empty()) {
+		if (argument.empty()) {
 			sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
 		} else {
 			l = stoi(argument);
@@ -239,7 +237,7 @@ void ModeCommand::_handleLFlag(User* user, Channel* channel, string argument, bo
 
 void ModeCommand::_handleBFLag(User* user, Channel* channel, bool isPlus, string argument)
 {
-	if (!argument.empty()) {
+	if (argument.empty()) {
 		sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
 	} else {
 		if (isPlus ? channel->addBannerMask(argument) //
@@ -257,11 +255,16 @@ void ModeCommand::_handleBFLag(User* user, Channel* channel, bool isPlus, string
 	}
 }
 
-void ModeCommand::_handleKFlag(User* user, Channel* channel, string argument, string& changes)
+void ModeCommand::_handleKFlag(User* user, Channel* channel, string argument, string& changes, bool isPlus)
 {
 	if (argument.empty()) {
-		sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
-	} else if (channel->getPassword() == argument) {
+		if (isPlus) {
+			sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
+		} else {
+			channel->setPassword("");
+			changes += 'k';
+		}
+	} else if (channel->getPassword() != argument) {
 		channel->setPassword(argument);
 		changes += 'k';
 	} else {
@@ -273,7 +276,7 @@ void ModeCommand::_handleVFlag(User* user, Channel* channel, string argument, bo
 {
 	User* userTarget;
 
-	if (!argument.empty()) {
+	if (argument.empty()) {
 		sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
 	} else {
 		userTarget = getUserFromArray(argument);
@@ -326,7 +329,7 @@ void ModeCommand::_executeUserMod(User* user, User* userTarget, string arguments
 			changes += "w";
 			break;
 		case 's':
-			userTarget->setIsReceiptNotice(isPlus);
+			userTarget->setIsReceiptNotice(isPlus); // this flag uses for server notices
 			changes += "s";
 			break;
 		case 'o':

@@ -17,7 +17,7 @@ private:
 	void _handleLFlag(User* user, Channel* channel, string argument, bool isPlus, string& changes);
 	void _handleBFLag(User* user, Channel* channel, bool isPlus, string argument);
 	void _handleVFlag(User* user, Channel* channel, string argument, bool isPlus);
-	void _handleKFlag(User* user, Channel* channel, string argument, string& changes);
+	void _handleKFlag(User* user, Channel* channel, string argument, string& changes, bool isPlus);
 };
 
 #endif

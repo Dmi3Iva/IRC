@@ -17,9 +17,9 @@
 
 #define RPL_TOPIC(server, channel, topic) std::string(":") + server + " 332 " + channel + " :" + topic + DELIMITER
 
-#define RPL_NAMREPLY(server, channel, nick) std::string(":") + server + " 353 " + channel + " :" + nick + DELIMITER
+#define RPL_NAMREPLY(server, channel, provideWho, nick) std::string(":") + server + " 353 " + provideWho + " = " + channel + " :" + nick + DELIMITER
 
-#define RPL_ENDOFNAMES(server, channel) std::string(":") + server + " 366 " + channel + " :End of /NAMES list" + DELIMITER
+#define RPL_ENDOFNAMES(server, channel, provideWho) std::string(":") + server + " 366 " + provideWho + " " + channel + " :End of /NAMES list" + DELIMITER
 
 #define RPL_WHOREPLY(server, nickname, channel, username, host, userNick, awaystatus, serverstatus, operator, realname)                                                            \
 	std::string(":") + server + " 352 " + nickname + " " + channel + " " + username + " " + host + " " + server + " " + userNick + " " + awaystatus + serverstatus                 \
@@ -58,13 +58,15 @@
 
 /**
  * example: ":Guest36552!~uss@joseon-i28.29p.1d9n3c.IP MODE Guest36552 :-w"
+ * :lara!Adium@* MODE #new :+o :qwe
  * :Guest19803!~uss@joseon-i28.29p.1d9n3c.IP MODE #nnnn4 +l :10
+ * :Guest50!~Guest50@joseon-i28.29p.1d9n3c.IP MODE #myfreenode +o :qwerty
  */
 #define MODE_RPL(nickname, username, host, targetNickname, changes)                                                                                                                \
-	std::string(":") + nickname + "!" + username + "@" + host + " MODE " + targetNickname + " :" + changes + DELIMITER
+	std::string(":") + nickname + "!" + username + "@" + host + " MODE " + targetNickname + " " + changes + DELIMITER
 
-#define MODE_CHANNEL_RPL(nickname, username, host, targetNickname, changes)                                                                                                        \
-	std::string(":") + nickname + "!" + username + "@" + host + " MODE " + targetNickname + " :" + changes + DELIMITER
+//#define MODE_CHANNEL_RPL(nickname, username, host, targetNickname, changes)                                                                                                        \
+//	std::string(":") + nickname + "!" + username + "@" + host + " MODE " + targetNickname + " :" + changes + DELIMITER
 
 /**
  * ERRORS

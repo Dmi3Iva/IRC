@@ -15,19 +15,15 @@ void JoinCommand::_userHasJoinedChannel(User* user, channelMap::iterator chItera
 	chIterator->second->sendToAllChannelMembers(JOIN_RPL(user->getNickname(), user->getUsername(), user->getHostname(), chIterator->second->getName()));
 	// send channel topic to the user
 	sendMessage(user->getFD(), RPL_TOPIC(_serverName, chIterator->second->getName(), chIterator->second->getTopic()));
-
 	// send channel members to joined user
-	if (chIterator->second->getMembers().empty()) {
-		// if there aren't any members send empty response, but it actually seems to be wrong
-		cerr << "ERROR: Channel " << chIterator->second->getName() << " after user joined still empty!" << endl;
-		sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, chIterator->second->getName(), ""));
-	} else {
-		for (Channel::usersVectorType::const_iterator it = chIterator->second->getMembers().begin(), ite = chIterator->second->getMembers().end(); it != ite; ++it)
-			sendMessage(
-				user->getFD(), RPL_NAMREPLY(_serverName, chIterator->second->getName(), (chIterator->second->isOperator(*it) ? "@" + (*it)->getNickname() : (*it)->getNickname())));
+	for (Channel::usersVectorType::const_iterator it = chIterator->second->getMembers().begin(); it != chIterator->second->getMembers().end(); ++it) {
+		if (!(*it)->isInvisible()) {
+			chIterator->second->sendToAllChannelMembers(RPL_NAMREPLY(
+				_serverName, chIterator->second->getName(), user->getNickname(), (chIterator->second->isOperator(*it) ? "@" + (*it)->getNickname() : (*it)->getNickname())));
+		}
 	}
 	// end of sending
-	sendMessage(user->getFD(), RPL_ENDOFNAMES(_serverName, chIterator->second->getName()));
+	chIterator->second->sendToAllChannelMembers(RPL_ENDOFNAMES(_serverName, chIterator->second->getName(), user->getNickname()));
 }
 
 void JoinCommand::_joinChannel(User* user, string channelName, string key)
