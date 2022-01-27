@@ -85,4 +85,10 @@ template <class Container> typename Container::value_type getPopFront(Container 
 	return result;
 }
 
+bool isMaskMatch(const string& str, const string& mask);
+
+bool isMaskMatch(const char* str, const char* mask);
+
+bool StarCmp(const char* str, const char* mask);
+
 #endif

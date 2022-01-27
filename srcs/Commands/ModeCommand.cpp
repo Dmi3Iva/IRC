@@ -245,7 +245,7 @@ void ModeCommand::_handleBFLag(User* user, Channel* channel, bool isPlus, string
 		) {
 			channel->sendToAllChannelMembers(MODE_RPL(user->getNickname(), user->getUsername(), user->getHostname(), channel->getName(), (isPlus ? "+b :" : "-b :") + argument));
 		} else {
-			if (channel->isBannedMask(argument)) {
+			if (channel->isBanned(argument)) {
 				// already using mask
 				sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
 			} else {

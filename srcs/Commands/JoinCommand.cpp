@@ -49,7 +49,7 @@ void JoinCommand::_joinChannel(User* user, string channelName, string key)
 			sendMessage(user->getFD(), ERR_BADCHANNELKEY(_serverName, user->getNickname(), channelName));
 			return;
 		}
-		if (it->second->isUserBanned(user)) {
+		if (it->second->isBanned(user)) {
 			sendMessage(user->getFD(), ERR_BANNEDFROMCHAN(_serverName, user->getNickname(), channelName));
 			return;
 		}
