@@ -81,6 +81,8 @@ public:
 	void setIsReceivesWallops(bool is_receives_wallops);
 	void setIsOper(bool is_oper);
 
+	bool isParticipateInChannels() const;
+
 private:
 	int _fd;
 	string _nickname;

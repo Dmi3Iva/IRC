@@ -60,7 +60,10 @@ void NoticeCommand::_sendMessageToReceivers(User* user, vector<string>& receiver
 		if (isChannel(*it)) {
 			channelMap::iterator channel = _channelsPtr->find(*it);
 			if (channel != _channelsPtr->end()) {
-				if (!_isReceiverAlredyGotMessage(handledReceivers, channel->second->getName())) {
+				if (!channel->second->isUserCanSpeak(user)) {
+					sendMessage(user->getFD(), ERR_CANNOTSENDTOCHAN(_serverName, user->getNickname(), *it));
+				}
+				else if (!_isReceiverAlredyGotMessage(handledReceivers, channel->second->getName())) {
 					channel->second->sendToAllChannelMembers(RPL_PRIVMSG(user->getNickname(), user->getUsername(), user->getUsername(), *it, message), user);
 					handledReceivers.push_back(channel->second->getName());
 				}

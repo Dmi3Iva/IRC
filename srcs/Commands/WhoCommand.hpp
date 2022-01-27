@@ -20,7 +20,7 @@ private:
 	void _performWithChannel(User* user, string channelName, bool operatorFlag);
 	void _performWithUser(User* user, string userNick);
 	string _getAwayStatus(User *user);
-	string _getChannelNameWichInUserParticipate(User *user);
+	string _getChannelNameWhichInUserParticipate(User *user);
 	string _getUserStatusOnServer(User *user);
 };
 

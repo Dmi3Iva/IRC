@@ -82,7 +82,7 @@ void WhoCommand::_performWithUser(User* user, string userNick)
 	}
 	if (wantedUser->isInvisible())
 		return;
-	string channel = _getChannelNameWichInUserParticipate(wantedUser);
+	string channel = _getChannelNameWhichInUserParticipate(wantedUser);
 	string serverstatus = _getUserStatusOnServer(user);
 	sendMessage(user->getFD(),
 		RPL_WHOREPLY(_serverName, user->getNickname(), channel, wantedUser->getUsername(), wantedUser->getHostname(), wantedUser->getNickname(), _getAwayStatus(wantedUser),
@@ -104,7 +104,7 @@ string WhoCommand::_getUserStatusOnServer(User* user)
 	return ("");
 }
 
-string WhoCommand::_getChannelNameWichInUserParticipate(User *user)
+string WhoCommand::_getChannelNameWhichInUserParticipate(User* user)
 {
 	for (channelMap::iterator it = _channelsPtr->begin(); it != _channelsPtr->end(); it++) {
 		if (it->second->isUserMember(user))

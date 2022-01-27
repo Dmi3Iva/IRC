@@ -16,6 +16,7 @@
 #include "Commands/AwayCommand.hpp"
 #include "Commands/NoticeCommand.hpp"
 #include "Commands/KickCommand.hpp"
+#include "Commands/WhoisCommand.hpp"
 #include "User.hpp"
 #include "utils.hpp"
 #include <map>

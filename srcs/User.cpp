@@ -133,3 +133,10 @@ void User::setIsReceiptNotice(bool is_receipt_notice) { _isReceiptNotice = is_re
 bool User::isReceivesWallops() const { return _isReceivesWallops; }
 
 void User::setIsReceivesWallops(bool is_receives_wallops) { _isReceivesWallops = is_receives_wallops; }
+
+bool User::isParticipateInChannels() const
+{
+	if (_userChannels.empty())
+		return (false);
+	return (true);
+}

@@ -19,6 +19,7 @@ SRC = srcs/main.cpp \
 	srcs/Commands/AwayCommand.cpp\
 	srcs/Commands/NoticeCommand.cpp\
 	srcs/Commands/KickCommand.cpp \
+	srcs/Commands/WhoisCommand.cpp \
 	srcs/Channel.cpp \
 	srcs/Context.cpp \
 	srcs/Server/Server.cpp \
@@ -44,6 +45,7 @@ HEADERS = srcs/constants.hpp \
 	srcs/Commands/AwayCommand.hpp\
 	srcs/Commands/NoticeCommand.hpp\
 	srcs/Commands/KickCommand.hpp \
+	srcs/Commands/WhoisCommand.hpp \
 	srcs/Channel.hpp \
 	srcs/Context.hpp \
 	srcs/Server/Server.hpp \

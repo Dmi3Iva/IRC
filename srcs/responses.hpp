@@ -36,6 +36,15 @@
 
 #define RPL_AWAY(server, nickname, receivernick, message) std::string(":") + server + " 301 " + nickname + " " + receivernick + " :" + message + DELIMITER
 
+#define RPL_WHOISUSER(server, nickname, nick, user, host, name) std::string(":") + server + " 311 " + nickname + " " + nick + " " + user + " " + host + " * :" + name + DELIMITER
+
+#define RPL_WHOISSERVER(server, nickname, nick, serverinfo) std::string(":") + server + " 312 " + nickname + " " + nick + " " + server + " :" + serverinfo + DELIMITER
+
+#define RPL_ENDOFWHOIS(server, nickname, nick) std::string(":") + server + " 318 " + nickname + " " + nick + " :End of WHOIS list" + DELIMITER
+
+#define RPL_WHOISCHANNELS(server, nickname, nick, channelsinfo) std::string(":") + server + " 319 " + nickname + " " + nick + " :" + channelsinfo + DELIMITER
+
+#define RPL_WHOISOPERATOR(server, nickname, nick) std::string(":") + server + " 313 " + nickname + " " + nick + " :is an IRC operator" + DELIMITER
 /**
  * CUSTOM REPLIES
  */
@@ -57,7 +66,7 @@
 
 #define PONG_RPL(msg) std::string("PONG :") + msg + DELIMITER
 
-#define RPL_KICK(nickname, username, host, channel, kickeddude, message)                                                                                                                   \
+#define RPL_KICK(nickname, username, host, channel, kickeddude, message)                                                                                                           \
 	std::string(":") + nickname + "!" + username + "@" + host + " KICK " + channel + " " + kickeddude + std::string(" :") + message + DELIMITER
 
 /**
@@ -148,6 +157,5 @@
 #define ERR_USERSDONTMATCH(servername, nickname) std::string(":") + servername + " 502 " + nickname + " :Cant change mode for other users" + DELIMITER
 
 #define ERR_NOSUCHSERVER(servername, nickname) std::string(":") + servername + " 402 " + nickname + " " + servername + " :No such server" + DELIMITER
-
 
 #endif
