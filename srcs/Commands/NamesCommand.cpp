@@ -34,7 +34,7 @@ void NamesCommand::_sendListOfChannelMembers(User* user, Channel* channel)
 {
 	if (!channel->isSecret() && !channel->isPrivate() && !channel->isUserMember(user)) {
 		string listOfNicknames = getListOfNicknames(channel->getMembers(), " ");
-		sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, channel->getName(), listOfNicknames));
+		sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, channel->getName(), listOfNicknames, user->getNickname()));
 		sendMessage(user->getFD(), RPL_ENDOFNAMES(_serverName, channel->getName()));
 	}
 }
