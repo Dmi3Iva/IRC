@@ -23,7 +23,7 @@ void JoinCommand::_userHasJoinedChannel(User* user, channelMap::iterator chItera
 		}
 	}
 	// end of sending
-	chIterator->second->sendToAllChannelMembers(RPL_ENDOFNAMES(_serverName, chIterator->second->getName(), user->getNickname()));
+	chIterator->second->sendToAllChannelMembers(RPL_ENDOFNAMES(_serverName, chIterator->second->getName()));
 }
 
 void JoinCommand::_joinChannel(User* user, string channelName, string key)

@@ -33,8 +33,10 @@ void NamesCommand::execute(User* user, string cmd)
 void NamesCommand::_sendListOfChannelMembers(User* user, Channel* channel)
 {
 	if (!channel->isSecret() && !channel->isPrivate() && !channel->isUserMember(user)) {
-		string listOfNicknames = getListOfNicknames(channel->getMembers(), " ");
-		sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, channel->getName(), listOfNicknames, user->getNickname()));
+		for (Channel::usersVectorType::const_iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it) {
+			if (!(*it)->isInvisible())
+				sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, channel->getNameWithPrefix(), channel->getUserNicknameWithPrefix(*it), user->getNickname()));
+		}
 		sendMessage(user->getFD(), RPL_ENDOFNAMES(_serverName, channel->getName()));
 	}
 }

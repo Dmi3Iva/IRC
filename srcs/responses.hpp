@@ -18,9 +18,9 @@
 
 #define RPL_TOPIC(server, channel, topic) std::string(":") + server + " 332 " + channel + " :" + topic + DELIMITER
 
-#define RPL_NAMREPLY(server, channel, provideWho, nick) std::string(":") + server + " 353 " + provideWho + " = " + channel + " :" + nick + DELIMITER
+#define RPL_NAMREPLY(server, channel, provideWho, nick) std::string(":") + server + " 353 " + provideWho + " " + channel + " :" + nick + DELIMITER
 
-#define RPL_ENDOFNAMES(server, channel, provideWho) std::string(":") + server + " 366 " + provideWho + " " + channel + " :End of /NAMES list" + DELIMITER
+#define RPL_ENDOFNAMES(server, channel) std::string(":") + server + " 366 " + channel + " :End of /NAMES list" + DELIMITER
 
 #define RPL_WHOREPLY(server, nickname, channel, username, host, userNick, awaystatus, serverstatus, operator, realname)                                                            \
 	std::string(":") + server + " 352 " + nickname + " " + channel + " " + username + " " + host + " " + server + " " + userNick + " " + awaystatus + serverstatus                 \
