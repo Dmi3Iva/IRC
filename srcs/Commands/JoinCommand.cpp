@@ -18,14 +18,8 @@ void JoinCommand::_userHasJoinedChannel(User* user, channelMap::iterator chItera
 	// send channel members to joined user
 	for (Channel::usersVectorType::const_iterator it = chIterator->second->getMembers().begin(); it != chIterator->second->getMembers().end(); ++it) {
 		if (!(*it)->isInvisible()) {
-
-			string name = (chIterator->second->isOperator(*it)
-								  ? "@"  // if it is operator
-								  :chIterator->second->isSpeaker(*it)
-									  ? "+" // if it is speaker
-									  : "") // regular
-				+ (*it)->getNickname();
-			chIterator->second->sendToAllChannelMembers(RPL_NAMREPLY(_serverName, chIterator->second->getName(), user->getNickname(), name));
+			chIterator->second->sendToAllChannelMembers(
+				RPL_NAMREPLY(_serverName, chIterator->second->getName(), user->getNickname(), chIterator->second->getUserPrefix(*it) + (*it)->getNickname()));
 		}
 	}
 	// end of sending

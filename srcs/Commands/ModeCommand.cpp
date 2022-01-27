@@ -123,7 +123,7 @@ void ModeCommand::_executeChannelMod(User* user, Channel* channel, string argume
 	size_t spacePos = arguments.find(' ');
 	string changes;
 	string modes = arguments.substr(0, spacePos);
-	deque<string> optionalArguments = ft_split<deque<string> >(spacePos == string::npos ? "" : arguments.substr(spacePos), " ");
+	vector<string> optionalArguments = ft_split(spacePos == string::npos ? "" : arguments.substr(spacePos), " ");
 
 	if (!channel->isUserMember(user)) {
 		sendMessage(user->getFD(), ERR_NOTONCHANNEL(_serverName, user->getNickname(), channel->getName()));
@@ -184,7 +184,7 @@ void ModeCommand::_executeChannelMod(User* user, Channel* channel, string argume
 	}
 }
 
-void ModeCommand::_handleOFlag(User* user, Channel* channel, bool isPlus, deque<string> optionalArguments)
+void ModeCommand::_handleOFlag(User* user, Channel* channel, bool isPlus, vector<string> optionalArguments)
 {
 	User* userTarget;
 

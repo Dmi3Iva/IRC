@@ -203,4 +203,16 @@ bool Channel::isSpeaker(User* pUser)
 	return false;
 }
 
-bool Channel::isUserCanSpeak(User* pUser) { return !_isModerated || isOperator(pUser) || isSpeaker(pUser); }
+bool Channel::isUserCanSpeak(User* pUser)
+{
+	return _isModerated //
+		? isOperator(pUser) || isSpeaker(pUser) //
+		: isUserMember(pUser);
+}
+
+string Channel::getUserPrefix(User* pUser)
+{
+	return isOperator(pUser) ? "@" // for oper
+		: isSpeaker(pUser)	 ? "+" // for speaker
+							 : ""; // just member
+}
