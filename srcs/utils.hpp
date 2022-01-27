@@ -78,6 +78,8 @@ bool isChannel(string receiver);
 
 template <class Container> typename Container::value_type getPopFront(Container c)
 {
+	if (c.empty())
+		return typename Container::value_type();
 	typename Container::value_type result = c.front();
 	c.erase(c.begin());
 	return result;

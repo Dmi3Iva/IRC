@@ -63,7 +63,7 @@ void WhoCommand::_performWithChannel(User* user, string channelName, bool operat
 		for (vector<User*>::iterator it = users.begin(); it != users.end(); it++) {
 			if ((*it)->isInvisible())
 				continue;
-			string userStatus = _getUserStatus(channel->second, *it);
+			string userStatus = channel->second->getUserPrefix(*it);
 			string awaystatus = _getAwayStatus(*it);
 			string serverstatus = _getUserStatusOnServer(user);
 			sendMessage(user->getFD(),
@@ -87,14 +87,6 @@ void WhoCommand::_performWithUser(User* user, string userNick)
 	sendMessage(user->getFD(),
 		RPL_WHOREPLY(_serverName, user->getNickname(), channel, wantedUser->getUsername(), wantedUser->getHostname(), wantedUser->getNickname(), _getAwayStatus(wantedUser),
 			serverstatus, "@", wantedUser->getRealname()));
-}
-
-string WhoCommand::_getUserStatus(Channel* channel, User* user)
-{
-	if (channel->isOperator(user)) {
-		return ("@");
-	}
-	return ("+");
 }
 
 string WhoCommand::_getAwayStatus(User* user)

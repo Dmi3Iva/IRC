@@ -15,19 +15,15 @@ void JoinCommand::_userHasJoinedChannel(User* user, channelMap::iterator chItera
 	chIterator->second->sendToAllChannelMembers(JOIN_RPL(user->getNickname(), user->getUsername(), user->getHostname(), chIterator->second->getName()));
 	// send channel topic to the user
 	sendMessage(user->getFD(), RPL_TOPIC(_serverName, chIterator->second->getName(), chIterator->second->getTopic()));
-
 	// send channel members to joined user
-	if (chIterator->second->getMembers().empty()) {
-		// if there aren't any members send empty response, but it actually seems to be wrong
-		cerr << "ERROR: Channel " << chIterator->second->getName() << " after user joined still empty!" << endl;
-		sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, chIterator->second->getName(), ""));
-	} else {
-		for (Channel::usersVectorType::const_iterator it = chIterator->second->getMembers().begin(), ite = chIterator->second->getMembers().end(); it != ite; ++it)
-			sendMessage(
-				user->getFD(), RPL_NAMREPLY(_serverName, chIterator->second->getName(), (chIterator->second->isOperator(*it) ? "@" + (*it)->getNickname() : (*it)->getNickname())));
+	for (Channel::usersVectorType::const_iterator it = chIterator->second->getMembers().begin(); it != chIterator->second->getMembers().end(); ++it) {
+		if (!(*it)->isInvisible()) {
+			chIterator->second->sendToAllChannelMembers(
+				RPL_NAMREPLY(_serverName, chIterator->second->getName(), user->getNickname(), chIterator->second->getUserPrefix(*it) + (*it)->getNickname()));
+		}
 	}
 	// end of sending
-	sendMessage(user->getFD(), RPL_ENDOFNAMES(_serverName, chIterator->second->getName()));
+	chIterator->second->sendToAllChannelMembers(RPL_ENDOFNAMES(_serverName, chIterator->second->getName(), user->getNickname()));
 }
 
 void JoinCommand::_joinChannel(User* user, string channelName, string key)
@@ -91,19 +87,16 @@ void JoinCommand::execute(User* user, string cmd)
 		return;
 	}
 	vector<string> channels = ft_split(channelsAndKeys[0], ",");
-	for (vector<string>::iterator it = channels.begin(), ite = channels.end(); it != ite;) {
-		if (!isChannelName(*it)) {
-			sendMessage(user->getFD(), ERR_NOSUCHCHANNEL(_serverName, user->getNickname(), _name));
-			it = channels.erase(it);
-		} else
-			++it;
-	}
 	vector<string> keys;
 	if (channelsAndKeys.size() > 1)
 		keys = ft_split(channelsAndKeys[1], ",");
 
 	// if channels and keys lists have different sizes, last channels received empty keys
 	for (size_t i = 0; i < channels.size(); ++i) {
-		_joinChannel(user, channels[i], i < keys.size() ? keys[i] : string());
+		if (isChannelName(channels[i])) {
+			_joinChannel(user, channels[i], i < keys.size() ? keys[i] : string());
+		} else {
+			sendMessage(user->getFD(), ERR_NOSUCHCHANNEL(_serverName, user->getNickname(), channels[i]));
+		}
 	}
 }

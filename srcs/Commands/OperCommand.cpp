@@ -15,9 +15,7 @@ void OperCommand::execute(User* user, string cmd)
 		return;
 	}
 	if (!user->isRegistered()) {
-		sendMessage(
-			user->getFD(),
-			ERR_NOTREGISTERED(_serverName, (user->getNickname().empty() ? std::string("*") : user->getNickname()), _name));
+		sendMessage(user->getFD(), ERR_NOTREGISTERED(_serverName, (user->getNickname().empty() ? std::string("*") : user->getNickname()), _name));
 		return;
 	}
 	if (string(PASS_TO_OPER) == "") {
@@ -33,7 +31,9 @@ void OperCommand::execute(User* user, string cmd)
 		if (!target->isOper()) {
 			target->setIsOper(true);
 			sendMessage(target->getFD(), RPL_YOUREOPER(_serverName, target->getNickname()));
-			// TODO:: If the client sending the OPER command supplies the correct password for the given user, the server then informs the rest of the network of the new operator by issuing a "MODE +o" for the clients nickname.
+			for (userVector::iterator it = _usersPtr->begin(); it != _usersPtr->end(); ++it) {
+				sendMessage((*it)->getFD(), MODE_RPL(user->getNickname(), user->getUsername(), user->getHostname(), target->getNickname(), "+o :" + target->getNickname()));
+			}
 		}
 		return;
 	}

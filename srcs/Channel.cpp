@@ -99,7 +99,7 @@ void Channel::sendToAllChannelMembers(string message, User* sender)
 {
 	for (usersVectorType::iterator user = _members.begin(); user != _members.end(); user++) {
 		if (!sender || sender->getNickname() != (*user)->getNickname())
-			send((*user)->getFD(), message.c_str(), message.size(), 0);
+			sendMessage((*user)->getFD(), message);
 	}
 }
 
@@ -202,3 +202,27 @@ bool Channel::removeSpeaker(User* pUser)
 	return false;
 }
 bool Channel::isBannedMask(string mask) { return std::find(_bannedUsers.begin(), _bannedUsers.end(), mask) != _bannedUsers.end(); }
+
+bool Channel::isSpeaker(User* pUser)
+{
+	for (usersVectorType ::const_iterator it = _speakers.begin(); it != _speakers.end(); ++it) {
+		if ((*it)->getNickname() == pUser->getNickname()) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Channel::isUserCanSpeak(User* pUser)
+{
+	return _isModerated //
+		? isOperator(pUser) || isSpeaker(pUser) //
+		: isUserMember(pUser);
+}
+
+string Channel::getUserPrefix(User* pUser)
+{
+	return isOperator(pUser) ? "@" // for oper
+		: isSpeaker(pUser)	 ? "+" // for speaker
+							 : ""; // just member
+}

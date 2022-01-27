@@ -9,9 +9,9 @@ User::User(int userFd, string hostname, string port, bool isAuthenticated)
 	, _isUserPerformed(false)
 	, _isAway(false)
 	, _isAuthenticated(isAuthenticated)
-	, _isInvisible(false) // TODO:: is correct values by default?
-	, _isReceivesWallops(false) // TODO:: is correct values by default?
-	, _isReceiptNotice(false) // TODO:: is correct values by default?
+	, _isInvisible(false)
+	, _isReceivesWallops(true)
+	, _isReceiptNotice(true)
 	, _message("")
 	, _awayMessage("")
 {

@@ -17,5 +17,5 @@ void PassCommand::execute(User* user, string cmd)
 	else if (cmd[0] == ':' && &cmd[1] == _serverPassword)
 		user->setIsAuthenticated(true);
 	else
-		sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
+		sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, (user->getNickname().empty() ? "*" : user->getNickname()), _name));
 }
