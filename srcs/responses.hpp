@@ -1,5 +1,6 @@
 #ifndef RESPONSES_HPP
 #define RESPONSES_HPP
+
 #include "constants.hpp"
 #include <string>
 
@@ -17,9 +18,9 @@
 
 #define RPL_TOPIC(server, channel, topic) std::string(":") + server + " 332 " + channel + " :" + topic + DELIMITER
 
-#define RPL_NAMREPLY(server, channel, nick) std::string(":") + server + " 353 " + channel + " :" + nick + DELIMITER
+#define RPL_NAMREPLY(server, channel, provideWho, nick) std::string(":") + server + " 353 " + provideWho + " = " + channel + " :" + nick + DELIMITER
 
-#define RPL_ENDOFNAMES(server, channel) std::string(":") + server + " 366 " + channel + " :End of /NAMES list" + DELIMITER
+#define RPL_ENDOFNAMES(server, channel, provideWho) std::string(":") + server + " 366 " + provideWho + " " + channel + " :End of /NAMES list" + DELIMITER
 
 #define RPL_WHOREPLY(server, nickname, channel, username, host, userNick, awaystatus, serverstatus, operator, realname)                                                            \
 	std::string(":") + server + " 352 " + nickname + " " + channel + " " + username + " " + host + " " + server + " " + userNick + " " + awaystatus + serverstatus                 \
@@ -58,18 +59,23 @@
 
 /**
  * example: ":Guest36552!~uss@joseon-i28.29p.1d9n3c.IP MODE Guest36552 :-w"
+ * :lara!Adium@* MODE #new :+o :qwe
+ * :Guest19803!~uss@joseon-i28.29p.1d9n3c.IP MODE #nnnn4 +l :10
+ * :Guest50!~Guest50@joseon-i28.29p.1d9n3c.IP MODE #myfreenode +o :qwerty
  */
 #define MODE_RPL(nickname, username, host, targetNickname, changes)                                                                                                                \
-	std::string(":") + nickname + "!" + username + "@" + host + " MODE " + targetNickname + " :" + changes + DELIMITER
+	std::string(":") + nickname + "!" + username + "@" + host + " MODE " + targetNickname + " " + changes + DELIMITER
 
-#define MODE_CHANNEL_RPL(nickname, username, host, targetNickname, changes)                                                                                                        \
-	std::string(":") + nickname + "!" + username + "@" + host + " MODE " + targetNickname + " :" + changes + DELIMITER
+//#define MODE_CHANNEL_RPL(nickname, username, host, targetNickname, changes)                                                                                                        \
+//	std::string(":") + nickname + "!" + username + "@" + host + " MODE " + targetNickname + " :" + changes + DELIMITER
 
 /**
  * ERRORS
  */
 
 #define ERR_NOSUCHCHANNEL(servername, nickname, channelName) std::string(":") + servername + " 403 " + nickname + " " + channelName + " :No such channel" + DELIMITER
+
+#define ERR_CANNOTSENDTOCHAN(servername, nickname, channelName) std::string(":") + servername + " 404 " + nickname + " " + channelName + " :Cannot send to channel" + DELIMITER
 
 #define ERR_TOOMANYCHANNELS(servername, nickname, channelName)                                                                                                                     \
 	std::string(":") + servername + " 405 " + nickname + " " + channelName + " :You have joined too many channels" + DELIMITER
@@ -114,7 +120,7 @@
 
 #define ERR_NOOPERHOST(servername, nickname) std::string(":") + servername + " 491 " + nickname + " :No O-lines for your host" + DELIMITER
 
-#define ERR_NOSUCHNICK(servername, nickname) std::string(":") + servername + " 401 " + std::string(nickname) + " PRIVMSG" + DELIMITER
+#define ERR_NOSUCHNICK(servername, nickname) std::string(":") + servername + " 401 " + std::string(nickname) + " :No such nick/channel" + DELIMITER
 
 #define ERR_NORECIPIENT(servername, nickname, commandName, description)                                                                                                            \
 	std::string(":") + servername + " 411 " + nickname + std::string(" :No recipient given (") + commandName + ")" + DELIMITER + description + DELIMITER
