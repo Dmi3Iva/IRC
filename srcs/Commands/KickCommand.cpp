@@ -15,6 +15,8 @@ void KickCommand::execute(User* user, string cmd)
 		return;
 	}
 	string message = _constructMessageAndEraseFromCmd(cmd);
+	if (message.empty())
+		message = user->getNickname();
 	vector<string> params = ft_split(cmd, " ");
 	if (params.size() != 2) {
 		sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), "KICK"));
@@ -22,7 +24,7 @@ void KickCommand::execute(User* user, string cmd)
 	}
 	vector<string> channels = ft_split(params[0], ",");
 	vector<string> users = ft_split(params[1], ",");
-	_startKicking(user, channels, users);
+	_startKicking(user, channels, users, message);
 }
 
 string KickCommand::_constructMessageAndEraseFromCmd(string& cmd)
@@ -46,18 +48,17 @@ string KickCommand::_constructMessageAndEraseFromCmd(string& cmd)
 	return (msg);
 }
 
-void KickCommand::_startKicking(User* user, vector<string>& channels, vector<string>& users)
+void KickCommand::_startKicking(User* user, vector<string>& channels, vector<string>& users, string message)
 {
 	for (vector<string>::iterator chit = channels.begin(); chit != channels.end(); chit++) {
 		channelMap::iterator channel = _channelsPtr->find(*chit);
 		if (channel != _channelsPtr->end()) {
 			if (!channel->second->isUserMember(user)) {
 				sendMessage(user->getFD(), ERR_NOTONCHANNEL(_serverName, user->getNickname(), channel->second->getName()));
-			}
-			else if (!channel->second->isOperator(user)) {
+			} else if (!channel->second->isOperator(user)) {
 				sendMessage(user->getFD(), ERR_CHANOPRIVSNEEDED(_serverName, user->getNickname(), channel->second->getName()));
 			} else {
-				_kickUsersFromChannel(user, channel->second, users);
+				_kickUsersFromChannel(user, channel->second, users, message);
 			}
 		} else {
 			sendMessage(user->getFD(), ERR_NOSUCHCHANNEL(_serverName, user->getNickname(), *chit));
@@ -65,13 +66,16 @@ void KickCommand::_startKicking(User* user, vector<string>& channels, vector<str
 	}
 }
 
-void KickCommand::_kickUsersFromChannel(User* user, Channel* channel, vector<string>& users)
+void KickCommand::_kickUsersFromChannel(User* user, Channel* channel, vector<string>& users, string message)
 {
 	for (vector<string>::iterator usit = users.begin(); usit != users.end(); usit++) {
-		User *userToKick = channel->getUserFromMembers(*usit);
+		User* userToKick = channel->getUserFromMembers(*usit);
 		if (!userToKick) {
 			sendMessage(user->getFD(), ERR_NOTONCHANNEL(_serverName, user->getNickname(), channel->getName()));
 		} else {
+			channel->sendToAllChannelMembers(RPL_KICK(user->getNickname(), user->getUsername(), user->getHostname(), channel->getName(), userToKick->getNickname(), message));
+			if (userToKick->quitChannel(channel->getName()))
+				cout << "Quit success" << endl;
 			channel->removeUser(userToKick);
 		}
 	}

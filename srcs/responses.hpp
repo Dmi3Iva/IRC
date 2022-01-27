@@ -56,6 +56,9 @@
 
 #define PONG_RPL(msg) std::string("PONG :") + msg + DELIMITER
 
+#define RPL_KICK(nickname, username, host, channel, kickeddude, message)                                                                                                                   \
+	std::string(":") + nickname + "!" + username + "@" + host + " KICK " + channel + " " + kickeddude + std::string(" :") + message + DELIMITER
+
 /**
  * example: ":Guest36552!~uss@joseon-i28.29p.1d9n3c.IP MODE Guest36552 :-w"
  */
