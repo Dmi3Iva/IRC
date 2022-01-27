@@ -35,19 +35,8 @@ void Server::start()
 
 	while (true) {
 		polling();
-		for (pollfdType::iterator it = _pollfds.begin(), ite = _pollfds.end(); it != ite; ++it) {
-			if (it->revents == 0)
-				continue;
-			if (it->revents) {
-				if (it->fd == _socket->getSockfd()) {
-					acceptNewClients();
-					break;
-				} else if (!receiveMessage(_context->findUserByFd(it->fd))) {
-					_pollfds.erase(it);
-					break;
-				}
-			}
-		}
+		_handlePolls();
+		_context->clearEmptyData();
 	}
 }
 
@@ -55,6 +44,23 @@ void Server::polling()
 {
 	if (poll(&(_pollfds.front()), _pollfds.size(), POLL_TIMEOUT) < 0)
 		cerr << "  poll() failed: " << strerror(errno) << endl;
+}
+
+void Server::_handlePolls()
+{
+	for (pollfdType::iterator it = _pollfds.begin(), ite = _pollfds.end(); it != ite; ++it) {
+		if (it->revents == 0)
+			continue;
+		if (it->revents) {
+			if (it->fd == _socket->getSockfd()) {
+				acceptNewClients();
+				break;
+			} else if (!receiveMessage(_context->findUserByFd(it->fd))) {
+				_pollfds.erase(it);
+				break;
+			}
+		}
+	}
 }
 
 void Server::acceptNewClients()
@@ -105,10 +111,7 @@ pair<string, string> Server::_getConnectionInfo(int userfd)
 	service.reserve(NI_MAXSERV);
 	cout << "new user fd is: " << userfd;
 	if (getnameinfo(
-			reinterpret_cast<const struct sockaddr*>(&_address), sizeof(sockaddr),
-			const_cast<char*>(host.data()), NI_MAXHOST,
-			const_cast<char*>(service.data()), NI_MAXSERV,
-			0)
+			reinterpret_cast<const struct sockaddr*>(&_address), sizeof(sockaddr), const_cast<char*>(host.data()), NI_MAXHOST, const_cast<char*>(service.data()), NI_MAXSERV, 0)
 		!= 0) {
 		inet_ntop(AF_INET, &_address.sin_addr, const_cast<char*>(host.data()), NI_MAXHOST);
 	}
