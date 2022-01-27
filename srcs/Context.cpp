@@ -23,6 +23,7 @@ void Context::_setupCommands()
 	_commandsMap["AWAY"] = new AwayCommand(_serverName, &_users, &_channels);
 	_commandsMap["KICK"] = new KickCommand(_serverName, &_users, &_channels);
 	_commandsMap["WHOIS"] = new WhoisCommand(_serverName, &_users, &_channels);
+	_commandsMap["INVITE"] = new InviteCommand(_serverName, &_users, &_channels);
 }
 
 Context::~Context()

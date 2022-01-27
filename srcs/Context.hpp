@@ -17,6 +17,7 @@
 #include "Commands/NoticeCommand.hpp"
 #include "Commands/KickCommand.hpp"
 #include "Commands/WhoisCommand.hpp"
+#include "Commands/InviteCommand.hpp"
 #include "User.hpp"
 #include "utils.hpp"
 #include <map>

@@ -45,6 +45,9 @@
 #define RPL_WHOISCHANNELS(server, nickname, nick, channelsinfo) std::string(":") + server + " 319 " + nickname + " " + nick + " :" + channelsinfo + DELIMITER
 
 #define RPL_WHOISOPERATOR(server, nickname, nick) std::string(":") + server + " 313 " + nickname + " " + nick + " :is an IRC operator" + DELIMITER
+
+#define RPL_INVITING(server, nickname, channel, nick) std::string(":") + server + " 341 " + nickname + " " + channel + " :" + nick + DELIMITER
+
 /**
  * CUSTOM REPLIES
  */
@@ -77,6 +80,9 @@
  */
 #define MODE_RPL(nickname, username, host, targetNickname, changes)                                                                                                                \
 	std::string(":") + nickname + "!" + username + "@" + host + " MODE " + targetNickname + " " + changes + DELIMITER
+
+#define INVITE_RPL(nickname, username, host, receiver, channel)                                                                                                                     \
+	std::string(":") + nickname + "!" + username + "@" + host + " INVITE " + receiver + std::string(" :") + channel + DELIMITER
 
 //#define MODE_CHANNEL_RPL(nickname, username, host, targetNickname, changes)                                                                                                        \
 //	std::string(":") + nickname + "!" + username + "@" + host + " MODE " + targetNickname + " :" + changes + DELIMITER
@@ -132,7 +138,7 @@
 
 #define ERR_NOOPERHOST(servername, nickname) std::string(":") + servername + " 491 " + nickname + " :No O-lines for your host" + DELIMITER
 
-#define ERR_NOSUCHNICK(servername, nickname) std::string(":") + servername + " 401 " + std::string(nickname) + " :No such nick/channel" + DELIMITER
+#define ERR_NOSUCHNICK(servername, nickname, nick) std::string(":") + servername + " 401 " + std::string(nickname) + " " + nick + " :No such nick/channel" + DELIMITER
 
 #define ERR_NORECIPIENT(servername, nickname, commandName, description)                                                                                                            \
 	std::string(":") + servername + " 411 " + nickname + std::string(" :No recipient given (") + commandName + ")" + DELIMITER + description + DELIMITER
@@ -157,5 +163,8 @@
 #define ERR_USERSDONTMATCH(servername, nickname) std::string(":") + servername + " 502 " + nickname + " :Cant change mode for other users" + DELIMITER
 
 #define ERR_NOSUCHSERVER(servername, nickname) std::string(":") + servername + " 402 " + nickname + " " + servername + " :No such server" + DELIMITER
+
+#define ERR_USERONCHANNEL(servername, nickname, nick, channel)                                                                                                                     \
+	std::string(":") + servername + " 443 " + nickname + " " + nick + " " + channel + " :is already on channel" + DELIMITER
 
 #endif

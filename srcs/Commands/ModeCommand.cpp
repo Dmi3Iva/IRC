@@ -94,14 +94,14 @@ void ModeCommand::execute(User* user, string cmd)
 	if (isChannelName(targetName)) {
 		channelMap::iterator chIterator = _channelsPtr->find(targetName);
 		if (chIterator == _channelsPtr->end()) {
-			sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname()));
+			sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname(), targetName));
 			return;
 		}
 		_executeChannelMod(user, chIterator->second, arguments);
 	} else {
 		User* userTarget = getUserFromArray(targetName);
 		if (userTarget == NULL) {
-			sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname()));
+			sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname(), targetName));
 			return;
 		}
 		// all what goes after first argument erase
@@ -192,7 +192,7 @@ void ModeCommand::_handleOFlag(User* user, Channel* channel, bool isPlus, vector
 		sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), _name));
 	} else if (!(userTarget = getUserFromArray(getPopFront(optionalArguments))) // if there aren't any user with this nickname
 		|| !channel->isUserMember(userTarget)) { // if this user not channel member
-		sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, userTarget->getNickname()));
+		sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, userTarget->getNickname(), userTarget->getNickname()));
 	} else if ((isPlus ? channel->addOper(userTarget) //
 					   : channel->removeOper(userTarget) //
 				   )) {
@@ -249,7 +249,7 @@ void ModeCommand::_handleBFLag(User* user, Channel* channel, bool isPlus, string
 				// already using mask
 				sendMessage(user->getFD(), ERR_KEYSET(_serverName, user->getNickname(), channel->getName()));
 			} else {
-				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname()));
+				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname(), argument));
 			}
 		}
 	}
@@ -281,7 +281,7 @@ void ModeCommand::_handleVFlag(User* user, Channel* channel, string argument, bo
 	} else {
 		userTarget = getUserFromArray(argument);
 		if (!userTarget || !channel->isUserMember(userTarget)) {
-			sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, argument));
+			sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname(), argument));
 		} else {
 			if (isPlus ? channel->addSpeaker(userTarget) //
 					   : channel->removeSpeaker(userTarget) //

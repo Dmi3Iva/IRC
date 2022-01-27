@@ -74,7 +74,7 @@ void PrivateMessageCommand::_sendMessageToReceivers(User* user, vector<string>& 
 					handledReceivers.push_back(channel->second->getName());
 				}
 			} else {
-				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, *it));
+				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname(), *it));
 			}
 		} else {
 			User* userReceiver = this->getUserFromArray(*it);
@@ -89,7 +89,7 @@ void PrivateMessageCommand::_sendMessageToReceivers(User* user, vector<string>& 
 					}
 				}
 			} else {
-				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, *it));
+				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname(), *it));
 			}
 		}
 	}

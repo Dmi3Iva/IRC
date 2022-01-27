@@ -34,9 +34,15 @@ void Server::start()
 	_pollfds.push_back(fillPollfd(_socket->getSockfd(), POLLIN));
 
 	while (true) {
-		polling();
-		_handlePolls();
-		_context->clearEmptyData();
+		try {
+			polling();
+			_handlePolls();
+			_context->clearEmptyData();
+		} catch (std::bad_alloc& e) {
+			cout << "Allocation failed " << e.what() << endl;
+		} catch (std::exception &e) {
+			cout << "Unexpected error " << e.what() << endl;
+		}
 	}
 }
 

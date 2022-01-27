@@ -36,7 +36,7 @@ void WhoisCommand::_presentUsersInformation(User* user, vector<string>& nickname
 			cout << searchedUser->getNickname() << endl;
 			_showUserInfo(user, searchedUser);
 		} else {
-			sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, *it));
+			sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname(), *it));
 		}
 	}
 }

@@ -37,5 +37,5 @@ void OperCommand::execute(User* user, string cmd)
 		}
 		return;
 	}
-	sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname()));
+	sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname(), args[0]));
 }
