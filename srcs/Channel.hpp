@@ -47,7 +47,6 @@ public:
 	void removeUser(User* pUser);
 	int isOperator(User* pUser) const;
 	bool isUserMember(User* pUser) const;
-	bool isUserBanned(User* pUser) const;
 	bool isPrivate() const;
 	void setIsPrivate(bool is_private);
 	bool isSecret() const;
@@ -64,7 +63,8 @@ public:
 	bool isSpeaker(User* pUser);
 	bool removeSpeaker(User* pUser);
 	bool isFullOfMembers();
-	bool isBannedMask(string mask);
+	bool isBanned(string username);
+	bool isBanned(User* user);
 	User* getUserFromMembers(string userNick);
 
 	bool isUserCanSpeak(User* pUser);

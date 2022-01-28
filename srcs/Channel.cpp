@@ -7,7 +7,7 @@ Channel::Channel(const string name)
 	, _isSecret(false)
 	, _isInviteOnlyChannel(false)
 	, _isTopicSettableOnlyByOpers(false)
-	, _isNoMessageOutside(false)
+	, _isNoMessageOutside(true)
 	, _isModerated(false)
 	, _usersLimit(-1)
 	, _owner(NULL)
@@ -123,16 +123,6 @@ User* Channel::getUserFromMembers(string userNick)
 	return NULL;
 }
 
-bool Channel::isUserBanned(User* pUser) const
-{
-	for (vector<string>::const_iterator it = _bannedUsers.begin(), ite = _bannedUsers.end(); it != ite; ++it) {
-		if (*it == pUser->getNickname()) {
-			return true;
-		}
-	}
-	return false;
-}
-
 bool Channel::addOper(User* pUser)
 {
 	if (isOperator(pUser))
@@ -164,7 +154,7 @@ void Channel::setIsModerated(bool is_moderated) { _isModerated = is_moderated; }
 
 bool Channel::addBannerMask(const string& mask)
 {
-	if (std::find(_bannedUsers.begin(), _bannedUsers.end(), mask) != _bannedUsers.end()) {
+	if (std::find(_bannedUsers.begin(), _bannedUsers.end(), mask) == _bannedUsers.end()) {
 		_bannedUsers.push_back(mask);
 		return true;
 	}
@@ -201,7 +191,16 @@ bool Channel::removeSpeaker(User* pUser)
 	}
 	return false;
 }
-bool Channel::isBannedMask(string mask) { return std::find(_bannedUsers.begin(), _bannedUsers.end(), mask) != _bannedUsers.end(); }
+
+bool Channel::isBanned(string userName)
+{
+	for (vector<string>::iterator it = _bannedUsers.begin(); it != _bannedUsers.end(); ++it) {
+		if (isMaskMatch(userName, *it))
+			return true;
+	}
+	return false;
+}
+bool Channel::isBanned(User* user) { return isBanned(user->getNickname() + "!" + user->getUsername() + "@" + user->getHostname()); }
 
 bool Channel::isSpeaker(User* pUser)
 {
@@ -213,11 +212,17 @@ bool Channel::isSpeaker(User* pUser)
 	return false;
 }
 
+/**
+ * In common case: if *outside messages allowed and user not banned in the channel) or user is member then user can speak
+ * In case of moderated Channel user can speak only if he/she is an operator or speaker
+ * @param pUser
+ * @return
+ */
 bool Channel::isUserCanSpeak(User* pUser)
 {
 	return _isModerated //
 		? isOperator(pUser) || isSpeaker(pUser) //
-		: !_isNoMessageOutside || isUserMember(pUser);
+		: (!_isNoMessageOutside && !isBanned(pUser)) || isUserMember(pUser);
 }
 
 string Channel::getUserPrefix(User* pUser)

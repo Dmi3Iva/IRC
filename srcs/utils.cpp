@@ -65,3 +65,36 @@ bool isChannel(string receiver)
 	}
 	return (false);
 }
+
+bool isMaskMatch(const string& str, const string& mask) { return isMaskMatch(str.c_str(), mask.c_str()); }
+
+bool isMaskMatch(const char* str, const char* mask)
+{
+	if (!str || !mask)
+		return 0;
+	do {
+		if (StarCmp(str, mask))
+			return 1;
+	} while (*str++);
+	return 0;
+}
+
+// StarCompare() helper function
+bool StarCmp(const char* str, const char* mask)
+{
+	if (*mask == '\0')
+		return 1;
+	if (*mask == '*') {
+		if (*str) {
+			// advance str and use the * again
+			if (StarCmp(str + 1, mask))
+				return 1;
+		}
+		// let * match nothing and advacne to the next pattern
+		return StarCmp(str, mask + 1);
+	}
+	if (*mask == *str) {
+		return StarCmp(str + 1, mask + 1);
+	}
+	return 0;
+}
