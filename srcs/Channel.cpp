@@ -123,16 +123,6 @@ User* Channel::getUserFromMembers(string userNick)
 	return NULL;
 }
 
-bool Channel::isUserBanned(User* pUser) const
-{
-	for (vector<string>::const_iterator it = _bannedUsers.begin(), ite = _bannedUsers.end(); it != ite; ++it) {
-		if (*it == pUser->getNickname()) {
-			return true;
-		}
-	}
-	return false;
-}
-
 bool Channel::addOper(User* pUser)
 {
 	if (isOperator(pUser))
