@@ -70,6 +70,8 @@ public:
 	bool isUserCanSpeak(User* pUser);
 
 	string getUserPrefix(User* pUser);
+	string getUserNicknameWithPrefix(User* pUser);
+	string getNameWithPrefix();
 
 private:
 	const string _name;

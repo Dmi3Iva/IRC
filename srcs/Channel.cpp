@@ -142,9 +142,22 @@ bool Channel::removeOper(User* pUser)
 	return false;
 }
 bool Channel::isPrivate() const { return _isPrivate; }
-void Channel::setIsPrivate(bool is_private) { _isPrivate = is_private; }
+
+void Channel::setIsPrivate(bool is_private)
+{
+	if (is_private)
+		_isSecret = false;
+	_isPrivate = is_private;
+}
 bool Channel::isSecret() const { return _isSecret; }
-void Channel::setIsSecret(bool is_secret) { _isSecret = is_secret; }
+
+void Channel::setIsSecret(bool is_secret)
+{
+	if (is_secret)
+		_isPrivate = false;
+	_isSecret = is_secret;
+}
+
 bool Channel::isTopicSettableOnlyByOpers() const { return _isTopicSettableOnlyByOpers; }
 void Channel::setIsTopicSettableOnlyByOpers(bool is_topic_settable_only_by_opers) { _isTopicSettableOnlyByOpers = is_topic_settable_only_by_opers; }
 bool Channel::isNoMessageOutside() const { return _isNoMessageOutside; }
@@ -230,4 +243,26 @@ string Channel::getUserPrefix(User* pUser)
 	return isOperator(pUser) ? "@" // for oper
 		: isSpeaker(pUser)	 ? "+" // for speaker
 							 : ""; // just member
+}
+
+string Channel::getNameWithPrefix()
+{
+	string prefix;
+	if (isSecret())
+		prefix = "@";
+	else if (isPrivate())
+		prefix = "*";
+	else
+		prefix = "=";
+	return prefix + _name;
+}
+
+string Channel::getUserNicknameWithPrefix(User* pUser)
+{
+	string prefix;
+	if (isOperator(pUser))
+		prefix = "@";
+	else if (isSpeaker(pUser))
+		prefix = "+";
+	return prefix + pUser->getNickname();
 }
