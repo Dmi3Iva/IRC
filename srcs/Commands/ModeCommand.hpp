@@ -13,7 +13,7 @@ private:
 	void _executeUserMod(User* user, User* userTarget, string arguments);
 	void _sendMessageToUserAndHisChannels(User* userTarget, string message);
 	void _handleOFlag(User* user, Channel* channel, bool isPlus, vector<string> optionalArguments);
-	void _handleCommonFlag(User* user, Channel* channel, bool isPlus, void (Channel::*setValue)(bool), bool isValue, string key, string& changes);
+	void _handleCommonFlag(User* user, Channel* channel, bool isPlus, void (Channel::*setValue)(bool), bool isValue, const string& key, string& changes);
 	void _handleLFlag(User* user, Channel* channel, string argument, bool isPlus, string& changes);
 	void _handleBFLag(User* user, Channel* channel, bool isPlus, string argument);
 	void _handleVFlag(User* user, Channel* channel, string argument, bool isPlus);

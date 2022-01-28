@@ -217,7 +217,7 @@ bool Channel::isUserCanSpeak(User* pUser)
 {
 	return _isModerated //
 		? isOperator(pUser) || isSpeaker(pUser) //
-		: isUserMember(pUser);
+		: !_isNoMessageOutside || isUserMember(pUser);
 }
 
 string Channel::getUserPrefix(User* pUser)

@@ -203,7 +203,7 @@ void ModeCommand::_handleOFlag(User* user, Channel* channel, bool isPlus, vector
 	}
 }
 
-void ModeCommand::_handleCommonFlag(User* user, Channel* channel, bool isPlus, void (Channel::*setValue)(bool), bool isValue, string key, string& changes)
+void ModeCommand::_handleCommonFlag(User* user, Channel* channel, bool isPlus, void (Channel::*setValue)(bool), bool isValue, const string& key, string& changes)
 {
 	if (isValue != isPlus) {
 		((*channel).*setValue)(isPlus);
