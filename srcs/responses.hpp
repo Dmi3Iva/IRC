@@ -10,6 +10,8 @@
 
 #define RPL_CHANNELMODEIS()
 
+#define RPL_QUITMSG(username, ip, message) "ERROR :Closing link: (~" + username.substr(0, 9) + "@" + ip + ") [" + message + "]" + DELIMITER
+
 #define RPL_MOTDSTART(server, nickname) ":" + server + " 375 " + nickname + " Message of the day - " + DELIMITER
 
 #define RPL_MOTD(server, nickname) ":" + server + " 372 " + nickname + " :- Welcome to the Internet Relay Network" + DELIMITER
@@ -81,7 +83,7 @@
 #define MODE_RPL(nickname, username, host, targetNickname, changes)                                                                                                                \
 	std::string(":") + nickname + "!" + username + "@" + host + " MODE " + targetNickname + " " + changes + DELIMITER
 
-#define INVITE_RPL(nickname, username, host, receiver, channel)                                                                                                                     \
+#define INVITE_RPL(nickname, username, host, receiver, channel)                                                                                                                    \
 	std::string(":") + nickname + "!" + username + "@" + host + " INVITE " + receiver + std::string(" :") + channel + DELIMITER
 
 //#define MODE_CHANNEL_RPL(nickname, username, host, targetNickname, changes)                                                                                                        \
