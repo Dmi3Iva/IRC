@@ -16,7 +16,7 @@ public:
 
 private:
 	void _sendListOfChannelTopics(User* user, Channel* channel);
-	int _getNumberOfVisibleUsers(vector<User*>& users);
+	int _getNumberOfVisibleUsers(const vector<User*>& users);
 };
 
 #endif

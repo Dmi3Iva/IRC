@@ -7,59 +7,42 @@
 ListCommand::ListCommand(string serverName, ACommand::userVector* usersPtr, ACommand::channelMap* channelsPtr)
 	: ACommand(serverName, usersPtr, channelsPtr, "LIST")
 {
-	_description = "[<channel>{,<channel>} [<server>]]";
+	_description = "[<channel>{,<channel>}]";
 }
 
 void ListCommand::execute(User* user, string cmd)
 {
 	cout << "List executes: " << cmd << endl;
-	if (!user->isRegistered()) {
+	if (!user->isRegistered())
 		sendMessage(user->getFD(), ERR_NOTREGISTERED(_serverName, user->getNickname(), _name));
-		return;
-	}
-	if (cmd.empty()) {
+	else if (cmd.empty()) {
 		for (channelMap::const_iterator channelIt = _channelsPtr->begin(); channelIt != _channelsPtr->end(); ++channelIt)
 			_sendListOfChannelTopics(user, channelIt->second);
-	}
-
-	vector<string> args = ft_split(cmd, " ");
-	if (args.size() == 1) {
-		vector<string> channelNames = ft_split(cmd, ",");
-
-	}
-	string listOfTopics;
-	if (channelNames.size() == 0) {
-
+		return;
 	} else {
+		vector<string> channelNames = ft_split(cmd, ",");
 		for (size_t i = 0; i < channelNames.size(); ++i) {
-			if (isChannelName(channelNames[i])) {
-				channelMap::const_iterator channelIt = _channelsPtr->find(channelNames[i]);
-				Channel* channel = channelIt->second;
-				if (channelIt != _channelsPtr->end() && !channel->isUserMember(user) && !channel->isPrivate()) {
-					listOfTopics = channel->getTopic();
-					//					sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, channel->getName(), listOfTopics));
-					//					sendMessage(user->getFD(), RPL_ENDOFNAMES(_serverName, channel->getName()));
-				}
-			}
+			channelMap::const_iterator channelIt;
+			if ((channelIt = _channelsPtr->find(channelNames[i])) != _channelsPtr->end())
+				_sendListOfChannelTopics(user, channelIt->second);
 		}
 	}
 }
 
 void ListCommand::_sendListOfChannelTopics(User* user, Channel* channel)
 {
-	if (!channel->isUserMember(user) && !channel->isSecret() && !channel->isPrivate()) {
-		for (Channel::usersVectorType::const_iterator it = channel->getMembers().begin(); it != channel->getMembers().end(); ++it) {
-			if (!(*it)->isInvisible())
-				sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, channel->getNameWithPrefix(), channel->getUserNicknameWithPrefix(*it), user->getNickname()));
-		}
-		sendMessage(user->getFD(), RPL_ENDOFNAMES(_serverName, channel->getName()));
+	if ((!channel->isSecret() && !channel->isPrivate()) || channel->isUserMember(user)) {
+		int visible = _getNumberOfVisibleUsers(channel->getMembers());
+		string topic = channel->getTopic();
+		sendMessage(user->getFD(), RPL_LIST(_serverName, user->getNickname(), channel->getName(), std::to_string(visible), topic));
+		sendMessage(user->getFD(), RPL_LISTEND(_serverName, user->getNickname()));
 	}
 }
 
-int ListCommand::_getNumberOfVisibleUsers(vector<User*>& users)
+int ListCommand::_getNumberOfVisibleUsers(const vector<User*>& users)
 {
 	int numberOfVisibleUsers = 0;
-	for (int i = 0; i < users.size(); ++i) {
+	for (size_t i = 0; i < users.size(); ++i) {
 		if (!users[i]->isInvisible())
 			++numberOfVisibleUsers;
 	}
