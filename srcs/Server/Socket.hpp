@@ -1,7 +1,3 @@
-//
-// Created by Twycross Redfort on 1/17/22.
-//
-
 #ifndef SOCKET_HPP
 #define SOCKET_HPP
 

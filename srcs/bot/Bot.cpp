@@ -5,18 +5,19 @@ Bot::Bot(string ip, string port, string pass)
 {
 	_sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (_sock == -1) {
-		return; // TODO:: exit
+		cerr << "Unable create a socket, errno number:" << errno << endl;
+		exit(EXIT_FAILURE);
 	}
 	_address.sin_family = AF_INET;
 	_address.sin_port = htons(atoi(port.c_str()));
 	_address.sin_addr.s_addr = inet_addr(ip.c_str());
-
 	// connect to the server on socket
 	int connectResult = connect(_sock, (sockaddr*)&_address, sizeof(_address));
 	if (connectResult == -1) {
-		cout << "connection failed :" << errno << endl; // TODO:: exit
+		cout << "Unable to create connection, errno number :" << errno << endl;
+		exit(EXIT_FAILURE);
 	}
-	std::srand(std::time(0));
+	std::srand(time(0));
 }
 
 Bot::~Bot() { close(_sock); }
@@ -24,11 +25,11 @@ Bot::~Bot() { close(_sock); }
 string Bot::_getMessage()
 {
 	ssize_t bytesReceived;
-	char buffer[4096];
+	string buffer;
 	string message;
 
-	memset(buffer, 0, 4096);
-	if ((bytesReceived = recv(_sock, buffer, 4096, 0)) > 0) {
+	buffer.resize( 4096, 0);
+	if ((bytesReceived = recv(_sock, reinterpret_cast<void*>(const_cast<char*>(buffer.c_str())), 4096, 0)) > 0) {
 		buffer[bytesReceived] = '\0';
 		cout << "received new message" << buffer << endl;
 		message.append(string(buffer));
@@ -60,7 +61,6 @@ void Bot::start()
 	string response;
 
 	_authorize();
-	// TODO:: should I add here stop flag?
 	while (true) {
 		response = _responseToMessage(_getMessage());
 		if (!response.empty())
@@ -68,23 +68,31 @@ void Bot::start()
 	}
 }
 
-void Bot::_authorize() { _sendMessage("PASS :1\nUSER bot * * :i'm bot\nNICK bot\n"); }
+void Bot::_authorize() { _sendMessage("PASS :" + _password+ "\nUSER "+BOT_USERNAME+" * * :"+BOT_REALNAME+"\nNICK "+ BOT_USERNAME"\n"); }
 
-// :qwe!user@user PRIVMSG bot :sdfew
 string Bot::_responseToMessage(string message)
 {
+	// Remove nickname and check password error message
+	if (message.substr(message.find(" ")).find("461 * PASS :Not enough parameters.") != string::npos)
+	{
+		cerr << "Incorrect password try again" <<endl;
+		exit(EXIT_FAILURE);
+	}
 	vector<string> args = ft_split(message, " ");
 	if (args.size() > 3 && args[1] == "PRIVMSG") {
+		if (args[3] == ":HELP" || args[3] == "HELP")
+			return std::string("PRIVMSG ") + _getNickname(args[0]) + " :I'm future taller, ask me about anything! I will asnwer shortly." + DELIMITER;
 		return std::string("PRIVMSG ") + _getNickname(args[0]) + " :" + guessingAnswers[std::rand() % GUESSING_ANSWERS_COUNT] + DELIMITER;
 	}
 	return "";
 }
 
-// :qwe!user@user
 string Bot::_getNickname(string s)
 {
-	if (!s.empty() && s[0] == ':')
-		s.erase(0, 1);
+	if (!s.empty() && s.find(":") != string::npos)
+	{
+		s.erase(0, s.find(":")+1);
+	}
 	if (s.find("!") != string::npos)
 		s.erase(s.find("!"), string::npos);
 	return s;

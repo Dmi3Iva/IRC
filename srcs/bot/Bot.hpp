@@ -13,9 +13,11 @@
 #include <string>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <vector>
 
 using std::cout;
+using std::cerr;
 using std::endl;
 using std::string;
 using std::vector;

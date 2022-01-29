@@ -4,6 +4,7 @@ BOT_NAME=./bot
 
 CC = clang++
 
+# TODO:: remove -g flag
 CFLAGS = -Wall -Werror -Wextra -std=c++98 -g
 
 SRC = srcs/main.cpp \
@@ -91,9 +92,9 @@ $(BOT_NAME): $(BOT_OBJ) $(BOT_HEADERS)
 all: $(NAME)
 
 clean:
-	rm -rf $(OBJ)
+	rm -rf $(OBJ) $(BOT_OBJ)
 
 fclean: clean
-	rm -rf $(NAME)
+	rm -rf $(NAME) $(BOT_NAME)
 
 re: fclean all
