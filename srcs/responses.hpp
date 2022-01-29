@@ -10,6 +10,8 @@
 
 #define RPL_CHANNELMODEIS()
 
+#define RPL_QUITMSG(username, ip, message) "ERROR :Closing link: (~" + username.substr(0, 9) + "@" + ip + ") [" + message + "]" + DELIMITER
+
 #define RPL_LIST(server, nickname, channel, visible, topic) \
 	":" + server + " 322 " + nickname + " " + channel + " " + visible + " " + topic + DELIMITER
 
