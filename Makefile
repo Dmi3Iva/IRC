@@ -22,6 +22,7 @@ SRC = srcs/main.cpp \
 	srcs/Commands/KickCommand.cpp \
 	srcs/Commands/WhoisCommand.cpp \
 	srcs/Commands/InviteCommand.cpp \
+	srcs/Commands/ListCommand.cpp \
 	srcs/Commands/QuitCommand.cpp \
 	srcs/Commands/ListCommand.cpp \
 	srcs/Channel.cpp \
