@@ -40,7 +40,7 @@ void Server::start()
 			_context->clearEmptyData();
 		} catch (std::bad_alloc& e) {
 			cout << "Allocation failed " << e.what() << endl;
-		} catch (std::exception &e) {
+		} catch (std::exception& e) {
 			cout << "Unexpected error " << e.what() << endl;
 		}
 	}
@@ -91,7 +91,7 @@ bool Server::receiveMessage(User* user)
 	cout << "User listens:" << endl;
 	bytesRead = recv(user->getFD(), buffer, sizeof(buffer), 0);
 
-	if (bytesRead == 0) {
+	if (bytesRead <= 0) {
 		cout << "Client ended the _userfd!" << user->getFD() << endl;
 		close(user->getFD());
 		_context->deleteUser(user);
