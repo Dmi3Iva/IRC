@@ -2,11 +2,14 @@
 
 Server::Server(string ip, string port, string password)
 	: _socket(NULL)
-	, _context(new Context("localhost", password))
+	, _context(new Context(HOSTNAME, password))
 {
 	_address.sin_family = AF_INET;
-	_address.sin_port = htons(atoi(port.c_str()));
-	_address.sin_addr.s_addr = inet_addr(ip.c_str());
+	_address.sin_port = getValidPort(port);
+	if (inet_aton(ip.c_str(), &_address.sin_addr) == 0) {
+		cout << "ERROR: Invalid ip address!" << endl;
+		exit(EXIT_FAILURE);
+	}
 }
 
 Server::~Server()

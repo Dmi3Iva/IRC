@@ -109,3 +109,14 @@ bool StarCmp(const char* str, const char* mask)
 void stringToLowerCase(string& str) {
 	std::transform(str.begin(), str.end(), str.begin(), tolower);
 }
+
+in_port_t getValidPort(const string& port) {
+	char* endPtr;
+	long _port = std::strtol(port.c_str(), &endPtr, 10);
+
+	if (*endPtr || _port <= 0 || _port > USHRT_MAX) {
+		cout << "ERROR: Invalid port!" << endl;
+		exit(EXIT_FAILURE);
+	}
+	return htons(_port);
+}

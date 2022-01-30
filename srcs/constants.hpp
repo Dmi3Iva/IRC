@@ -13,4 +13,6 @@
 
 #define PASS_TO_OPER "4TYTwd"
 
+#define HOSTNAME "localhost"
+
 #endif
