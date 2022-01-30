@@ -48,7 +48,7 @@ void Server::start()
 
 void Server::polling()
 {
-	if (poll(&(_pollfds.front()), _pollfds.size(), POLL_TIMEOUT) < 0 && errno != EWOULDBLOCK)
+	if (poll(&(_pollfds.front()), _pollfds.size(), POLL_TIMEOUT) < 0)
 		cerr << "  poll() failed: " << strerror(errno) << endl;
 }
 
@@ -91,7 +91,7 @@ bool Server::receiveMessage(User* user)
 	cout << "User listens:" << endl;
 	bytesRead = recv(user->getFD(), buffer, sizeof(buffer), 0);
 
-	if (bytesRead <= 0 && errno != EWOULDBLOCK) {
+	if (bytesRead <= 0) {
 		cout << "Client ended the _userfd!" << user->getFD() << endl;
 		close(user->getFD());
 		_context->deleteUser(user);
