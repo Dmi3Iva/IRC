@@ -24,8 +24,6 @@ SRC = srcs/main.cpp \
 	srcs/Commands/InviteCommand.cpp \
 	srcs/Commands/QuitCommand.cpp \
 	srcs/Commands/ListCommand.cpp \
-	srcs/Commands/QuitCommand.cpp \
-	srcs/Commands/ListCommand.cpp \
 	srcs/Channel.cpp \
 	srcs/Context.cpp \
 	srcs/Server/Server.cpp \
