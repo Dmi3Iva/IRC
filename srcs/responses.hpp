@@ -30,6 +30,8 @@
 
 #define RPL_ENDOFMOTD(server, nickname) ":" + server + " 376 " + nickname + " :End of /MOTD command" + DELIMITER
 
+#define RPL_NOTOPIC(server, channel) std::string(":") + server + " 331 " + channel + " :No topic is set" + DELIMITER
+
 #define RPL_TOPIC(server, channel, topic) std::string(":") + server + " 332 " + channel + " :" + topic + DELIMITER
 
 #define RPL_NAMREPLY(server, channel, provideWho, nick) std::string(":") + server + " 353 " + provideWho + " " + channel + " :" + nick + DELIMITER
@@ -77,6 +79,8 @@
  * example: ":Guest41!~Guest41@joseon-i28.29p.1d9n3c.IP PART :#freenode"
  */
 #define PART_RPL(nickname, username, host, channel) std::string(":") + nickname + "!" + username + "@" + host + " PART " + channel + DELIMITER
+
+#define TOPIC_RPL(nickname, username, host, channel, topic) std::string(":") + nickname + "!" + username + "@" + host + " TOPIC " + channel + " :" + topic + DELIMITER
 
 #define RPL_PRIVMSG(nickname, username, host, receiver, message)                                                                                                                   \
 	std::string(":") + nickname + "!" + username + "@" + host + " PRIVMSG " + receiver + std::string(" :") + message + DELIMITER

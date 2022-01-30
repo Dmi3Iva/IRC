@@ -22,6 +22,7 @@
 #include "Commands/WhoisCommand.hpp"
 #include "Commands/InviteCommand.hpp"
 #include "Commands/ListCommand.hpp"
+#include "Commands/TopicCommand.hpp"
 #include "User.hpp"
 #include "utils.hpp"
 #include <map>

@@ -27,6 +27,7 @@ void Context::_setupCommands()
 	_commandsMap["NAMES"] = new NamesCommand(_serverName, &_users, &_channels);
 	_commandsMap["QUIT"] = new QuitCommand(_serverName, &_users, &_channels);
 	_commandsMap["LIST"] = new ListCommand(_serverName, &_users, &_channels);
+	_commandsMap["TOPIC"] = new TopicCommand(_serverName, &_users, &_channels);
 }
 
 Context::~Context()

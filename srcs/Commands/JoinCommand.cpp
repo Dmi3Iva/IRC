@@ -14,7 +14,10 @@ void JoinCommand::_userHasJoinedChannel(User* user, channelMap::iterator chItera
 {
 	chIterator->second->sendToAllChannelMembers(JOIN_RPL(user->getNickname(), user->getUsername(), user->getHostname(), chIterator->second->getName()));
 	// send channel topic to the user
-	sendMessage(user->getFD(), RPL_TOPIC(_serverName, chIterator->second->getName(), chIterator->second->getTopic()));
+	if (chIterator->second->getTopic().empty())
+		sendMessage(user->getFD(), RPL_NOTOPIC(_serverName, chIterator->second->getName()));
+	else
+		sendMessage(user->getFD(), RPL_TOPIC(_serverName, chIterator->second->getName(), chIterator->second->getTopic()));
 	// send channel members to joined user
 	for (Channel::usersVectorType::const_iterator it = chIterator->second->getMembers().begin(); it != chIterator->second->getMembers().end(); ++it) {
 		if (!(*it)->isInvisible()) {
