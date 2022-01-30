@@ -16,6 +16,7 @@ void NickCommand::execute(User* user, string cmd)
 		sendMessage(user->getFD(), ERR_NONICKNAMEGIVEN(_serverName, ""));
 		return;
 	}
+	stringToLowerCase(cmd);
 	string nick = _getNickname(cmd);
 	if (!_validateNick(user, nick)) {
 		return;
