@@ -22,6 +22,7 @@ SRC = srcs/main.cpp \
 	srcs/Commands/KickCommand.cpp \
 	srcs/Commands/WhoisCommand.cpp \
 	srcs/Commands/InviteCommand.cpp \
+	srcs/Commands/ListCommand.cpp \
 	srcs/Commands/QuitCommand.cpp \
 	srcs/Channel.cpp \
 	srcs/Context.cpp \
@@ -51,6 +52,7 @@ HEADERS = srcs/constants.hpp \
 	srcs/Commands/KickCommand.hpp \
 	srcs/Commands/WhoisCommand.hpp \
 	srcs/Commands/InviteCommand.hpp \
+	srcs/Commands/ListCommand.hpp \
 	srcs/Commands/QuitCommand.hpp \
 	srcs/Channel.hpp \
 	srcs/Context.hpp \

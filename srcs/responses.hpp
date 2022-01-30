@@ -10,6 +10,11 @@
 
 #define RPL_CHANNELMODEIS()
 
+#define RPL_LIST(server, nickname, channel, visible, topic) \
+	":" + server + " 322 " + nickname + " " + channel + " " + visible + " " + topic + DELIMITER
+
+#define RPL_LISTEND(server, nickname) ":" + server + " 323 " + nickname + " :End of LIST" + DELIMITER
+
 #define RPL_QUITMSG(username, ip, message) "ERROR :Closing link: (~" + username.substr(0, 9) + "@" + ip + ") [" + message + "]" + DELIMITER
 
 #define RPL_MOTDSTART(server, nickname) ":" + server + " 375 " + nickname + " Message of the day - " + DELIMITER

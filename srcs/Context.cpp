@@ -25,6 +25,7 @@ void Context::_setupCommands()
 	_commandsMap["WHOIS"] = new WhoisCommand(_serverName, &_users, &_channels);
 	_commandsMap["INVITE"] = new InviteCommand(_serverName, &_users, &_channels);
 	_commandsMap["NAMES"] = new NamesCommand(_serverName, &_users, &_channels);
+	_commandsMap["LIST"] = new ListCommand(_serverName, &_users, &_channels);
 	_commandsMap["QUIT"] = new QuitCommand(_serverName, &_users, &_channels);
 }
 

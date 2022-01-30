@@ -20,6 +20,8 @@
 #include "Commands/UserCommand.hpp"
 #include "Commands/WhoCommand.hpp"
 #include "Commands/WhoisCommand.hpp"
+#include "Commands/InviteCommand.hpp"
+#include "Commands/ListCommand.hpp"
 #include "User.hpp"
 #include "utils.hpp"
 #include <map>
