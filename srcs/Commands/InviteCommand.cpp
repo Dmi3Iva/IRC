@@ -46,6 +46,9 @@ void InviteCommand::_sendInvite(User* user, Channel* channel, User* userToInvite
 		sendMessage(user->getFD(), ERR_CHANOPRIVSNEEDED(_serverName, user->getNickname(), channel->getName()));
 		return;
 	}
+	if (channel->isInviteOnlyChannel()) {
+		channel->addUserToInviteList(userToInvite);
+	}
 	sendMessage(user->getFD(), RPL_INVITING(_serverName, user->getNickname(), channel->getName(), userToInvite->getNickname()));
 	sendMessage(userToInvite->getFD(), INVITE_RPL(user->getNickname(), user->getUsername(), user->getHostname(), userToInvite->getNickname(), channel->getName()));
 	if (userToInvite->getIsAway()) {
