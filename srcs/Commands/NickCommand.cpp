@@ -51,7 +51,7 @@ bool NickCommand::_validateNick(User* user, string nick)
 	}
 	string allowedSpecialChars(ALLOWED_NICK_SECIAL_CHARACTERS);
 	for (int i = 0; nick[i] != '\0'; i++) {
-		if ((allowedSpecialChars.find(nick[i]) == string::npos && !isalpha(nick[i]) && !isdigit(nick[i])) || nick[i] < 0) {
+		if (allowedSpecialChars.find(nick[i]) == string::npos && !isalpha(nick[i]) && !isdigit(nick[i])) {
 			sendMessage(user->getFD(), ERR_ERRONEUSNICKNAME(_serverName, "", nick));
 			return (false);
 		}
