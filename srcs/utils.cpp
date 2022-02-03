@@ -54,17 +54,6 @@ struct pollfd fillPollfd(int sd, short events)
 	return fd;
 }
 
-string getListOfNicknames(const vector<User*> users, string separator)
-{
-	stringstream ss;
-	for (size_t i = 0; i < users.size(); ++i) {
-		ss << users[i]->getNickname();
-		if (i != users.size() - 1)
-			ss << separator;
-	}
-	return ss.str();
-}
-
 bool isChannel(string receiver)
 {
 	if (receiver[0] == '#' || receiver[0] == '&') {

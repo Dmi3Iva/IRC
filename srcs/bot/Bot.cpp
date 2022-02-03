@@ -9,8 +9,11 @@ Bot::Bot(string ip, string port, string pass)
 		exit(EXIT_FAILURE);
 	}
 	_address.sin_family = AF_INET;
-	_address.sin_port = htons(atoi(port.c_str()));
-	_address.sin_addr.s_addr = inet_addr(ip.c_str());
+	_address.sin_port = getValidPort(port);
+	if (inet_aton(ip.c_str(), &_address.sin_addr) == 0) {
+		cout << "ERROR: Invalid ip address!" << endl;
+		exit(EXIT_FAILURE);
+	}
 	// connect to the server on socket
 	int connectResult = connect(_sock, (sockaddr*)&_address, sizeof(_address));
 	if (connectResult == -1) {
