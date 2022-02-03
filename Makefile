@@ -97,4 +97,7 @@ clean:
 fclean: clean
 	rm -rf $(NAME) $(BOT_NAME)
 
+format:
+	find . -iname *.hpp -o -iname *.cpp | xargs clang-format -i -style=file
+
 re: fclean all

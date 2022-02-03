@@ -1,6 +1,6 @@
+#include "Bot.hpp"
 #include <iostream>
 #include <string>
-#include "Bot.hpp"
 
 using std::cout;
 using std::endl;
@@ -9,12 +9,11 @@ using std::string;
 int main(int argc, char** argv)
 {
 	string hint = "./bot [host:port_network:password_network] <port> <password>\n";
-	Bot *bot;
+	Bot* bot;
 	if (argc < 2 || argc > 3) {
 		cout << hint;
-    	return 0;
-	}
-	else if (argc == 3)
+		return 0;
+	} else if (argc == 3)
 		bot = new Bot("127.0.0.1", argv[1], argv[2]);
 	else {
 		vector<string> args = ft_split(argv[1], ":");

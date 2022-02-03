@@ -57,7 +57,7 @@ void JoinCommand::_joinChannel(User* user, string channelName, string key)
 			return;
 		}
 		if (it->second->isInviteOnlyChannel()) {
-			//if user isn't in invintation list then return else remove him from list and then add
+			// if user isn't in invintation list then return else remove him from list and then add
 			if (!it->second->isUserInInvintationList(user)) {
 				sendMessage(user->getFD(), ERR_INVITEONLYCHAN(_serverName, user->getNickname(), channelName));
 				return;

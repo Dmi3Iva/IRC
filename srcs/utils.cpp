@@ -95,11 +95,10 @@ bool StarCmp(const char* str, const char* mask)
 	return 0;
 }
 
-void stringToLowerCase(string& str) {
-	std::transform(str.begin(), str.end(), str.begin(), tolower);
-}
+void stringToLowerCase(string& str) { std::transform(str.begin(), str.end(), str.begin(), tolower); }
 
-in_port_t getValidPort(const string& port) {
+in_port_t getValidPort(const string& port)
+{
 	char* endPtr;
 	long _port = std::strtol(port.c_str(), &endPtr, 10);
 

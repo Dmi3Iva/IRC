@@ -5,7 +5,9 @@
 #include "User.hpp"
 #include "responses.hpp"
 #include "utils.hpp"
+#include <algorithm>
 #include <cctype>
+#include <cstdlib>
 #include <cstring>
 #include <deque>
 #include <iostream>
@@ -13,8 +15,6 @@
 #include <map>
 #include <string>
 #include <sys/socket.h>
-#include <algorithm>
-#include <cstdlib>
 
 using std::cout;
 using std::deque;

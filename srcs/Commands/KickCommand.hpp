@@ -17,9 +17,9 @@ public:
 	void execute(User* user, string cmd);
 
 private:
-	string _constructMessageAndEraseFromCmd(string &cmd);
-	void _startKicking(User *user, vector<string> &channels, vector<string> &users, string message);
-	void _kickUsersFromChannel(User *user, Channel *channel, vector<string> &users, string message);
+	string _constructMessageAndEraseFromCmd(string& cmd);
+	void _startKicking(User* user, vector<string>& channels, vector<string>& users, string message);
+	void _kickUsersFromChannel(User* user, Channel* channel, vector<string>& users, string message);
 };
 
 #endif

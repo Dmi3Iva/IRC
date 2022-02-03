@@ -17,9 +17,9 @@ public:
 	void execute(User* user, string cmd);
 
 private:
-	void _presentUsersInformation(User *user, vector<string> &nicknames);
-	void _showUserInfo(User *user, User *searchedUser);
-	string _constructChannelsInfo(User *searchedUser);
+	void _presentUsersInformation(User* user, vector<string>& nicknames);
+	void _showUserInfo(User* user, User* searchedUser);
+	string _constructChannelsInfo(User* searchedUser);
 };
 
 #endif

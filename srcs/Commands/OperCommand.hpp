@@ -6,7 +6,7 @@
  * https://datatracker.ietf.org/doc/html/rfc1459#section-4.1.5
  */
 class OperCommand : public ACommand {
-	public:
+public:
 	OperCommand(string serverName, userVector* usersPtr, channelMap* channelsPtr);
 	void execute(User* user, string cmd);
 };

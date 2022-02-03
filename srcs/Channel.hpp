@@ -3,14 +3,14 @@
 
 #include "User.hpp"
 #include "utils.hpp"
-#include <string>
-#include <vector>
 #include <algorithm>
 #include <map>
+#include <string>
+#include <vector>
 
+using std::map;
 using std::string;
 using std::vector;
-using std::map;
 
 class User;
 
@@ -75,9 +75,9 @@ public:
 	string getUserPrefix(User* pUser);
 	string getUserNicknameWithPrefix(User* pUser);
 	string getNameWithPrefix();
-	bool addUserToInviteList(User *pUser);
-	bool isUserInInvintationList(User *pUser);
-	void removeUserFromInvintationList(User *pUser);
+	bool addUserToInviteList(User* pUser);
+	bool isUserInInvintationList(User* pUser);
+	void removeUserFromInvintationList(User* pUser);
 
 private:
 	const string _name;
@@ -95,7 +95,7 @@ private:
 	usersVectorType _operators; // only operators
 	usersVectorType _speakers; // v
 	vector<string> _bannedUsers; // b - set a ban mask to keep users out;
-	map<string, User *> _invitedUsersList;
+	map<string, User*> _invitedUsersList;
 
 	int _removeUserByNickname(usersVectorType& users, string nickname);
 };

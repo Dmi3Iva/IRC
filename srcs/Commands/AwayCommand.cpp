@@ -8,7 +8,8 @@ AwayCommand::AwayCommand(string serverName, userVector* userPtr, channelMap* cha
 
 AwayCommand::~AwayCommand() { }
 
-void AwayCommand::execute(User* user, string cmd) {
+void AwayCommand::execute(User* user, string cmd)
+{
 	eraseSpacesInFront(cmd);
 	if (cmd.empty()) {
 		user->setIsAway(false);

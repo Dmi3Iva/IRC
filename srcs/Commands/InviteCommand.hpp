@@ -17,7 +17,7 @@ public:
 	void execute(User* user, string cmd);
 
 private:
-	void _sendInvite(User *user, Channel *channel, User *userToInvite);
+	void _sendInvite(User* user, Channel* channel, User* userToInvite);
 };
 
 #endif

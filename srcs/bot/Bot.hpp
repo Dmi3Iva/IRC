@@ -10,14 +10,14 @@
 #include <arpa/inet.h>
 #include <iostream>
 #include <netinet/in.h>
+#include <stdlib.h>
 #include <string>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <stdlib.h>
 #include <vector>
 
-using std::cout;
 using std::cerr;
+using std::cout;
 using std::endl;
 using std::string;
 using std::vector;

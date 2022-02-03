@@ -267,20 +267,20 @@ string Channel::getUserNicknameWithPrefix(User* pUser)
 	return prefix + pUser->getNickname();
 }
 
-bool Channel::addUserToInviteList(User *pUser)
+bool Channel::addUserToInviteList(User* pUser)
 {
 	// map<string, User*>::iterator it = _invitedUsersList.find(pUser->getNickname());
 	// if (it != _invitedUsersList.end()) {
 	// 	return (false);
 	// }
-	std::pair<string, User*>	user(pUser->getNickname(), pUser);
+	std::pair<string, User*> user(pUser->getNickname(), pUser);
 	std::pair<map<string, User*>::iterator, bool> insertResult = _invitedUsersList.insert(user);
 	if (insertResult.second)
 		return (true);
 	return (false);
 }
 
-bool Channel::isUserInInvintationList(User *pUser)
+bool Channel::isUserInInvintationList(User* pUser)
 {
 	map<string, User*>::iterator it = _invitedUsersList.find(pUser->getNickname());
 	if (it == _invitedUsersList.end())
@@ -288,7 +288,7 @@ bool Channel::isUserInInvintationList(User *pUser)
 	return (true);
 }
 
-void Channel::removeUserFromInvintationList(User *pUser)
+void Channel::removeUserFromInvintationList(User* pUser)
 {
 	map<string, User*>::iterator it = _invitedUsersList.find(pUser->getNickname());
 	if (it == _invitedUsersList.end())

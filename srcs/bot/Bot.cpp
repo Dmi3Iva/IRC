@@ -31,7 +31,7 @@ string Bot::_getMessage()
 	string buffer;
 	string message;
 
-	buffer.resize( 4096, 0);
+	buffer.resize(4096, 0);
 	if ((bytesReceived = recv(_sock, reinterpret_cast<void*>(const_cast<char*>(buffer.c_str())), 4096, 0)) > 0) {
 		buffer[bytesReceived] = '\0';
 		cout << "received new message" << buffer << endl;
@@ -71,14 +71,13 @@ void Bot::start()
 	}
 }
 
-void Bot::_authorize() { _sendMessage("PASS :" + _password+ "\nUSER "+BOT_USERNAME+" * * :"+BOT_REALNAME+"\nNICK "+ BOT_USERNAME"\n"); }
+void Bot::_authorize() { _sendMessage("PASS :" + _password + "\nUSER " + BOT_USERNAME + " * * :" + BOT_REALNAME + "\nNICK " + BOT_USERNAME "\n"); }
 
 string Bot::_responseToMessage(string message)
 {
 	// Remove nickname and check password error message
-	if (message.substr(message.find(" ")).find("461 * PASS :Not enough parameters.") != string::npos)
-	{
-		cerr << "Incorrect password try again" <<endl;
+	if (message.substr(message.find(" ")).find("461 * PASS :Not enough parameters.") != string::npos) {
+		cerr << "Incorrect password try again" << endl;
 		exit(EXIT_FAILURE);
 	}
 	vector<string> args = ft_split(message, " ");
@@ -92,9 +91,8 @@ string Bot::_responseToMessage(string message)
 
 string Bot::_getNickname(string s)
 {
-	if (!s.empty() && s.find(":") != string::npos)
-	{
-		s.erase(0, s.find(":")+1);
+	if (!s.empty() && s.find(":") != string::npos) {
+		s.erase(0, s.find(":") + 1);
 	}
 	if (s.find("!") != string::npos)
 		s.erase(s.find("!"), string::npos);
