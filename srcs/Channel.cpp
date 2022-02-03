@@ -60,6 +60,13 @@ void Channel::removeUser(User* pUser)
 		} else {
 			_owner = _members.front();
 			_operators.push_back(_owner);
+			sendToAllChannelMembers(MODE_RPL(_owner->getNickname(), _owner->getUsername(), _owner->getHostname(), this->getName(), "+o :" + _owner->getNickname()));
+			// Send to new owner names reply, without it adium doesn't believe that this user becomes oper
+			for (Channel::usersVectorType::const_iterator it = this->getMembers().begin(); it != this->getMembers().end(); ++it) {
+				if (!(*it)->isInvisible())
+					sendMessage(_owner->getFD(), RPL_NAMREPLY(HOSTNAME, this->getNameWithPrefix(), this->getUserNicknameWithPrefix(*it), _owner->getNickname()));
+			}
+			sendMessage(_owner->getFD(), RPL_ENDOFNAMES(HOSTNAME, this->getName(), _owner->getNickname()));
 		}
 	}
 }
