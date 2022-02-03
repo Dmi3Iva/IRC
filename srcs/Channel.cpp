@@ -245,15 +245,21 @@ string Channel::getUserPrefix(User* pUser)
 							 : ""; // just member
 }
 
+/**
+ * @ - secret channel
+ * * private channel
+ * = public channel
+ * @return
+ */
 string Channel::getNameWithPrefix()
 {
 	string prefix;
 	if (isSecret())
-		prefix = "@";
+		prefix = "@ ";
 	else if (isPrivate())
-		prefix = "*";
+		prefix = "* ";
 	else
-		prefix = "=";
+		prefix = "= ";
 	return prefix + _name;
 }
 

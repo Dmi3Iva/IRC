@@ -37,6 +37,6 @@ void NamesCommand::_sendListOfChannelMembers(User* user, Channel* channel)
 			if (!(*it)->isInvisible())
 				sendMessage(user->getFD(), RPL_NAMREPLY(_serverName, channel->getNameWithPrefix(), channel->getUserNicknameWithPrefix(*it), user->getNickname()));
 		}
-		sendMessage(user->getFD(), RPL_ENDOFNAMES(_serverName, channel->getName()));
+		sendMessage(user->getFD(), RPL_ENDOFNAMES(_serverName, channel->getName(), user->getNickname()));
 	}
 }
