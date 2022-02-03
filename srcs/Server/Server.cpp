@@ -60,14 +60,17 @@ void Server::_handlePolls()
 	for (pollfdType::iterator it = _pollfds.begin(), ite = _pollfds.end(); it != ite; ++it) {
 		if (it->revents == 0)
 			continue;
-		if (it->revents) {
-			if (it->fd == _socket->getSockfd()) {
+		else if (it->revents & POLLIN) {
+			if (it->events == POLLIN)
 				acceptNewClients();
-				break;
-			} else if (!receiveMessage(_context->findUserByFd(it->fd))) {
+			else if (!receiveMessage(_context->findUserByFd(it->fd))) {
 				_pollfds.erase(it);
 				break;
 			}
+		}
+		else if (it->revents & POLLOUT && !sendMessage(_context->findUserByFd(it->fd))) {
+			_pollfds.erase(it);
+			break;
 		}
 	}
 }
@@ -81,7 +84,7 @@ void Server::acceptNewClients()
 		if (userfd <= 0)
 			break;
 		pair<string, string> info = _getConnectionInfo(userfd);
-		_pollfds.push_back(fillPollfd(userfd, POLLIN));
+		_pollfds.push_back(fillPollfd(userfd, POLLIN | POLLOUT));
 		_context->addUser(new User(userfd, info.first, info.second, !_context->isPasswordSet()));
 	}
 }
@@ -105,7 +108,27 @@ bool Server::receiveMessage(User* user)
 		buffer[bytesRead] = '\0';
 		_context->handleMessage(user, buffer);
 	}
+	return true;
+}
 
+bool Server::sendMessage(User* user)
+{
+	ssize_t bytesSent;
+	string message = user->getBuffer();
+
+	if (!message.empty()) {
+		bytesSent = send(user->getFD(), message.c_str(), message.size(), 0);
+		if (bytesSent <= 0) {
+			cout << "Client ended the _userfd!" << user->getFD() << endl;
+			close(user->getFD());
+			_context->deleteUser(user);
+			return false;
+		}
+
+		if (bytesSent > 0) {
+			user->setBuffer(message.substr(bytesSent));
+		}
+	}
 	return true;
 }
 

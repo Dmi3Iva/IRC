@@ -13,11 +13,13 @@ PassCommand::PassCommand(string serverName, userVector* usersPtr, channelMap* ch
 void PassCommand::execute(User* user, string cmd)
 {
 	if (user->isAuthenticated())
-		sendMessage(user->getFD(), ERR_ALREADYREGISTRED(_serverName, user->getNickname()));
+		user->appendBuffer(ERR_ALREADYREGISTRED(_serverName, user->getNickname()));
+//		sendMessage(user->getFD(), ERR_ALREADYREGISTRED(_serverName, user->getNickname()));
 	else if (cmd[0] == ':' && &cmd[1] == _serverPassword)
 		user->setIsAuthenticated(true);
 	else {
-		sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, (user->getNickname().empty() ? "*" : user->getNickname()), _name));
+		user->appendBuffer(ERR_NEEDMOREPARAMS(_serverName, (user->getNickname().empty() ? "*" : user->getNickname()), _name));
+//		sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, (user->getNickname().empty() ? "*" : user->getNickname()), _name));
 		close(user->getFD());
 	}
 }

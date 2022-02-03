@@ -11,12 +11,14 @@ InviteCommand::~InviteCommand() { }
 void InviteCommand::execute(User* user, string cmd)
 {
 	if (!user->isRegistered()) {
-		sendMessage(user->getFD(), ERR_NOTREGISTERED(_serverName, user->getNickname(), "INVITE"));
+		user->appendBuffer(ERR_NOTREGISTERED(_serverName, user->getNickname(), "INVITE"));
+//		sendMessage(user->getFD(), ERR_NOTREGISTERED(_serverName, user->getNickname(), "INVITE"));
 		return;
 	}
 	vector<string> params = ft_split(cmd, " ");
 	if (params.size() != 2) {
-		sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), "INVITE"));
+		user->appendBuffer(ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), "INVITE"));
+//		sendMessage(user->getFD(), ERR_NEEDMOREPARAMS(_serverName, user->getNickname(), "INVITE"));
 		return;
 	}
 	User* userToInvite = getUserFromArray(params[0]);

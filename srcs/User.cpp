@@ -140,3 +140,23 @@ bool User::isParticipateInChannels() const
 		return (false);
 	return (true);
 }
+
+string User::getBuffer() const
+{
+	return _buffer;
+}
+
+void User::appendBuffer(string buffer)
+{
+	_buffer.append(buffer);
+}
+
+void User::setBuffer(string buffer)
+{
+	_buffer = buffer;
+}
+
+void User::appendMessage(string message)
+{
+	_message.append(message);
+}
