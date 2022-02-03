@@ -83,6 +83,11 @@ public:
 
 	bool isParticipateInChannels() const;
 
+	string getBuffer() const;
+	void setBuffer(string buffer);
+	void appendBuffer(string buffer);
+	void appendMessage(string message);
+
 private:
 	int _fd;
 	string _nickname;
@@ -100,6 +105,7 @@ private:
 	bool _isReceivesWallops; // MODE w
 	bool _isReceiptNotice; // MODE s
 	string _message;
+	string _buffer;
 	string _awayMessage;
 	userChannels _userChannels;
 };

@@ -37,6 +37,7 @@ public:
 	void polling();
 	void acceptNewClients();
 	bool receiveMessage(User* user);
+	bool sendMessage(User* user);
 
 private:
 	Server(Server const&); // Don't Implement.

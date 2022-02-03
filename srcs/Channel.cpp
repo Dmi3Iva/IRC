@@ -99,7 +99,8 @@ void Channel::sendToAllChannelMembers(string message, User* sender)
 {
 	for (usersVectorType::iterator user = _members.begin(); user != _members.end(); user++) {
 		if (!sender || sender->getNickname() != (*user)->getNickname())
-			sendMessage((*user)->getFD(), message);
+			(*user)->appendBuffer(message);
+		//			sendMessage((*user)->getFD(), message);
 	}
 }
 

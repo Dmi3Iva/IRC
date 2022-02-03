@@ -12,20 +12,23 @@ void PrivateMessageCommand::execute(User* user, string cmd)
 {
 
 	if (!user->isRegistered()) {
-		sendMessage(user->getFD(), ERR_NOTREGISTERED(_serverName, user->getNickname(), "PRIVMSG"));
+		user->appendBuffer(ERR_NOTREGISTERED(_serverName, user->getNickname(), "PRIVMSG"));
+		//		sendMessage(user->getFD(), ERR_NOTREGISTERED(_serverName, user->getNickname(), "PRIVMSG"));
 		return;
 	}
 
 	vector<string> receivers = _getReceivers(cmd);
 	if (receivers.size() == 0 || receivers[0] == "" || receivers[0].c_str()[0] == ':') {
-		sendMessage(user->getFD(), ERR_NORECIPIENT(_serverName, user->getNickname(), _name, _description));
+		user->appendBuffer(ERR_NORECIPIENT(_serverName, user->getNickname(), _name, _description));
+//		sendMessage(user->getFD(), ERR_NORECIPIENT(_serverName, user->getNickname(), _name, _description));
 		return;
 	}
 
 	string message = _constructMessage(cmd);
 
 	if (message.size() == 0 || message == "") {
-		sendMessage(user->getFD(), ERR_NOTEXTTOSEND(_serverName, user->getNickname()));
+		user->appendBuffer(ERR_NOTEXTTOSEND(_serverName, user->getNickname()));
+		//		sendMessage(user->getFD(), ERR_NOTEXTTOSEND(_serverName, user->getNickname()));
 		return;
 	}
 	_sendMessageToReceivers(user, receivers, message);
@@ -66,30 +69,37 @@ void PrivateMessageCommand::_sendMessageToReceivers(User* user, vector<string>& 
 			channelMap::iterator channel = _channelsPtr->find(*it);
 			if (channel != _channelsPtr->end()) {
 				if (!channel->second->isUserCanSpeak(user)) {
-					sendMessage(user->getFD(), ERR_CANNOTSENDTOCHAN(_serverName, user->getNickname(), *it));
+					user->appendBuffer(ERR_CANNOTSENDTOCHAN(_serverName, user->getNickname(), *it));
+//					sendMessage(user->getFD(), ERR_CANNOTSENDTOCHAN(_serverName, user->getNickname(), *it));
 				} else if (_isReceiverAlredyGotMessage(handledReceivers, channel->second->getName())) {
-					sendMessage(user->getFD(), ERR_TOOMANYTARGETS(_serverName, user->getNickname(), *it));
+					user->appendBuffer(ERR_TOOMANYTARGETS(_serverName, user->getNickname(), *it));
+//					sendMessage(user->getFD(), ERR_TOOMANYTARGETS(_serverName, user->getNickname(), *it));
 				} else {
 					channel->second->sendToAllChannelMembers(RPL_PRIVMSG(user->getNickname(), user->getUsername(), user->getUsername(), *it, message), user);
 					handledReceivers.push_back(channel->second->getName());
 				}
 			} else {
-				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname(), *it));
+				user->appendBuffer(ERR_NOSUCHNICK(_serverName, user->getNickname(), *it));
+//				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname(), *it));
 			}
 		} else {
 			User* userReceiver = this->getUserFromArray(*it);
 			if (userReceiver) {
 				if (_isReceiverAlredyGotMessage(handledReceivers, userReceiver->getNickname())) {
-					sendMessage(user->getFD(), ERR_TOOMANYTARGETS(_serverName, user->getNickname(), *it));
+					user->appendBuffer(ERR_TOOMANYTARGETS(_serverName, user->getNickname(), *it));
+//					sendMessage(user->getFD(), ERR_TOOMANYTARGETS(_serverName, user->getNickname(), *it));
 				} else {
-					sendMessage(userReceiver->getFD(), RPL_PRIVMSG(user->getNickname(), user->getUsername(), user->getUsername(), *it, message));
+					user->appendBuffer(RPL_PRIVMSG(user->getNickname(), user->getUsername(), user->getUsername(), *it, message));
+//					sendMessage(userReceiver->getFD(), RPL_PRIVMSG(user->getNickname(), user->getUsername(), user->getUsername(), *it, message));
 					handledReceivers.push_back(userReceiver->getNickname());
 					if (userReceiver->getIsAway()) {
-						sendMessage(user->getFD(), RPL_AWAY(_serverName, user->getNickname(), userReceiver->getNickname(), userReceiver->getAwayMessage()));
+						user->appendBuffer(RPL_AWAY(_serverName, user->getNickname(), userReceiver->getNickname(), userReceiver->getAwayMessage()));
+//						sendMessage(user->getFD(), RPL_AWAY(_serverName, user->getNickname(), userReceiver->getNickname(), userReceiver->getAwayMessage()));
 					}
 				}
 			} else {
-				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname(), *it));
+				user->appendBuffer(ERR_NOSUCHNICK(_serverName, user->getNickname(), *it));
+//				sendMessage(user->getFD(), ERR_NOSUCHNICK(_serverName, user->getNickname(), *it));
 			}
 		}
 	}
