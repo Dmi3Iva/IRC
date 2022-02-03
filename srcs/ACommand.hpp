@@ -13,6 +13,8 @@
 #include <map>
 #include <string>
 #include <sys/socket.h>
+#include <algorithm>
+#include <cstdlib>
 
 using std::cout;
 using std::deque;

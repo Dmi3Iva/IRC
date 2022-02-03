@@ -2,7 +2,7 @@
 
 Channel::Channel(const string name)
 	: _name(name)
-	, _topic("default topic: welcome to the channel! :)")
+	, _topic()
 	, _isPrivate(false)
 	, _isSecret(false)
 	, _isInviteOnlyChannel(false)
