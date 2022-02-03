@@ -105,3 +105,7 @@ bool StarCmp(const char* str, const char* mask)
 	}
 	return 0;
 }
+
+void stringToLowerCase(string& str) {
+	std::transform(str.begin(), str.end(), str.begin(), tolower);
+}

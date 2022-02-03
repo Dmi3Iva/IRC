@@ -95,4 +95,6 @@ bool isMaskMatch(const char* str, const char* mask);
 
 bool StarCmp(const char* str, const char* mask);
 
+void stringToLowerCase(string& str);
+
 #endif
