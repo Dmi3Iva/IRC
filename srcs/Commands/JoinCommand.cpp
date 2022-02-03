@@ -22,11 +22,11 @@ void JoinCommand::_userHasJoinedChannel(User* user, channelMap::iterator chItera
 	for (Channel::usersVectorType::const_iterator it = chIterator->second->getMembers().begin(); it != chIterator->second->getMembers().end(); ++it) {
 		if (!(*it)->isInvisible()) {
 			chIterator->second->sendToAllChannelMembers(
-				RPL_NAMREPLY(_serverName, chIterator->second->getName(), user->getNickname(), chIterator->second->getUserPrefix(*it) + (*it)->getNickname()));
+				RPL_NAMREPLY(_serverName, chIterator->second->getNameWithPrefix(), user->getNickname(), chIterator->second->getUserPrefix(*it) + (*it)->getNickname()));
 		}
 	}
 	// end of sending
-	chIterator->second->sendToAllChannelMembers(RPL_ENDOFNAMES(_serverName, chIterator->second->getName()));
+	chIterator->second->sendToAllChannelMembers(RPL_ENDOFNAMES(_serverName, chIterator->second->getName(), user->getNickname()));
 }
 
 void JoinCommand::_joinChannel(User* user, string channelName, string key)

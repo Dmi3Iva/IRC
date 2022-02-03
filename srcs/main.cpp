@@ -17,10 +17,14 @@ int main(int argc, char** argv)
 	else {
 		vector<string> args = ft_split(argv[1], ":");
 
-		if (args.size() != 3 || args[0].empty() || args[1].empty() || args[2].empty())
+		if (args.size() == 1)
+			app = new Server("127.0.0.1", args[0], "");
+		else if (args.size() != 3 || args[0].empty() || args[1].empty() || args[2].empty()) {
 			cout << hint;
-
-		app = new Server(args[0], args[1], args[2]);
+			return (0);
+		} else {
+			app = new Server(args[0], args[1], args[2]);
+		}
 	}
 
 	app->start();
