@@ -54,17 +54,6 @@ struct pollfd fillPollfd(int sd, short events)
 	return fd;
 }
 
-string getListOfNicknames(const vector<User*> users, string separator)
-{
-	stringstream ss;
-	for (size_t i = 0; i < users.size(); ++i) {
-		ss << users[i]->getNickname();
-		if (i != users.size() - 1)
-			ss << separator;
-	}
-	return ss.str();
-}
-
 bool isChannel(string receiver)
 {
 	if (receiver[0] == '#' || receiver[0] == '&') {
@@ -108,4 +97,15 @@ bool StarCmp(const char* str, const char* mask)
 
 void stringToLowerCase(string& str) {
 	std::transform(str.begin(), str.end(), str.begin(), tolower);
+}
+
+in_port_t getValidPort(const string& port) {
+	char* endPtr;
+	long _port = std::strtol(port.c_str(), &endPtr, 10);
+
+	if (*endPtr || _port <= 0 || _port > USHRT_MAX) {
+		cout << "ERROR: Invalid port!" << endl;
+		exit(EXIT_FAILURE);
+	}
+	return htons(_port);
 }

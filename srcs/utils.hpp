@@ -76,8 +76,6 @@ void eraseSpacesInFront(string& cmd);
 
 struct pollfd fillPollfd(int sd, short events);
 
-string getListOfNicknames(const vector<User*> users, string separator);
-
 bool isChannel(string receiver);
 
 template <class Container> typename Container::value_type getPopFront(Container c)
@@ -96,5 +94,7 @@ bool isMaskMatch(const char* str, const char* mask);
 bool StarCmp(const char* str, const char* mask);
 
 void stringToLowerCase(string& str);
+
+in_port_t getValidPort(const string& port);
 
 #endif
