@@ -36,6 +36,7 @@
 *.out
 *.app
 ircserv
+bot
 
 # IDE
 .idea

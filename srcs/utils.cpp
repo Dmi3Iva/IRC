@@ -1,7 +1,3 @@
-//
-// Created by Shandy Mephesto on 1/13/22.
-//
-
 #include "utils.hpp"
 
 std::vector<string> ft_split(const string& s, const string& delimiter) { return ft_split<vector<string> >(s, delimiter); }

@@ -1,7 +1,7 @@
 #include "Server/Server.hpp"
 
 /**
- * Parse args, if they okay execute server
+ * Parse args, if they are okay to execute server
  * @return
  */
 int main(int argc, char** argv) {
@@ -24,5 +24,6 @@ int main(int argc, char** argv) {
   }
 
   app->start();
+  delete app;
   return (0);
 }

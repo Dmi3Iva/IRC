@@ -5,8 +5,8 @@ Server::Server(string ip, string port, string password)
 	, _context(new Context("localhost", password))
 {
 	_address.sin_family = AF_INET;
-	_address.sin_port = htons(atoi(port.c_str())); // TODO: добавить валидацию
-	_address.sin_addr.s_addr = inet_addr(ip.c_str()); // TODO: добавить валидацию
+	_address.sin_port = htons(atoi(port.c_str()));
+	_address.sin_addr.s_addr = inet_addr(ip.c_str());
 }
 
 Server::~Server()

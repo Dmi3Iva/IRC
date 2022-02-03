@@ -1,7 +1,10 @@
 NAME=ircserv
 
+BOT_NAME=./bot
+
 CC = clang++
 
+# TODO:: remove -g flag
 CFLAGS = -Wall -Werror -Wextra -std=c++98 -g
 
 SRC = srcs/main.cpp \
@@ -63,18 +66,35 @@ HEADERS = srcs/constants.hpp \
 	srcs/User.hpp \
 	srcs/utils.hpp
 
+# ================== BOT ====================
+
+BOT_SRC = srcs/bot/botMain.cpp \
+	srcs/bot/Bot.cpp \
+	srcs/utils.cpp
+
+BOT_OBJ=$(BOT_SRC:.cpp=.o)
+
+BOT_HEADERS = srcs/bot/config.hpp \
+				srcs/bot/Bot.hpp \
+				srcs/utils.hpp
+
+# ================== END_BOT ====================
+
 srcs/%.o: srcs/%.cpp $(HEADERS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(NAME): $(OBJ) $(HEADERS)
 	$(CC) $(OBJ) $(CFLAGS) -o $(NAME)
 
+$(BOT_NAME): $(BOT_OBJ) $(BOT_HEADERS)
+	$(CC) $(BOT_OBJ) $(CFLAGS) -o $(BOT_NAME)
+
 all: $(NAME)
 
 clean:
-	rm -rf $(OBJ)
+	rm -rf $(OBJ) $(BOT_OBJ)
 
 fclean: clean
-	rm -rf $(NAME)
+	rm -rf $(NAME) $(BOT_NAME)
 
 re: fclean all
