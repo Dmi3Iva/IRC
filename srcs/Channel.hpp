@@ -2,6 +2,7 @@
 #define CHANNEL_HPP
 
 #include "User.hpp"
+#include "responses.hpp"
 #include "utils.hpp"
 #include <algorithm>
 #include <map>
