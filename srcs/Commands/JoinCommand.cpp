@@ -33,6 +33,11 @@ void JoinCommand::_joinChannel(User* user, string channelName, string key)
 {
 	channelMap::iterator it = _channelsPtr->find(channelName);
 
+	// is user able to join?
+	if (user->isFullOfChannels()) {
+		sendMessage(user->getFD(), ERR_TOOMANYCHANNELS(_serverName, user->getNickname(), channelName));
+		return;
+	}
 	// if channel is not created, create it
 	if (it == _channelsPtr->end()) {
 		std::pair<channelMap::iterator, bool> newChannel = _channelsPtr->insert(make_pair(channelName, new Channel(channelName)));
@@ -40,10 +45,6 @@ void JoinCommand::_joinChannel(User* user, string channelName, string key)
 	}
 	// else check channel and user
 	else {
-		if (user->isFullOfChannels()) {
-			sendMessage(user->getFD(), ERR_TOOMANYCHANNELS(_serverName, user->getNickname(), channelName));
-			return;
-		}
 		if (it->second->isFullOfMembers()) {
 			sendMessage(user->getFD(), ERR_CHANNELISFULL(_serverName, user->getNickname(), channelName));
 			return;

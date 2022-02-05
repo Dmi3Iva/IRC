@@ -47,8 +47,9 @@ void Context::deleteUser(User* user)
 {
 	for (std::vector<User*>::iterator it = _users.begin(), ite = _users.end(); it != ite; ++it) {
 		if ((*it)->getFD() == user->getFD()) {
-			_users.erase(it);
 			delete *it;
+			_users.erase(it);
+			return;
 		}
 	}
 }
