@@ -27,6 +27,7 @@ int main(int argc, char** argv)
 		}
 	}
 	bot->start();
+	cout << "Bot is closing ..." << endl;
 	delete bot;
 	return 0;
 }

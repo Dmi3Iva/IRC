@@ -2,6 +2,7 @@
 
 Bot::Bot(string ip, string port, string pass)
 	: _password(pass)
+	, _stopFlag(false)
 {
 	_sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (_sock == -1) {
@@ -36,6 +37,9 @@ string Bot::_getMessage()
 		buffer[bytesReceived] = '\0';
 		cout << "received new message" << buffer << endl;
 		message.append(string(buffer));
+	} else {
+		setStopFlag(true);
+		return "";
 	}
 	return _parseMessage(message);
 }
@@ -63,11 +67,10 @@ void Bot::start()
 {
 	string response;
 
+	setStopFlag(false);
 	_authorize();
-	while (true) {
-		response = _responseToMessage(_getMessage());
-		if (!response.empty())
-			_sendMessage(response);
+	while (!_stopFlag) {
+		_sendMessage(_responseToMessage(_getMessage()));
 	}
 }
 
@@ -75,6 +78,8 @@ void Bot::_authorize() { _sendMessage("PASS :" + _password + "\nUSER " + BOT_USE
 
 string Bot::_responseToMessage(string message)
 {
+	if (message.empty())
+		return "";
 	// Remove nickname and check password error message
 	if (message.substr(message.find(" ")).find("461 * PASS :Not enough parameters.") != string::npos) {
 		cerr << "Incorrect password try again" << endl;
@@ -101,9 +106,17 @@ string Bot::_getNickname(string s)
 
 void Bot::_sendMessage(string message)
 {
+	if (message.empty())
+		return;
 	cout << "sending message: " << message << endl;
 	int sendResult = send(_sock, message.c_str(), message.size(), 0); // Check result
 	if (sendResult == -1) {
 		cout << "cant' sernd to the server" << endl;
 	}
+}
+
+void Bot::setStopFlag(bool value)
+{
+	cout << "Set stop flag = " << value << endl;
+	_stopFlag = value;
 }

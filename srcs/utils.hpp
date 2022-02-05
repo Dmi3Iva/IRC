@@ -2,6 +2,8 @@
 #define UTILS_HPP
 
 #include "User.hpp"
+#include <limits.h>
+#include <netinet/in.h>
 #include <sstream>
 #include <string>
 #include <sys/poll.h>

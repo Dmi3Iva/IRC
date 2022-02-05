@@ -1,11 +1,10 @@
 NAME=ircserv
 
-BOT_NAME = bot
+BOT_NAME=bot
 
 CC = clang++
 
-# TODO:: remove -g flag
-CFLAGS = -Wall -Werror -Wextra -std=c++98 -g
+CFLAGS = -Wall -Werror -Wextra -std=c++98
 
 SRC = srcs/main.cpp \
 	srcs/ACommand.cpp \
