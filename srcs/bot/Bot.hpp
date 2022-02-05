@@ -1,7 +1,3 @@
-//
-// Created by Shandy Mephesto on 1/27/22.
-//
-
 #ifndef BOT_HPP
 #define BOT_HPP
 
@@ -27,6 +23,7 @@ public:
 	Bot(string, string, string);
 	~Bot();
 	void start();
+	void setStopFlag(bool value);
 
 private:
 	int _sock;
@@ -35,6 +32,7 @@ private:
 	string _port;
 	string _password;
 	string _remainder;
+	bool _stopFlag;
 
 	string _getMessage();
 	string _parseMessage(string);
@@ -44,4 +42,4 @@ private:
 	string _getNickname(string s);
 };
 
-#endif // IRC_BOT_HPP
+#endif

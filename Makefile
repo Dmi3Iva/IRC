@@ -1,6 +1,6 @@
 NAME=ircserv
 
-BOT_NAME=./bot
+BOT_NAME=bot
 
 CC = clang++
 
