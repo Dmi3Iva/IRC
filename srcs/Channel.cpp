@@ -282,10 +282,6 @@ string Channel::getUserNicknameWithPrefix(User* pUser)
 
 bool Channel::addUserToInviteList(User* pUser)
 {
-	// map<string, User*>::iterator it = _invitedUsersList.find(pUser->getNickname());
-	// if (it != _invitedUsersList.end()) {
-	// 	return (false);
-	// }
 	std::pair<string, User*> user(pUser->getNickname(), pUser);
 	std::pair<map<string, User*>::iterator, bool> insertResult = _invitedUsersList.insert(user);
 	if (insertResult.second)
